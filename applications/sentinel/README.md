@@ -222,6 +222,30 @@ For production environments and CI/CD pipelines, Sentinel includes Terraform con
 
 > **Prerequisite:** Pre-create a Google Cloud Storage bucket for Terraform remote state (e.g. `YOUR_STATE_BUCKET_NAME`).
 
+> **One-time project setup (new/fresh Google Cloud projects):** On a project that has never run Cloud Build or Terraform before, the pipeline will fail with permission errors unless the following are set up first. Replace `YOUR_PROJECT_ID` and `YOUR_PROJECT_NUMBER` accordingly (`gcloud projects describe YOUR_PROJECT_ID --format="value(projectNumber)"`):
+>
+> ```bash
+> # Enable the APIs required by Cloud Build and Terraform's google_project_service resources
+> gcloud services enable cloudbuild.googleapis.com cloudresourcemanager.googleapis.com \
+>     --project=YOUR_PROJECT_ID
+>
+> # Grant the default Compute Engine service account (used by Cloud Build on new projects)
+> # the roles needed to read build source, provision infrastructure, and manage the
+> # agent identity's IAM bindings.
+> SA="serviceAccount:YOUR_PROJECT_NUMBER-compute@developer.gserviceaccount.com"
+> gcloud projects add-iam-policy-binding YOUR_PROJECT_ID --member="$SA" --role="roles/storage.objectViewer"
+> gcloud projects add-iam-policy-binding YOUR_PROJECT_ID --member="$SA" --role="roles/editor"
+> gcloud projects add-iam-policy-binding YOUR_PROJECT_ID --member="$SA" --role="roles/resourcemanager.projectIamAdmin"
+> ```
+>
+> Without these:
+> - Missing `cloudresourcemanager.googleapis.com` causes Terraform to fail during `tf-apply` with `Cloud Resource Manager API has not been used in project ... before or it is disabled`.
+> - Missing `roles/storage.objectViewer` causes `gcloud builds submit` to fail with `could not resolve source: ... does not have storage.objects.get access`.
+> - Missing `roles/editor` causes Terraform to fail creating most project resources (buckets, Reasoning Engine, etc.).
+> - Missing `roles/resourcemanager.projectIamAdmin` causes Terraform to fail specifically on `google_project_iam_member.agent_identity` with `Error setting IAM policy for project ...: Policy update access denied`, since `roles/editor` intentionally excludes IAM policy management.
+>
+> Allow a minute or two after enabling APIs/granting roles for IAM changes to propagate before retrying.
+
 #### Deploy Agent Infrastructure & Runtime:
 ```bash
 # Run from applications/sentinel/
@@ -246,6 +270,54 @@ This automated pipeline:
 | **`_ENABLE_TELEMETRY`** | Enable Cloud Observability tracing and logging (`true`/`false`). | `"true"` |
 | **`_GEMINI_ENTERPRISE_APP_ID`** | Gemini Enterprise application resource name for registration. | *None* |
 | **`_ENV_VARS`** | Additional environment variables (semicolon-separated). | *None* |
+
+### Lessons Learned: One-Time Project Setup (fresh Google Cloud projects)
+
+On a project that has never run Cloud Build or Terraform before, the pipeline fails with permission errors unless the following are set up first. Replace `YOUR_PROJECT_ID` and `YOUR_PROJECT_NUMBER` (`gcloud projects describe YOUR_PROJECT_ID --format="value(projectNumber)")`):
+
+```bash
+# Enable the APIs required by Cloud Build and Terraform's google_project_service resources
+gcloud services enable cloudbuild.googleapis.com cloudresourcemanager.googleapis.com \
+    --project=YOUR_PROJECT_ID
+
+# Grant the default Compute Engine service account (used by Cloud Build on new projects)
+# the roles needed to read build source, provision infrastructure, and manage the
+# agent identity's IAM bindings.
+SA="serviceAccount:YOUR_PROJECT_NUMBER-compute@developer.gserviceaccount.com"
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID --member="$SA" --role="roles/storage.objectViewer"
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID --member="$SA" --role="roles/editor"
+gcloud projects add-iam-policy-binding YOUR_PROJECT_ID --member="$SA" --role="roles/resourcemanager.projectIamAdmin"
+```
+
+| Symptom | Root Cause | Fix |
+| :--- | :--- | :--- |
+| `gcloud builds submit` fails immediately after enabling `cloudbuild.googleapis.com`, with `NOT_FOUND: Requested entity was not found` | API enablement hadn't finished provisioning the build service agent / staging bucket yet (race condition on brand-new projects) | Wait ~1-2 minutes after enabling the API, then retry the same command |
+| `INVALID_ARGUMENT: could not resolve source ... storage.objects.get ... forbidden` | The default Compute Engine service account (used by Cloud Build on new projects) has no IAM role and can't read the uploaded source tarball | Grant it `roles/storage.objectViewer` (see above) |
+| Terraform `tf-apply` step fails with `Cloud Resource Manager API has not been used in project ... before or it is disabled` | Terraform's `google_project_service` resources (which enable other APIs like `aiplatform.googleapis.com`) themselves require `cloudresourcemanager.googleapis.com` to be enabled first | `gcloud services enable cloudresourcemanager.googleapis.com --project=YOUR_PROJECT_ID`, wait a minute, retry |
+| Terraform fails on `google_project_iam_member.agent_identity` with `Error setting IAM policy for project ...: Policy update access denied` | `roles/editor` (granted above) intentionally **excludes** `setIamPolicy` — Terraform needs to grant the agent's own identity roles like `aiplatform.expressUser`, `agentregistry.viewer`, `telemetry.writer` | Grant the same service account `roles/resourcemanager.projectIamAdmin` |
+
+Allow a minute or two after enabling APIs/granting roles for IAM changes to propagate before retrying a build. To inspect build logs beyond what Cloud Storage buffers, use `gcloud beta builds log BUILD_ID --project=YOUR_PROJECT_ID` (requires the `beta` component: `gcloud components install beta`).
+
+### Verifying & Testing the Deployed Agent
+
+Once `gcloud builds submit` reports `SUCCESS`, the agent has **no browser UI of its own** — it's a pure API/A2A service (Vertex AI Agent Runtime / Reasoning Engine), meant to be called by other systems (web apps, other agents, Gemini Enterprise, etc.), not opened in a browser directly.
+
+**Find the deployed agent in the Console:**
+1. Go to **Vertex AI → Agent Engine**: `https://console.cloud.google.com/vertex-ai/agents/agent-engines?project=YOUR_PROJECT_ID`
+2. Click the agent (e.g. "Sentinel Agent") to see its resource name/ID, and test it directly from the **Test** tab.
+
+**Or test it via the CLI/REST API** (useful to confirm the deployment actually works end-to-end):
+```bash
+TOKEN=$(gcloud auth print-access-token)
+curl -X POST \
+  -H "Authorization: Bearer $TOKEN" \
+  -H "Content-Type: application/json" \
+  -d '{"class_method": "create_session", "input": {"user_id": "test-user"}}' \
+  "https://us-central1-aiplatform.googleapis.com/v1/projects/YOUR_PROJECT_ID/locations/us-central1/reasoningEngines/YOUR_ENGINE_ID:query"
+```
+A successful response returns a JSON session object (`id`, `app_name`, `user_id`, etc.), confirming the agent is live and responding. The `YOUR_ENGINE_ID` value is printed at the end of the `deploy-agent` build step as `Agent Runtime ID: projects/.../reasoningEngines/<ID>`.
+
+> **To get a visual UI on top of this deployed agent**, run the frontend locally (see [Run the Full-Stack Web Application Locally](#4-run-the-full-stack-web-application-locally)) pointed at this project, or deploy the separate [Cloud Run Deployment for Full-Stack Web Application](#cloud-run-deployment-for-full-stack-web-application) below. These are **two independent deployments layered on the same agent** — not alternatives to the Terraform/Cloud Build deployment above. See the architecture note at the start of that section for why both exist.
 
 ---
 
@@ -336,6 +408,26 @@ Sentinel provides two Docker container options:
 
 Follow these steps to deploy the full-stack interactive web application (`Dockerfile.webapp`) to Google Cloud Run with Identity-Aware Proxy (IAP):
 
+> **Architecture note — why this is a *separate* deployment from the Agent Runtime:**
+>
+> ```
+> ┌─────────────────────────────────────────────────────────┐
+> │  Layer 2: Full-Stack Web App (this section)              │
+> │  Dockerfile.webapp → Cloud Run + IAP                     │
+> │  = React frontend + FastAPI backend (api/main.py)        │
+> │  "the human-facing UI"                                   │
+> └───────────────────────┬───────────────────────────────────┘
+>                         │ calls as a client
+>                         ▼
+> ┌─────────────────────────────────────────────────────────┐
+> │  Layer 1: Agent Runtime (Reasoning Engine)                │
+> │  Terraform + Cloud Build → Vertex AI Agent Runtime         │
+> │  = the actual Sentinel compliance-checking agent (app/)    │
+> │  "the brain" — API/A2A only, no UI of its own              │
+> └─────────────────────────────────────────────────────────┘
+> ```
+> The Agent Runtime (previous section) is a pure API — it's meant to be called by any number of clients (this web app, other agents, Gemini Enterprise, etc.), so it's deployed independently. This Cloud Run deployment is just **one possible UI** on top of it; you don't need it at all if you only need to call the agent programmatically, and you don't need to redeploy the agent to deploy/redeploy this UI.
+
 ### 1. Set Environment Variables
 ```bash
 export PROJECT_ID=[YOUR_PROJECT_ID]
@@ -371,6 +463,23 @@ docker build -f Dockerfile.webapp -t $IMAGE_URI .
 docker push $IMAGE_URI
 ```
 
+> **No local Docker installed?** Build and push via Cloud Build instead — note that `gcloud builds submit --tag` alone defaults to the repo's plain `Dockerfile` (used for the agent), **not** `Dockerfile.webapp`, so you must specify it explicitly via an inline build config:
+> ```bash
+> cat > /tmp/cloudbuild-webapp.yaml <<'EOF'
+> steps:
+>   - name: 'gcr.io/cloud-builders/docker'
+>     args: ['build', '-f', 'Dockerfile.webapp', '-t', '${_IMAGE_URI}', '.']
+> images: ['${_IMAGE_URI}']
+> substitutions:
+>   _IMAGE_URI: ''
+> options:
+>   logging: CLOUD_LOGGING_ONLY
+> EOF
+>
+> gcloud builds submit --config=/tmp/cloudbuild-webapp.yaml \
+>     --substitutions=_IMAGE_URI=$IMAGE_URI --project=$PROJECT_ID
+> ```
+
 ### 4. Create Storage Bucket and Service Account
 ```bash
 gcloud storage buckets create gs://$BUCKET_NAME --location=$REGION
@@ -388,6 +497,14 @@ gcloud projects add-iam-policy-binding $PROJECT_ID \
   --member="serviceAccount:$SA_EMAIL" \
   --role="roles/aiplatform.user"
 ```
+
+> **Already have a bucket?** (e.g. the one used by the agent's `GCS_BUCKET_NAME` in `.env`) You don't need to create a new one — reuse it and skip the `gcloud storage buckets create` line. Just grant the new `sentinel-sa` service account access to the existing bucket:
+> ```bash
+> export BUCKET_NAME=your-existing-bucket-name
+> gcloud storage buckets add-iam-policy-binding gs://$BUCKET_NAME \
+>   --member="serviceAccount:$SA_EMAIL" \
+>   --role="roles/storage.objectUser"
+> ```
 
 ### 5. Deploy to Cloud Run with IAP
 ```bash
@@ -411,6 +528,86 @@ gcloud beta iap web add-iam-policy-binding \
   --member="user:[USER_EMAIL]" \
   --role="roles/iap.httpsResourceAccessor"
 ```
+
+### Finding the Deployed URL
+
+The `gcloud beta run deploy` command prints the service URL on success:
+```
+Service URL: https://sentinel-<PROJECT_NUMBER>.<REGION>.run.app
+```
+You can re-fetch it anytime without redeploying:
+```bash
+gcloud run services describe sentinel --region=$REGION --project=$PROJECT_ID --format="value(status.url)"
+```
+**Or from the Console:** go to **Cloud Run** (`https://console.cloud.google.com/run?project=YOUR_PROJECT_ID`) → click the **sentinel** service → the URL is shown at the top of the service's details page and is clickable.
+
+### Granting Additional Users Access
+
+Anyone with a Google account (including personal `@gmail.com` — no Workspace/organization membership required, assuming your org's `iam.allowedPolicyMemberDomains` policy allows it) can be granted access. **If the project uses a Custom OAuth client** (see the Known Issue below — required on fresh projects), this is a **two-step** process; both steps are required or the user will be blocked at a different point in the flow:
+
+#### Step 1 — Add them as an OAuth Test User
+
+Only needed if the app's OAuth consent screen **Publishing status** is still **"Testing"** (the default, and likely the case unless you've gone through Google verification). Without this, affected users get a Google "access blocked: app hasn't been verified" style error at sign-in, before IAP is even reached.
+
+1. Go to **Google Auth Platform → Audience**: `https://console.cloud.google.com/auth/audience?project=YOUR_PROJECT_ID`
+2. Scroll to **Test users** → **"+ Add users"** → enter their Gmail address → Save.
+
+> If **Publishing status** shows **"In production"** instead, skip this step.
+
+#### Step 2 — Grant them IAP access (IAM binding)
+
+Controls whether IAP lets them through *after* they successfully sign in via OAuth.
+
+**Console:** Security → Identity-Aware Proxy (`https://console.cloud.google.com/security/iap?project=YOUR_PROJECT_ID`) → check the `sentinel` resource → **ADD PRINCIPAL** → enter their email → role **"Cloud IAP → IAP-secured Web App User"** → Save.
+
+**gcloud:**
+```bash
+gcloud beta iap web add-iam-policy-binding \
+  --resource-type=cloud-run \
+  --service=sentinel \
+  --region=$REGION \
+  --member="user:theirname@gmail.com" \
+  --role="roles/iap.httpsResourceAccessor" \
+  --project=$PROJECT_ID
+```
+
+| Step | Where | Symptom if skipped |
+| :--- | :--- | :--- |
+| 1. Test user | Google Auth Platform → Audience | Google blocks sign-in with "app hasn't been verified" / "access blocked" |
+| 2. IAP binding | Security → IAP → sentinel → Add principal | IAP shows the "You don't have access" page after successful sign-in |
+
+### ⚠️ Known Issue: "You don't have access" / Error code 11 "Incorrectly configured OAuth client ID"
+
+On **brand-new Google Cloud projects**, the native Cloud Run + IAP integration (`gcloud beta run deploy --iap`) can leave IAP in a broken state — showing as "enabled" with a green checkmark in the Console, but actually non-functional. You may see this manifest in two stages:
+
+1. First, a plain **"You don't have access"** page, even though:
+   - `gcloud beta iap web get-iam-policy` confirms the binding (`roles/iap.httpsResourceAccessor`) is correctly present for the user
+   - The [IAM Policy Troubleshooter](https://cloud.google.com/iam/docs/troubleshooting-access) (`gcloud policy-troubleshoot iam`) explicitly reports `access: GRANTED` for that exact user/resource/permission
+   - There are no org-level IAM Deny policies, Context-Aware Access levels, or VPC Service Controls perimeters involved
+   - A **fully fresh session** (via the page's "try a different account" link, then re-authenticating) still shows the same denial
+2. After adding a user via **Security → Identity-Aware Proxy → Add principal**, you instead get a more specific error page:
+   > *"There was a problem with your request... **Error code 11: Incorrectly configured OAuth client ID**"*
+
+**Root cause:** `gcloud beta run deploy --iap` silently relies on the legacy **IAP OAuth Admin API** to auto-create an OAuth "brand" (consent screen) and client ID behind the scenes. That API is deprecated/shut down for new projects, so on a fresh project this auto-provisioning **fails silently** — IAP looks "on" in the Console, but there's no valid OAuth client backing it. Confirm this yourself with:
+```bash
+TOKEN=$(gcloud auth print-access-token)
+curl -H "Authorization: Bearer $TOKEN" "https://iap.googleapis.com/v1/projects/YOUR_PROJECT_ID/brands"
+# Returns {} (no brands) on affected projects
+```
+
+**Fix — switch IAP to a Custom OAuth client** (do **not** use the "Use external identities for authorization" button — see warning below):
+
+1. Go to **Security → Identity-Aware Proxy**: `https://console.cloud.google.com/security/iap?project=YOUR_PROJECT_ID`
+2. Click the **`sentinel`** resource row to open its **Settings** panel.
+3. Under **OAuth configuration**, select **"Custom OAuth (for specific control, branding, or external users)"** instead of the default "Google-Managed OAuth".
+4. You need a **Client ID and secret** to paste in here. Create one via **APIs & Services → Google Auth Platform** (`https://console.cloud.google.com/auth/overview?project=YOUR_PROJECT_ID`) — this is the renamed "OAuth consent screen" page:
+   - **Branding** tab: fill in app name / support email → Save.
+   - **Audience** tab: set to **External** (required for personal `@gmail.com` accounts outside your org) and add each user's email as a test user.
+   - **Clients** tab → **Create Client** → Application type **Web application** → Save, then copy the **Client ID** and **Client secret**.
+5. Back on the IAP **Settings for "sentinel"** panel, paste the Client ID and secret into the **Custom client ID and secret** fields → Save.
+6. Retry the Cloud Run URL — it will now use your manually-created OAuth client instead of the broken auto-provisioned one.
+
+> **⚠️ Do not use "Use external identities for authorization" → Start** on the IAP page as a fix for this. That switches IAP's entire auth backend to **Identity Platform** (Firebase Auth), which explicitly **does not support IAM** — it silently discards all your `roles/iap.httpsResourceAccessor` bindings and requires building/hosting a separate sign-in page. It's meant for customer-facing multi-provider login (SAML/OIDC/social), not for allowlisting a handful of Google accounts. If you accidentally start this flow, click **Cancel** before saving, or revert back to IAM from the same panel if already saved — per Google's own warning dialog, this is reversible.
 
 ---
 
