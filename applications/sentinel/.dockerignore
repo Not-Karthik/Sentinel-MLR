@@ -18,3 +18,12 @@
 # Docker
 Dockerfile
 .dockerignore
+
+# Not part of the backend image
+frontend
+terraform
+terraform-cloudrun
+deploy
+tests
+.tools
+.env.*

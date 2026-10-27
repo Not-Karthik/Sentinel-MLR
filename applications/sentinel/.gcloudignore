@@ -13,3 +13,14 @@
 # agents-cli-extensions.yaml, and their code runs on the developer's machine.
 # Uploading them costs image size and ships their sources with the agent.
 /extensions/
+
+# Not needed to build the backend image
+/frontend/
+/terraform/
+/terraform-cloudrun/
+/deploy/
+/tests/
+/.tools/
+/.venv/
+.env
+.env.*

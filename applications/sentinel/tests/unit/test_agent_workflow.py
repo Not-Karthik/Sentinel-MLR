@@ -22,6 +22,7 @@ from google.adk.runners import InMemoryRunner
 from google.adk.workflow import START, JoinNode, Workflow
 from google.genai import types
 
+import app.agent as agent_module
 from app.agent import (
     _MAX_REVIEW_ITERATIONS,
     _load_custom_rules,
@@ -195,8 +196,23 @@ def test_decide_intake_route_promotional_submission() -> None:
     assert event.actions.route == "review"
 
 
-def test_decide_review_loop_iteration_branch() -> None:
+def test_review_iteration_cap_is_single_pass() -> None:
+    """Production config runs one review pass and never loops back to the reviewers."""
+    assert _MAX_REVIEW_ITERATIONS == 1
+    ctx = MockContext(
+        state={
+            "review_iteration_count": 0,
+            "critic_review": {"iteration_recommendation": "another_pass_would_help"},
+        }
+    )
+    event = decide_review_loop(ctx, node_input="test_input")
+    assert event.actions.route == "synthesize"
+    assert ctx.state["review_iteration_count"] == 1
+
+
+def test_decide_review_loop_iteration_branch(monkeypatch: pytest.MonkeyPatch) -> None:
     """When iteration < max and critic recommends another pass, route to 'iterate'."""
+    monkeypatch.setattr(agent_module, "_MAX_REVIEW_ITERATIONS", 2)
     ctx = MockContext(
         state={
             "review_iteration_count": 0,
@@ -259,6 +275,7 @@ async def test_load_custom_rules_passthrough() -> None:
 async def test_simulated_workflow_execution() -> None:
     """Execute a simulated Sentinel workflow graph with mock node functions via InMemoryRunner."""
     call_counts = {}
+    loop_cap = 2
 
     def track(name: str) -> None:
         call_counts[name] = call_counts.get(name, 0) + 1
@@ -333,7 +350,7 @@ async def test_simulated_workflow_execution() -> None:
         ctx.state["review_iteration_count"] = iteration
         critic_review = ctx.state.get("critic_review") or {}
         rec = critic_review.get("iteration_recommendation", "")
-        if iteration < _MAX_REVIEW_ITERATIONS and rec == "another_pass_would_help":
+        if iteration < loop_cap and rec == "another_pass_would_help":
             return Event(output=node_input, route="iterate")  # ty: ignore[pydantic-discarded-extra-argument]
         return Event(output=node_input, route="synthesize")  # ty: ignore[pydantic-discarded-extra-argument]
 

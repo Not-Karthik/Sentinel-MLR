@@ -27,8 +27,10 @@ from app.app_utils.a2a import attach_a2a_routes
 from app.app_utils.reasoning_engine_adapter import (
     attach_reasoning_engine_routes,
 )
+from app.routes import dummy_router, media_router
 
 load_dotenv()
+enable_api_docs = os.getenv("ENABLE_API_DOCS", "true").lower() in ("true", "1")
 allow_origins = (
     os.getenv("ALLOW_ORIGINS", "").split(",") if os.getenv("ALLOW_ORIGINS") else None
 )
@@ -64,7 +66,7 @@ async def lifespan(app: FastAPI) -> AsyncIterator[None]:
 
 app: FastAPI = get_fast_api_app(
     agents_dir=AGENT_DIR,
-    web=True,
+    web=False,
     artifact_service_uri=services.ARTIFACT_SERVICE_URI,
     allow_origins=allow_origins,
     session_service_uri=services.SESSION_SERVICE_URI,
@@ -77,6 +79,17 @@ app.description = "API for interacting with the Agent sentinel-agent"
 # Proxy routes so the Vertex AI Console Playground (reasoning_engine SDK) can
 # talk to this agent alongside the native adk_api routes.
 attach_reasoning_engine_routes(app)
+
+app.include_router(media_router)
+app.include_router(dummy_router)
+
+if not enable_api_docs:
+    docs_paths = {"/docs", "/redoc", "/openapi.json", "/docs/oauth2-redirect"}
+    app.router.routes = [
+        route
+        for route in app.router.routes
+        if getattr(route, "path", None) not in docs_paths
+    ]
 
 
 # Main execution

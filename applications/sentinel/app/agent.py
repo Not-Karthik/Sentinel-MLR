@@ -93,9 +93,9 @@ os.environ["GOOGLE_CLOUD_LOCATION"] = os.getenv("MODEL_LOCATION", "global")
 # Retry configuration for model calls to handle transient 429 RESOURCE_EXHAUSTED
 # and 5xx server errors across both agent and genai client layers.
 _MODEL_RETRY_OPTIONS = types.HttpRetryOptions(
-    attempts=int(os.getenv("MODEL_RETRY_ATTEMPTS", "5")),
+    attempts=int(os.getenv("MODEL_RETRY_ATTEMPTS", "10")),
     initial_delay=float(os.getenv("MODEL_RETRY_INITIAL_DELAY", "1.0")),
-    max_delay=float(os.getenv("MODEL_RETRY_MAX_DELAY", "60.0")),
+    max_delay=float(os.getenv("MODEL_RETRY_MAX_DELAY", "120.0")),
     exp_base=float(os.getenv("MODEL_RETRY_EXP_BASE", "2.0")),
     jitter=float(os.getenv("MODEL_RETRY_JITTER", "1.0")),
     http_status_codes=[408, 429, 500, 502, 503, 504],
@@ -115,7 +115,7 @@ _GENERATE_CONFIG = types.GenerateContentConfig(max_output_tokens=65535)
 # Hard cap on review iterations. Each iteration runs the full reviewer
 # panel + critic panel + merger, so the cost budget per cap
 # is ~iterations * (6 reviewers + 3 critics + merger).
-_MAX_REVIEW_ITERATIONS = 2
+_MAX_REVIEW_ITERATIONS = 1
 
 
 async def _load_custom_rules(ctx: Context, node_input: Any) -> Any:

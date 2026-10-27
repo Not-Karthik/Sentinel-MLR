@@ -1,0 +1,110 @@
+{
+  "duplicate_groups": [
+    {
+      "finding_ids": [
+        "F-REG-01",
+        "F-LEG-1"
+      ],
+      "rationale": "Both findings assess the identical legal and regulatory defect under 21 CFR § 812.7 and FD&C Act principles, concluding that active commercial promotion cannot be cured by a contradictory fine-print 'fictional concept' disclaimer. F-REG-01 provides the most direct regulatory framing and is retained as canonical.",
+      "keep": "F-REG-01"
+    },
+    {
+      "finding_ids": [
+        "F-MED-1",
+        "F-REG-07",
+        "F-LEG-9",
+        "F-EDT-02"
+      ],
+      "rationale": "All four findings address the exact same graphic defect in the hero display: the presentation of the non-physiological placeholder value '936' alongside standard vital signs. F-MED-1 is retained as canonical because it provides the most precise clinical and physiological rationale.",
+      "keep": "F-MED-1"
+    },
+    {
+      "finding_ids": [
+        "F-REG-04",
+        "F-LEG-5"
+      ],
+      "rationale": "Both findings challenge the 'ADVANCED ALERTS' claim for lacking alarm standard verification, classification, and compliance with IEC 60601-1-8 medical alarm standards. F-REG-04 is retained as canonical.",
+      "keep": "F-REG-04"
+    },
+    {
+      "finding_ids": [
+        "F-REG-05",
+        "F-LEG-6"
+      ],
+      "rationale": "Both findings address the substantiation failure of 'REAL-TIME VITALS' regarding undisclosed data transmission latency and refresh intervals under medical telemetry standards. F-REG-05 is retained as canonical.",
+      "keep": "F-REG-05"
+    },
+    {
+      "finding_ids": [
+        "F-REG-06",
+        "F-LEG-8"
+      ],
+      "rationale": "Both findings observe that the 'WIRELESS CONNECTIVITY' claim omits essential technical boundaries, network prerequisites, and cybersecurity compliance specifications. F-REG-06 is retained as canonical.",
+      "keep": "F-REG-06"
+    },
+    {
+      "finding_ids": [
+        "F-REG-10",
+        "F-LEG-7"
+      ],
+      "rationale": "Both findings challenge 'INTUITIVE OLED DISPLAY' as an actionable usability claim lacking required human factors validation under FDA Human Factors guidance. F-REG-10 is retained as canonical.",
+      "keep": "F-REG-10"
+    },
+    {
+      "finding_ids": [
+        "F-REG-09",
+        "F-EDT-01"
+      ],
+      "rationale": "Both findings identify the presentation failure of the bottom-margin disclaimer, noting that its diminutive size and low contrast violate prominence-ratio and clear-and-conspicuous presentation standards. F-REG-09 is retained as canonical.",
+      "keep": "F-REG-09"
+    }
+  ],
+  "cross_lens_themes": [
+    {
+      "theme": "Premarket Commercialization vs. Concept Disclaimer Dissonance",
+      "related_finding_ids": [
+        "F-REG-01",
+        "F-MED-10",
+        "F-EDT-04",
+        "F-LEG-3",
+        "F-REG-08"
+      ],
+      "discussion": "The asset suffers from a foundational identity crisis: it uses urgent, commercial launch rhetoric ('THE FUTURE... IS HERE', 'DISCOVER SMARTER CARE') while simultaneously attempting to disclaim promotional intent via a bottom-of-page footnote stating it is a fictional concept not for clinical use. Viewed across regulatory, legal, medical, and editorial lenses, this juxtaposition creates unacceptable regulatory exposure for unlawful premarket distribution, clinical misrepresentation to HCPs, and severe editorial dissonance."
+    },
+    {
+      "theme": "Total Absence of Risk Architecture and Fair Balance",
+      "related_finding_ids": [
+        "F-REG-02",
+        "F-MED-9",
+        "F-MED-6",
+        "F-REG-03",
+        "F-MED-8"
+      ],
+      "discussion": "While individual reviewers flagged distinct gaps—such as missing contraindications, lack of an IFU statement, telemetry dropout vulnerabilities, and undefined patient populations—collectively they demonstrate the total absence of a safety apparatus. Promotional claims touting high-acuity capabilities are delivered in a complete vacuum without required fair balance, operational boundaries, or basic clinical warnings."
+    },
+    {
+      "theme": "Unsubstantiated High-Acuity Telemetry and Usability Claims",
+      "related_finding_ids": [
+        "F-REG-04",
+        "F-REG-05",
+        "F-REG-10",
+        "F-MED-4",
+        "F-MED-5",
+        "F-MED-7",
+        "F-MED-11",
+        "F-LEG-4"
+      ],
+      "discussion": "Across all four feature callouts and the CTA, the piece employs sophisticated clinical buzzwords ('Real-Time', 'Advanced Alerts', 'Intuitive', 'Smarter Care') that imply advanced clinical decision support and superior clinical outcomes. Together, these findings reveal a systemic substantiation gap where high-risk medical hardware and software capabilities are marketed to HCPs without underlying clinical outcome data, human factors studies, or technical benchmark citations."
+    },
+    {
+      "theme": "Clinical UI Telemetry Verisimilitude Deficits",
+      "related_finding_ids": [
+        "F-MED-1",
+        "F-MED-2",
+        "F-MED-3"
+      ],
+      "discussion": "The product rendering displays telemetry metrics as decorative graphic art rather than accurate clinical instrumentation, presenting nonsensical numbers ('936'), omitting measurement units, and rendering an uncalibrated rhythm strip devoid of lead designation or sweep speed. Taken together, these findings show that the hero visual undermines brand credibility with clinical specialists by disregarding foundational telemetry conventions."
+    }
+  ],
+  "rationale": "Redundant findings across regulatory, legal, and editorial reviewers were consolidated into canonical entries, specifically where multiple reviewers raised the identical technical issue on placeholder vitals ('936'), feature substantiation ('Real-Time Vitals', 'Advanced Alerts', 'Intuitive Display'), and disclaimer prominence. Distinct lens perspectives on the broader asset failures were organized into four major cross-lens themes: premarket promotional exposure, complete absence of risk profile/fair balance, widespread clinical claim substantiation gaps, and telemetry verisimilitude deficiencies in the hero visual. This approach eliminates repetitive line items while preserving crucial multi-lens insights for MLR committee alignment."
+}

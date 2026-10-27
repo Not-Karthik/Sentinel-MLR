@@ -1,0 +1,1 @@
+Review the attached promotional image for MLR compliance and return findings with bounding boxes.

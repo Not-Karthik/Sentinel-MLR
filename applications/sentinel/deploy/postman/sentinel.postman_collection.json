@@ -1,0 +1,1049 @@
+{
+  "info": {
+    "name": "Sentinel backend",
+    "description": "A2A multi-agent endpoint and FastAPI routes. Select the Sentinel environment and set base_url. Set Postman Settings > Request timeout to 0 because agent runs take minutes.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const token = pm.variables.get('token');",
+          "if (token && !pm.request.headers.has('Authorization')) {",
+          "  pm.request.headers.add({ key: 'Authorization', value: 'Bearer ' + token });",
+          "}"
+        ]
+      }
+    }
+  ],
+  "item": [
+    {
+      "name": "1. Service",
+      "item": [
+        {
+          "name": "Health",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/health",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "health"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Swagger UI",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/docs",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "docs"
+              ]
+            },
+            "description": "Open this URL in a browser for interactive API docs with request and response schemas."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "OpenAPI schema",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/openapi.json",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "openapi.json"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "A2A agent card",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/a2a/app/.well-known/agent-card.json",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app",
+                ".well-known",
+                "agent-card.json"
+              ]
+            },
+            "description": "url must equal the public service URL + /a2a/app."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "const card = pm.response.json();",
+                  "pm.test('card has a name', function () { pm.expect(card.name).to.be.a('string'); });",
+                  "console.log('Agent card url:', card.url);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "2. Media (image input)",
+      "item": [
+        {
+          "name": "Upload image or PDF",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/media",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "media"
+              ]
+            },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": []
+                }
+              ]
+            },
+            "description": "Pick a PNG, JPEG, WebP, GIF or PDF (max 32 MB) in the file field. The test saves media_uri and media_mime for the A2A requests."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "const body = pm.response.json();",
+                  "pm.test('returns a gs:// uri', function () { pm.expect(body.uri).to.match(/^gs:\\/\\//); });",
+                  "pm.environment.set('media_uri', body.uri);",
+                  "pm.environment.set('media_mime', body.mime_type);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "3. A2A (v0.3 shape, default)",
+      "item": [
+        {
+          "name": "message/send - text (blocking)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/a2a/app",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/send\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review this promotional claim for MLR compliance: 'OncoBoost delivers unmatched 95% survival with zero serious adverse events.' Provide a full risk breakdown.\"\n        }\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Blocks until the whole multi-agent run finishes (minutes). Set Postman Settings > Request timeout to 0."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "pm.test('no JSON-RPC error', function () { pm.expect(pm.response.json().error).to.be.undefined; });",
+                  "const body = pm.response.json();",
+                  "const result = body.result || {};",
+                  "const task = result.task || result;",
+                  "const ctx = task.contextId || result.contextId;",
+                  "const id = task.id || result.taskId;",
+                  "if (ctx) pm.environment.set('context_id', ctx);",
+                  "if (id) pm.environment.set('task_id', id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "message/send - image by uploaded URI (blocking)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/a2a/app",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/send\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"kind\": \"file\",\n          \"file\": {\n            \"uri\": \"{{media_uri}}\",\n            \"mimeType\": \"{{media_mime}}\"\n          }\n        }\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Run '2. Media > Upload' first so media_uri is set."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "pm.test('no JSON-RPC error', function () { pm.expect(pm.response.json().error).to.be.undefined; });",
+                  "const body = pm.response.json();",
+                  "const result = body.result || {};",
+                  "const task = result.task || result;",
+                  "const ctx = task.contextId || result.contextId;",
+                  "const id = task.id || result.taskId;",
+                  "if (ctx) pm.environment.set('context_id', ctx);",
+                  "if (id) pm.environment.set('task_id', id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "message/stream - text (SSE)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/a2a/app",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review this promotional claim for MLR compliance: 'OncoBoost delivers unmatched 95% survival with zero serious adverse events.' Provide a full risk breakdown.\"\n        }\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Server-sent events: one data: line per status or artifact update; the last events contain the final report."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "const text = pm.response.text();",
+                  "let ctx = null, id = null, errorMessage = null;",
+                  "text.split(/\\r?\\n/).forEach(function (line) {",
+                  "  if (!line.startsWith('data:')) return;",
+                  "  try {",
+                  "    const event = JSON.parse(line.slice(5).trim());",
+                  "    if (event.error) errorMessage = event.error.message;",
+                  "    const result = event.result || {};",
+                  "    const node = result.task || result.statusUpdate || result.artifactUpdate || result.message || result;",
+                  "    ctx = node.contextId || result.contextId || ctx;",
+                  "    id = node.taskId || node.id || result.taskId || id;",
+                  "  } catch (e) {}",
+                  "});",
+                  "pm.test('stream has no JSON-RPC error', function () { pm.expect(errorMessage).to.eql(null); });",
+                  "pm.test('stream returned events', function () { pm.expect(text).to.include('data:'); });",
+                  "if (ctx) pm.environment.set('context_id', ctx);",
+                  "if (id) pm.environment.set('task_id', id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "message/stream - image by uploaded URI (SSE)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/a2a/app",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"kind\": \"file\",\n          \"file\": {\n            \"uri\": \"{{media_uri}}\",\n            \"mimeType\": \"{{media_mime}}\"\n          }\n        }\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Image findings include location.bbox as [x_min, y_min, x_max, y_max] normalised 0..1."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "const text = pm.response.text();",
+                  "let ctx = null, id = null, errorMessage = null;",
+                  "text.split(/\\r?\\n/).forEach(function (line) {",
+                  "  if (!line.startsWith('data:')) return;",
+                  "  try {",
+                  "    const event = JSON.parse(line.slice(5).trim());",
+                  "    if (event.error) errorMessage = event.error.message;",
+                  "    const result = event.result || {};",
+                  "    const node = result.task || result.statusUpdate || result.artifactUpdate || result.message || result;",
+                  "    ctx = node.contextId || result.contextId || ctx;",
+                  "    id = node.taskId || node.id || result.taskId || id;",
+                  "  } catch (e) {}",
+                  "});",
+                  "pm.test('stream has no JSON-RPC error', function () { pm.expect(errorMessage).to.eql(null); });",
+                  "pm.test('stream returned events', function () { pm.expect(text).to.include('data:'); });",
+                  "if (ctx) pm.environment.set('context_id', ctx);",
+                  "if (id) pm.environment.set('task_id', id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "message/stream - image inline base64 (SSE)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/a2a/app",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"kind\": \"file\",\n          \"file\": {\n            \"bytes\": \"{{image_base64}}\",\n            \"mimeType\": \"image/png\"\n          }\n        }\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Put the base64 of a PNG (no data: prefix) in the image_base64 environment variable. Keep it well under 32 MB, the Cloud Run request limit, because base64 adds about a third."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "const text = pm.response.text();",
+                  "let ctx = null, id = null, errorMessage = null;",
+                  "text.split(/\\r?\\n/).forEach(function (line) {",
+                  "  if (!line.startsWith('data:')) return;",
+                  "  try {",
+                  "    const event = JSON.parse(line.slice(5).trim());",
+                  "    if (event.error) errorMessage = event.error.message;",
+                  "    const result = event.result || {};",
+                  "    const node = result.task || result.statusUpdate || result.artifactUpdate || result.message || result;",
+                  "    ctx = node.contextId || result.contextId || ctx;",
+                  "    id = node.taskId || node.id || result.taskId || id;",
+                  "  } catch (e) {}",
+                  "});",
+                  "pm.test('stream has no JSON-RPC error', function () { pm.expect(errorMessage).to.eql(null); });",
+                  "pm.test('stream returned events', function () { pm.expect(text).to.include('data:'); });",
+                  "if (ctx) pm.environment.set('context_id', ctx);",
+                  "if (id) pm.environment.set('task_id', id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "message/stream - follow-up in same context (SSE)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/a2a/app",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Summarise the three most severe findings.\"\n        }\n      ],\n      \"contextId\": \"{{context_id}}\"\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "description": "Reuses context_id from the previous run. Works while the same instance is alive (sessions are in memory)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "const text = pm.response.text();",
+                  "let ctx = null, id = null, errorMessage = null;",
+                  "text.split(/\\r?\\n/).forEach(function (line) {",
+                  "  if (!line.startsWith('data:')) return;",
+                  "  try {",
+                  "    const event = JSON.parse(line.slice(5).trim());",
+                  "    if (event.error) errorMessage = event.error.message;",
+                  "    const result = event.result || {};",
+                  "    const node = result.task || result.statusUpdate || result.artifactUpdate || result.message || result;",
+                  "    ctx = node.contextId || result.contextId || ctx;",
+                  "    id = node.taskId || node.id || result.taskId || id;",
+                  "  } catch (e) {}",
+                  "});",
+                  "pm.test('stream has no JSON-RPC error', function () { pm.expect(errorMessage).to.eql(null); });",
+                  "pm.test('stream returned events', function () { pm.expect(text).to.include('data:'); });",
+                  "if (ctx) pm.environment.set('context_id', ctx);",
+                  "if (id) pm.environment.set('task_id', id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "tasks/get",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/a2a/app",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"tasks/get\",\n  \"params\": {\n    \"id\": \"{{task_id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "pm.test('no JSON-RPC error', function () { pm.expect(pm.response.json().error).to.be.undefined; });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "4. A2A (v1.0 shape)",
+      "description": "Same endpoint; the A2A-Version: 1.0 header selects the v1.0 protocol (default is 0.3).",
+      "item": [
+        {
+          "name": "SendMessage - text (blocking)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "A2A-Version",
+                "value": "1.0"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/a2a/app",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"SendMessage\",\n  \"params\": {\n    \"message\": {\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"ROLE_USER\",\n      \"parts\": [\n        {\n          \"text\": \"Review this promotional claim for MLR compliance: 'OncoBoost delivers unmatched 95% survival with zero serious adverse events.' Provide a full risk breakdown.\"\n        }\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "pm.test('no JSON-RPC error', function () { pm.expect(pm.response.json().error).to.be.undefined; });",
+                  "const body = pm.response.json();",
+                  "const result = body.result || {};",
+                  "const task = result.task || result;",
+                  "const ctx = task.contextId || result.contextId;",
+                  "const id = task.id || result.taskId;",
+                  "if (ctx) pm.environment.set('context_id', ctx);",
+                  "if (id) pm.environment.set('task_id', id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "SendMessage - image by uploaded URI (blocking)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "A2A-Version",
+                "value": "1.0"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/a2a/app",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"SendMessage\",\n  \"params\": {\n    \"message\": {\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"ROLE_USER\",\n      \"parts\": [\n        {\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"url\": \"{{media_uri}}\",\n          \"mediaType\": \"{{media_mime}}\"\n        }\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "pm.test('no JSON-RPC error', function () { pm.expect(pm.response.json().error).to.be.undefined; });",
+                  "const body = pm.response.json();",
+                  "const result = body.result || {};",
+                  "const task = result.task || result;",
+                  "const ctx = task.contextId || result.contextId;",
+                  "const id = task.id || result.taskId;",
+                  "if (ctx) pm.environment.set('context_id', ctx);",
+                  "if (id) pm.environment.set('task_id', id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "SendStreamingMessage - image by uploaded URI (SSE)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "A2A-Version",
+                "value": "1.0"
+              },
+              {
+                "key": "Accept",
+                "value": "text/event-stream"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/a2a/app",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"SendStreamingMessage\",\n  \"params\": {\n    \"message\": {\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"ROLE_USER\",\n      \"parts\": [\n        {\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"url\": \"{{media_uri}}\",\n          \"mediaType\": \"{{media_mime}}\"\n        }\n      ]\n    }\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "const text = pm.response.text();",
+                  "let ctx = null, id = null, errorMessage = null;",
+                  "text.split(/\\r?\\n/).forEach(function (line) {",
+                  "  if (!line.startsWith('data:')) return;",
+                  "  try {",
+                  "    const event = JSON.parse(line.slice(5).trim());",
+                  "    if (event.error) errorMessage = event.error.message;",
+                  "    const result = event.result || {};",
+                  "    const node = result.task || result.statusUpdate || result.artifactUpdate || result.message || result;",
+                  "    ctx = node.contextId || result.contextId || ctx;",
+                  "    id = node.taskId || node.id || result.taskId || id;",
+                  "  } catch (e) {}",
+                  "});",
+                  "pm.test('stream has no JSON-RPC error', function () { pm.expect(errorMessage).to.eql(null); });",
+                  "pm.test('stream returned events', function () { pm.expect(text).to.include('data:'); });",
+                  "if (ctx) pm.environment.set('context_id', ctx);",
+                  "if (id) pm.environment.set('task_id', id);"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GetTask",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "A2A-Version",
+                "value": "1.0"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/a2a/app",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "a2a",
+                "app"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"GetTask\",\n  \"params\": {\n    \"id\": \"{{task_id}}\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });",
+                  "pm.test('no JSON-RPC error', function () { pm.expect(pm.response.json().error).to.be.undefined; });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "5. Placeholder APIs (in memory)",
+      "description": "Responses carry X-Storage: ephemeral. Data is lost when the instance restarts.",
+      "item": [
+        {
+          "name": "POST feedback",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/feedback",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "feedback"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"task_id\": \"{{task_id}}\",\n  \"context_id\": \"{{context_id}}\",\n  \"rating\": 4,\n  \"comment\": \"Useful findings\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET feedback",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/feedback",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "feedback"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST review",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/review",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "review"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"task_id\": \"{{task_id}}\",\n  \"context_id\": \"{{context_id}}\",\n  \"finding_id\": \"finding-1\",\n  \"decision\": \"accept\",\n  \"comment\": \"Agreed\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET review",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/review",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "review"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "POST save",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{base_url}}/api/v1/save",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "save"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"task_id\": \"{{task_id}}\",\n  \"context_id\": \"{{context_id}}\",\n  \"name\": \"First report\",\n  \"report\": {\n    \"findings\": []\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "GET save",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/save",
+              "host": [
+                "{{base_url}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "save"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('status is 2xx', function () { pm.response.to.be.success; });"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

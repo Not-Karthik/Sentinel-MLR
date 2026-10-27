@@ -1,0 +1,30 @@
+{
+  "input_image": "C:\\Users\\karthik.kishor\\Downloads\\Vitalynx Test Image 2.png",
+  "image_size_bytes": 10294083,
+  "endpoint": "message/stream (A2A v0.3), image sent inline as base64",
+  "run": "local, single review pass (_MAX_REVIEW_ITERATIONS = 1)",
+  "total_seconds": 893.2,
+  "stage_completed_seconds": {
+    "intake": 102.4,
+    "reviewers": 190.9,
+    "critics": 254.0,
+    "critic_merger": 275.0,
+    "synthesizer": 893.1
+  },
+  "stream_events": 20,
+  "agent_output_order": [
+    "sentinel",
+    "intake",
+    "rules_reviewer",
+    "submitter_advocate",
+    "editorial_reviewer",
+    "regulatory_reviewer",
+    "medical_reviewer",
+    "legal_reviewer",
+    "severity_critic",
+    "gap_critic",
+    "dedupe_critic",
+    "critic_merger",
+    "synthesizer"
+  ]
+}

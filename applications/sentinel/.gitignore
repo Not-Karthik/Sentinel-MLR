@@ -81,3 +81,12 @@ app/FUTURE_DEVELOPMENTS.md
 .adk/
 
 deployment_metadata.json
+
+# Terraform and deployment
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+terraform.tfvars
+.tools/
+deploy/deploy.env

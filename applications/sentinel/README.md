@@ -47,7 +47,7 @@ root_agent "sentinel" (ADK v2 Workflow DAG)
 │                      Consolidates critic outputs and recommends whether another review pass is needed
 │
 ├── critic_merger ──► decide_review_loop (FunctionNode router)
-│                       ├── route="iterate"    ──► loops back to reviewer_panel (capped at 2 iterations)
+│                       ├── route="iterate"    ──► loops back to reviewer_panel (disabled: _MAX_REVIEW_ITERATIONS = 1, a single review pass)
 │                       └── route="synthesize" ──► synthesizer
 │
 └── decide_review_loop ──► synthesizer (LlmAgent: FinalReport)
@@ -61,8 +61,9 @@ root_agent "sentinel" (ADK v2 Workflow DAG)
 - **Parallel Reviewer Fan-Out:** The intake inventory is analyzed concurrently by 6 specialized reviewers. In addition to standard Medical, Legal, Regulatory, and Editorial reviewers, the **Submitter Advocate** argues in favor of the submission, ensuring balanced criticism and preventing excessive false positives.
 - **Custom Rules Injection:** If a user uploads custom brand rules or SOPs (as a `.txt` or `.md` artifact), `_load_custom_rules` automatically injects them into session state for the `rules_reviewer` to check market-specific restrictions, tone guidelines, or corporate policies.
 - **Three-Way Critic Panel & Calibration:** Rather than accepting raw reviewer comments, a parallel critic panel (`dedupe_critic`, `severity_critic`, `gap_critic`) deduplicates overlapping findings across lenses, cross-examines reviewer severity ratings against the submitter's defense, and identifies blind spots.
-- **Iterative Review Loop:** The `critic_merger` evaluates overall findings and issues an iteration recommendation. `decide_review_loop` dynamically iterates the reviewer and critic panels (up to `_MAX_REVIEW_ITERATIONS = 2`) before passing execution to the synthesizer.
-- **A2A Interoperability:** Implements the Agent-to-Agent protocol (`/a2a/app/`) and JSON-RPC 2.0 streaming, making Sentinel callable by other orchestrators or multi-agent pipelines as a modular compliance checker.
+- **Iterative Review Loop:** The `critic_merger` evaluates overall findings and issues an iteration recommendation. `decide_review_loop` can send the reviewer and critic panels around again, up to `_MAX_REVIEW_ITERATIONS` passes in total, before passing execution to the synthesizer. The cap is currently `1`, so the workflow runs a single review pass to keep latency and model quota use down; raise it in `app/agent.py` to re-enable the loop.
+- **Model Retries:** Every agent retries transient model errors (429, 5xx) with exponential backoff. Defaults are `MODEL_RETRY_ATTEMPTS=10` and `MODEL_RETRY_MAX_DELAY=120` seconds, overridable through environment variables (`MODEL_RETRY_INITIAL_DELAY`, `MODEL_RETRY_EXP_BASE` and `MODEL_RETRY_JITTER` as well). Persistent 429 `RESOURCE_EXHAUSTED` errors mean the project's Gemini quota is too low, and retries only delay the failure.
+- **A2A Interoperability:** Implements the Agent-to-Agent protocol (`/a2a/app`) and JSON-RPC 2.0 streaming, making Sentinel callable by other orchestrators or multi-agent pipelines as a modular compliance checker.
 
 ---
 
@@ -137,10 +138,14 @@ You have several ways to interact with and test the Sentinel agent locally:
   uv run uvicorn app.fast_api_app:app --host 0.0.0.0 --port 8000 --reload
   ```
   The server exposes:
-  - A2A JSON-RPC endpoint: `http://localhost:8000/a2a/app/`
+  - A2A JSON-RPC endpoint: `http://localhost:8000/a2a/app`
   - A2A Agent Card: `http://localhost:8000/a2a/app/.well-known/agent-card.json`
-  - SSE Stream: `http://localhost:8000/run_sse`
-  - Feedback endpoint: `http://localhost:8000/feedback`
+  - Swagger UI: `http://localhost:8000/docs` (set `ENABLE_API_DOCS=false` to turn it off)
+  - ADK SSE stream: `http://localhost:8000/run_sse`
+  - Media upload: `POST http://localhost:8000/api/v1/media` (needs `MEDIA_BUCKET_NAME`)
+  - Placeholder APIs: `/api/v1/feedback`, `/api/v1/review`, `/api/v1/save` (in memory)
+
+  The ADK developer UI is disabled in this server. Use `uv run adk web app` (above) for it.
 
 ### 4. Run the Full-Stack Web Application Locally
 
@@ -195,7 +200,36 @@ agents-cli eval grade
 
 ---
 
+## Headless Backend Deployment (Cloud Run + Terraform)
+
+The A2A agent and its FastAPI routes (`app.fast_api_app:app`) deploy to Cloud Run in a new Google Cloud project with one command. Everything needed is inside this folder, and the only tool you need installed is `gcloud` (Terraform is downloaded automatically and the image is built with Cloud Build, so Docker is not needed).
+
+```powershell
+copy deploy\deploy.env.example deploy\deploy.env
+notepad deploy\deploy.env
+gcloud auth login
+.\deploy\deploy.ps1
+```
+
+On macOS, Linux or Git Bash use `./deploy/deploy.sh` instead. Running the script again deploys updates, and the first deployment's resources are updated in place:
+- **Code changes:** run the script again. It rebuilds the image and rolls out a new revision with the same URL.
+- **Settings-only changes:** if you only change `deploy.env` or Terraform settings, add `-SkipBuild` (`--skip-build`) to reuse the current image. Use `-PlanOnly` (`--plan-only`) to preview.
+- **Local testing first:** you can speed up iteration by running `uv run uvicorn app.fast_api_app:app --port 8000` locally and testing there before deploying.
+
+It creates: the required API enablement, an Artifact Registry repository, one GCS bucket (uploaded media and ADK artifacts), a runtime service account with Vertex AI access, and the Cloud Run service `sentinel`. It prints the service URL, the Swagger UI URL (`/docs`) and the A2A agent card URL.
+
+Current state of this test deployment:
+- **Security is on hold.** By default the service accepts calls from anyone (`allUsers` invoker, no JWT). Set `ALLOW_UNAUTHENTICATED_INVOKE=false` in `deploy.env` to require a Google identity token, or access it through `gcloud run services proxy`. Add Entra ID or Cognito JWT validation in `app/` before real client data goes through it.
+- **State is in memory.** Sessions and A2A tasks are lost on restart, so the service is pinned to a single instance.
+- `/api/v1/feedback`, `/api/v1/review` and `/api/v1/save` are placeholders that store data in memory.
+
+Feeding images to the agent, testing from Postman, the Terraform layout and troubleshooting are covered in [deploy/README.md](deploy/README.md). A ready-to-import Postman collection is in `deploy/postman/`.
+
+---
+
 ## Deploying Sentinel Agent to Agent Runtime
+
+An alternative path that uses Vertex AI Agent Runtime and Google IAM authentication instead of Cloud Run. Its Terraform (`terraform/`) uses a shared module from the `pharma-on-gemini-enterprise` folder of the parent repository. It does not include the REST routes, Swagger or media upload described above.
 
 Sentinel is configured for [Google Cloud Agent Runtime](https://docs.cloud.google.com/gemini-enterprise-agent-platform/build/runtime) via `agents-cli-manifest.yaml`.
 
@@ -328,36 +362,55 @@ Sentinel is designed as a standalone compliance agent and as a **downstream A2A 
 ### A2A Endpoints
 
 When running (`app/fast_api_app.py`), Sentinel exposes standard A2A endpoints:
-- **Agent Card**: `GET /a2a/app/.well-known/agent-card.json`
-- **JSON-RPC Endpoint**: `POST /a2a/app/` (supports `message/send`, `message/sendStreaming`, task lifecycle methods)
+- **Agent Card**: `GET /a2a/app/.well-known/agent-card.json` (advertises protocol versions 1.0 and 0.3)
+- **JSON-RPC Endpoint**: `POST /a2a/app` (no trailing slash). By default it speaks protocol 0.3: `message/send`, `message/stream` (SSE), `tasks/get`, `tasks/resubscribe`. Send the header `A2A-Version: 1.0` to use protocol 1.0 instead: `SendMessage`, `SendStreamingMessage`, `GetTask`, `SubscribeToTask`.
+
+The final answer is the `final_report` structured output (`app/schemas.py` `FinalReport`). Each entry of `findings` can carry `location.bbox`, a normalised `[x_min, y_min, x_max, y_max]` box (values 0 to 1, origin top-left) for image submissions.
 
 ### Invoking Sentinel from Another Agent Workflow
 
 Other agents (e.g. content generation agents, regulatory dossier builders) can invoke Sentinel over A2A:
 
-```python
-from a2a.client import A2AClient
-from a2a.types import Message, Part, Role, TextPart
+Text review with protocol 0.3 (blocks until the run finishes, which takes minutes):
 
-# Connect to deployed Sentinel A2A endpoint
-client = A2AClient(base_url="https://YOUR_SENTINEL_ENDPOINT/a2a/app")
-
-# Send promotional copy or asset for compliance check
-response = await client.send_message(
-    Message(
-        role=Role.USER,
-        parts=[
-            TextPart(
-                text=(
-                    "Review the following draft claim for OncoBoost (gemcitabine combo): "
-                    "'OncoBoost delivers unmatched 95% survival with zero serious adverse events.' "
-                    "Provide a full MLR risk breakdown."
-                )
-            )
-        ],
-    )
-)
+```bash
+curl -X POST "$BASE_URL/a2a/app" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "jsonrpc": "2.0",
+    "id": "1",
+    "method": "message/send",
+    "params": {
+      "message": {
+        "kind": "message",
+        "messageId": "msg-1",
+        "role": "user",
+        "parts": [{"kind": "text", "text": "Review this claim: OncoBoost delivers unmatched 95% survival with zero serious adverse events. Provide a full MLR risk breakdown."}]
+      }
+    }
+  }'
 ```
+
+Use `"method": "message/stream"` with `-N -H "Accept: text/event-stream"` to receive server-sent events as the reviewers and critics finish. Reuse the returned `contextId` in a later message to continue the same session.
+
+### Sending Images and Documents
+
+The A2A server accepts `file` parts. Three ways to supply the image:
+
+1. **Upload, then reference it (recommended).** `POST /api/v1/media` stores a PNG, JPEG, WebP, GIF or PDF (up to 32 MB by default) in the media bucket and returns a `gs://` URI:
+   ```bash
+   curl -F "file=@ad.png" "$BASE_URL/api/v1/media"
+   ```
+   ```json
+   {"id": "3f2a...png", "uri": "gs://PROJECT-sentinel-media/uploads/3f2a...png", "mime_type": "image/png", "size": 183204}
+   ```
+   Then send that URI as a part: `{"kind": "file", "file": {"uri": "gs://...", "mimeType": "image/png"}}`.
+2. **Inline base64.** `{"kind": "file", "file": {"bytes": "<base64>", "mimeType": "image/png"}}` in the message. Keep it small: Cloud Run accepts requests up to 32 MiB and Gemini limits inline data.
+3. **Public URL.** `{"kind": "file", "file": {"uri": "https://example.com/ad.png", "mimeType": "image/png"}}`.
+
+With protocol 1.0 the file part is written `{"url": "gs://...", "mediaType": "image/png"}`. Parts can be mixed with a text part such as "Review the attached image for MLR compliance."
+
+Ready-made requests for every case are in `deploy/postman/`; see [deploy/README.md](deploy/README.md).
 
 ---
 
@@ -408,25 +461,23 @@ Sentinel provides two Docker container options:
 
 Follow these steps to deploy the full-stack interactive web application (`Dockerfile.webapp`) to Google Cloud Run with Identity-Aware Proxy (IAP):
 
-> **Architecture note — why this is a *separate* deployment from the Agent Runtime:**
+> **Architecture note — this is the legacy web app, independent of the A2A agent:**
 >
 > ```
 > ┌─────────────────────────────────────────────────────────┐
-> │  Layer 2: Full-Stack Web App (this section)              │
+> │  Legacy web app (this section)                           │
 > │  Dockerfile.webapp → Cloud Run + IAP                     │
-> │  = React frontend + FastAPI backend (api/main.py)        │
-> │  "the human-facing UI"                                   │
-> └───────────────────────┬───────────────────────────────────┘
->                         │ calls as a client
->                         ▼
+> │  React frontend + FastAPI backend (api/main.py)          │
+> │  Calls Gemini directly through google-genai              │
+> └─────────────────────────────────────────────────────────┘
+>
 > ┌─────────────────────────────────────────────────────────┐
-> │  Layer 1: Agent Runtime (Reasoning Engine)                │
-> │  Terraform + Cloud Build → Vertex AI Agent Runtime         │
-> │  = the actual Sentinel compliance-checking agent (app/)    │
-> │  "the brain" — API/A2A only, no UI of its own              │
+> │  Sentinel A2A agent (app/)                               │
+> │  Headless Cloud Run deployment or Agent Runtime          │
+> │  Multi-agent MLR workflow, API/A2A only, no UI           │
 > └─────────────────────────────────────────────────────────┘
 > ```
-> The Agent Runtime (previous section) is a pure API — it's meant to be called by any number of clients (this web app, other agents, Gemini Enterprise, etc.), so it's deployed independently. This Cloud Run deployment is just **one possible UI** on top of it; you don't need it at all if you only need to call the agent programmatically, and you don't need to redeploy the agent to deploy/redeploy this UI.
+> `api/` does not import or call `app/`, and the frontend only calls `/api/v1/analyze` and `/api/v1/storage/*`. The two are deployed separately, and new development (more APIs, JWT authentication) builds on `app/`.
 
 ### 1. Set Environment Variables
 ```bash
@@ -626,7 +677,7 @@ sentinel/
 ├── app/                       # ADK v2 Multi-Agent Workflow & A2A Server
 │   ├── __init__.py
 │   ├── agent.py               # Root Workflow DAG, parallel reviewer/critic panels, loop routing
-│   ├── fast_api_app.py        # FastAPI server with A2A protocol & Reasoning Engine adapter
+│   ├── fast_api_app.py        # FastAPI server with A2A protocol, Reasoning Engine adapter, and API routes
 │   ├── prompts.py             # Reviewer, critic, and synthesizer prompt templates
 │   ├── prompts/               # Markdown prompt definitions for each agent role
 │   │   ├── intake.md
@@ -643,12 +694,14 @@ sentinel/
 │   │   ├── loop_decider.md
 │   │   └── synthesizer.md
 │   ├── schemas.py             # Pydantic schemas (ContentInventory, ReviewerOutput, FinalReport)
+│   ├── routes/                # FastAPI routers mounted by fast_api_app.py
+│   │   ├── media.py           # POST /api/v1/media image/PDF upload to GCS
+│   │   └── dummy.py           # Placeholder feedback, review and save APIs (in memory)
 │   └── app_utils/             # Utility modules
 │       ├── __init__.py
 │       ├── a2a.py             # A2A route attachment and Agent Card generator
 │       ├── reasoning_engine_adapter.py # Reasoning Engine compatibility adapter
-│       ├── services.py        # Session and artifact service providers
-│       └── typing.py          # Feedback schemas and data models
+│       └── services.py        # Session and artifact service providers
 │
 ├── api/                       # Standalone REST API for the interactive webapp
 │   ├── __init__.py
@@ -679,10 +732,26 @@ sentinel/
 │   ├── outputs.tf             # Reasoning engine IDs, display name, agent identity
 │   └── .gitignore
 │
+├── terraform-cloudrun/        # Self-contained Terraform for the headless Cloud Run deployment
+│   ├── versions.tf            # Providers and GCS backend
+│   ├── main.tf                # APIs, Artifact Registry, bucket, service accounts, Cloud Run service
+│   ├── variables.tf
+│   ├── outputs.tf
+│   └── terraform.tfvars.example
+│
+├── deploy/                    # Deployment scripts, Cloud Build config, Postman collection
+│   ├── deploy.ps1             # Windows PowerShell deploy (initial and repeat runs)
+│   ├── deploy.sh              # Bash equivalent
+│   ├── deploy.env.example     # Deployment settings template
+│   ├── cloudbuild.yaml        # Container image build
+│   ├── postman/               # Postman collection and environment
+│   └── README.md              # Deployment, access and testing guide
+│
 └── tests/                     # Unit, integration, and evaluation test suites
     ├── __init__.py
-    ├── unit/                  # Unit tests (Workflow graph structure, loop router, panels)
-    │   └── test_agent_workflow.py
+    ├── unit/                  # Unit tests (Workflow graph structure, loop router, panels, API routes)
+    │   ├── test_agent_workflow.py
+    │   └── test_routes.py
     ├── integration/           # Integration & E2E tests (A2A server, SSE stream, agent runner)
     │   ├── test_agent.py
     │   └── test_server_e2e.py
@@ -699,18 +768,23 @@ sentinel/
 ## API Endpoints Reference
 
 ### Agent & A2A Server (`app/fast_api_app.py`)
+- `GET /health` — Health check endpoint.
+- `GET /docs`, `GET /openapi.json` — Swagger UI and OpenAPI schema (disable with `ENABLE_API_DOCS=false`).
 - `GET /a2a/app/.well-known/agent-card.json` — Returns A2A Agent Card with capabilities and skills metadata.
-- `POST /a2a/app/` — A2A JSON-RPC 2.0 endpoint (`message/send`, `message/sendStreaming`).
-- `POST /run_sse` — ADK Server-Sent Events (SSE) streaming endpoint.
-- `POST /feedback` — Logs user feedback to Google Cloud Logging.
+- `POST /a2a/app` — A2A JSON-RPC 2.0 endpoint (`message/send`, `message/stream`, `tasks/get`, `tasks/resubscribe`; protocol 1.0 names with the `A2A-Version: 1.0` header).
+- `POST /api/v1/media` — Upload an image or PDF to the media bucket; returns a `gs://` URI to use in an A2A `file` part.
+- `POST` and `GET /api/v1/feedback`, `/api/v1/review`, `/api/v1/save` — Placeholder APIs that keep records in memory (response header `X-Storage: ephemeral`).
+- `POST /run_sse` and the other ADK routes under `/apps/...` — ADK's native session and run API.
+- `POST /api/reasoning_engine`, `POST /api/stream_reasoning_engine` — Vertex AI Console Playground adapter.
 
-### Full-Stack Web Application API (`api/main.py`)
+### Full-Stack Web Application API (`api/main.py`, legacy)
 - `GET /health` — Health check endpoint.
 - `POST /api/v1/analyze` — Analyze video (YouTube URL) or image (URL).
 - `POST /api/v1/analyze/upload` — Analyze uploaded image file.
 - `GET /api/v1/storage/list` — List files in Google Cloud Storage bucket.
 - `POST /api/v1/storage/upload` — Upload file to Google Cloud Storage.
-- `GET /api/v1/storage/file/{path}` — Retrieve/stream file from Google Cloud Storage.
+- `GET /api/v1/storage/file/{path}` — Retrieve/stream file from Google Cloud Storage (supports `Range`).
+- `DELETE /api/v1/storage/file/{path}` — Delete a file from Google Cloud Storage.
 
 ---
 
