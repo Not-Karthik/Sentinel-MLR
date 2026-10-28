@@ -1,0 +1,230 @@
+{
+  "reviewer_summary": "I focused on editorial craft, typographic hierarchy, visual-verbal coherence, accessibility, and overall communication clarity for an HCP audience. The piece relies heavily on high-impact tech-marketing conventions—such as pervasive uppercase styling and broad superlatives—which create visual noise and diminish clinical specificity.",
+  "findings": [
+    {
+      "category": "typography",
+      "severity": "low",
+      "confidence": 0.95,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C3"
+      ],
+      "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+      "observation": "The primary headline is set entirely in uppercase with terminal punctuation.",
+      "mlr_principle": "Sentence case enhances readability and avoids an aggressive, shouting tone in professional medical communications.",
+      "discussion": "Long lines of all-caps text reduce character shape differentiation, which slows down reading comprehension and feels overly forceful for a clinical audience. Additionally, terminal periods on isolated headline banners often create an abrupt visual stop rather than guiding the eye down the page.",
+      "suggested_questions": [
+        "Would sentence case or title case align better with a refined, professional healthcare aesthetic?"
+      ],
+      "suggested_actions": [
+        "Change the headline to sentence case or title case (e.g., 'The future of patient monitoring is here' or 'The Future of Patient Monitoring Is Here') and consider omitting the terminal period."
+      ]
+    },
+    {
+      "category": "typography",
+      "severity": "low",
+      "confidence": 0.9,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C4",
+        "C5",
+        "C6",
+        "C7"
+      ],
+      "observation": "All four product capability bullet points are styled in uniform uppercase sans-serif text without hierarchical secondary descriptors.",
+      "mlr_principle": "Typographic contrast between labels and descriptions improves scannability and information retention.",
+      "discussion": "Presenting feature callouts entirely in capitalized bold phrases makes them blend into visual blocks of similar visual weight. Adding sentence-case explanatory sub-lines would clarify how these capabilities operate while improving reading comfort.",
+      "suggested_questions": [
+        "Can these feature callouts include brief clarifying sub-copy to provide meaningful clinical context?"
+      ],
+      "suggested_actions": [
+        "Switch the feature labels to title or sentence case and add 1–2 lines of supporting descriptive copy underneath each item."
+      ],
+      "bbox": [
+        0.14,
+        0.76,
+        0.87,
+        0.83
+      ]
+    },
+    {
+      "category": "clarity",
+      "severity": "medium",
+      "confidence": 0.85,
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C2"
+      ],
+      "observation": "The device render displays physiological numeric values without clearly legible measurement units or physiological context.",
+      "mlr_principle": "Clinical visuals must depict physiological parameters accurately with clear units of measure to avoid confusion.",
+      "discussion": "The screen mock-up depicts numbers such as '936', '99', '60', and '128' alongside an ECG tracing. While an HCP may infer standard vitals like heart rate or SpO2, a value like '936' is clinically nonsensical or alarming without an explicit unit (such as steps, device telemetry ID, or battery status).",
+      "suggested_questions": [
+        "What specific metric does the value '936' represent on this interface?",
+        "Are units of measure (e.g., bpm, %, mmHg) clearly visible to the user at native viewing resolution?"
+      ],
+      "suggested_actions": [
+        "Add explicit units of measurement next to each numerical read-out on the simulated display screen.",
+        "Ensure all rendered values reflect realistic, clinically plausible physiological states."
+      ]
+    },
+    {
+      "category": "visual_design",
+      "severity": "medium",
+      "confidence": 0.9,
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C2",
+        "C9"
+      ],
+      "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+      "observation": "A highly realistic product rendering is juxtaposed with a tiny, understated footer disclaimer stating the device is fictional.",
+      "mlr_principle": "Visual realism should not contradict or overpower qualifying disclosures regarding product status.",
+      "discussion": "The central image presents a polished, production-ready hospital monitor in an authentic clinical environment, yet the qualification that this is a fictional concept appears in minimal font at the very bottom edge. This disparity can lead readers to mistakenly believe the device is an available, cleared medical device.",
+      "suggested_questions": [
+        "Should the concept status be integrated more visibly near the device name or render?"
+      ],
+      "suggested_actions": [
+        "Include a clear 'Concept Prototype' badge or subtitle near the product name on the device or header.",
+        "Increase the prominence and font size of the disclaimer relative to the hero imagery."
+      ],
+      "bbox": [
+        0.24,
+        0.21,
+        0.76,
+        0.98
+      ]
+    },
+    {
+      "category": "accessibility",
+      "severity": "medium",
+      "confidence": 0.9,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C9"
+      ],
+      "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+      "observation": "The footer disclaimer is set in a very small font size positioned tightly against the bottom margin.",
+      "mlr_principle": "Essential qualifying disclaimers must meet minimum legible type size and contrast standards.",
+      "discussion": "The disclaimer occupies less than 2% of the vertical page space and appears in low-prominence text. If this material is viewed on mobile screens or printed at standard collaterals, readers with visual impairments or standard reading distances will struggle to read these critical qualifications.",
+      "suggested_questions": [
+        "Does the footer text satisfy minimum font size recommendations (e.g., 8–10 pt print equivalent) and contrast ratios across viewing formats?"
+      ],
+      "suggested_actions": [
+        "Increase the type size of the footer text and provide sufficient breathing room from the bottom page boundary."
+      ]
+    },
+    {
+      "category": "clarity",
+      "severity": "low",
+      "confidence": 0.85,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C8"
+      ],
+      "quoted_content": "DISCOVER SMARTER CARE",
+      "observation": "The call-to-action button uses vague, generic language without indicating the destination or action.",
+      "mlr_principle": "Action prompts should clearly communicate what the user will receive or where the action leads.",
+      "discussion": "'Discover Smarter Care' sounds like an inspirational tagline rather than an actionable digital prompt. Healthcare professionals benefit from direct signposting—such as whether the button leads to technical specifications, a demonstration request, or a downloadable brochure.",
+      "suggested_questions": [
+        "What specific asset or page does this call to action lead to?"
+      ],
+      "suggested_actions": [
+        "Refine the button text to be more explicit (e.g., 'Explore Product Specifications', 'Request a Concept Demo', or 'Learn More at vitalynx.com')."
+      ]
+    },
+    {
+      "category": "tone",
+      "severity": "low",
+      "confidence": 0.8,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C7"
+      ],
+      "quoted_content": "ADVANCED ALERTS",
+      "observation": "The term 'ADVANCED ALERTS' relies on broad marketing terminology without clinical grounding.",
+      "mlr_principle": "Feature claims for HCP audiences should favor clinical precision over generic buzzwords.",
+      "discussion": "To a clinician or biomedical engineer, 'advanced alerts' is ambiguous; it could mean threshold-based alarms, predictive arrhythmia detection, multi-parameter scoring, or remote notification routing. Grounding this in specific functionality builds professional credibility.",
+      "suggested_questions": [
+        "What clinical mechanism or algorithm makes the alerts 'advanced'?"
+      ],
+      "suggested_actions": [
+        "Replace or qualify 'ADVANCED ALERTS' with specific clinical functionality, such as 'Customizable Alarm Thresholds' or 'Early Warning Notifications'."
+      ]
+    },
+    {
+      "category": "typography",
+      "severity": "low",
+      "confidence": 0.85,
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8"
+      ],
+      "observation": "Inconsistent end-punctuation across major textual elements on the page.",
+      "mlr_principle": "Typographic styling and punctuation conventions should remain consistent across display copy.",
+      "discussion": "The main headline (C3) concludes with a period, whereas the feature claims (C4–C7) and call-to-action (C8) omit end punctuation. Display copy usually adopts a consistent standard—either headline-style open punctuation without periods, or full sentences with consistent terminal punctuation.",
+      "suggested_questions": [
+        "Does the brand style guide mandate open punctuation for display headers?"
+      ],
+      "suggested_actions": [
+        "Remove the terminal period from C3 to align with the open punctuation used throughout the rest of the display copy."
+      ],
+      "bbox": [
+        0.14,
+        0.61,
+        0.87,
+        0.93
+      ]
+    },
+    {
+      "category": "visual_design",
+      "severity": "low",
+      "confidence": 0.8,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C4",
+        "C5",
+        "C6",
+        "C7"
+      ],
+      "observation": "Feature claims are arranged in a 2x2 grid without supporting icons or bullet markers, making them feel floating and disconnected.",
+      "mlr_principle": "Visual grouping and structured lists guide reader eye movement efficiently.",
+      "discussion": "The four feature callouts span across two horizontal columns under the headline without clear bounding, numbering, or iconography. This loose alignment makes it slightly ambiguous whether the content should be read horizontally row-by-row or vertically down columns.",
+      "suggested_questions": [
+        "Could micro-icons or subtle divider lines improve scan order for these four core features?"
+      ],
+      "suggested_actions": [
+        "Introduce subtle bullet indicators, icons, or a clearer column grid to define the reading path."
+      ],
+      "bbox": [
+        0.14,
+        0.76,
+        0.87,
+        0.83
+      ]
+    },
+    {
+      "category": "clarity",
+      "severity": "low",
+      "confidence": 0.8,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C1"
+      ],
+      "quoted_content": "VITALYNX Medical Technologies",
+      "observation": "Mixed capitalization styles are combined within the company brand name.",
+      "mlr_principle": "Brand identity styling should follow consistent typographic hierarchy.",
+      "discussion": "The header pairs an all-caps brand name ('VITALYNX') with a title-case descriptor ('Medical Technologies'). While this may reflect trademark styling, verifying that the weight and tracking are calibrated prevents visual clunkiness at the top of the layout.",
+      "suggested_questions": [
+        "Is 'VITALYNX' strictly styled in full capitals in the brand identity guidelines, or is small-caps intended?"
+      ],
+      "suggested_actions": [
+        "Verify font tracking and styling against the corporate identity guide to ensure the lockup feels intentional and cohesive."
+      ]
+    }
+  ]
+}

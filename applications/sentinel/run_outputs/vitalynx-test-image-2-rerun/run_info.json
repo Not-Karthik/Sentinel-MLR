@@ -1,0 +1,46 @@
+{
+  "input_image": "C:\\Users\\karthik.kishor\\Downloads\\Vitalynx Test Image 2.png",
+  "image_size_bytes": 10294083,
+  "endpoint": "message/stream (A2A v0.3), image sent inline as base64",
+  "run": "local app server on port 8000, thinking level medium, single review pass",
+  "total_seconds": 265.5,
+  "artifact_arrival_seconds": {
+    "intake": 30.3,
+    "rules_reviewer (skipped, no rules)": 30.4,
+    "submitter_advocate": 46.4,
+    "editorial_reviewer": 48.3,
+    "medical_reviewer": 61.0,
+    "legal_reviewer": 67.3,
+    "regulatory_reviewer": 213.8,
+    "severity_critic": 234.3,
+    "gap_critic": 239.8,
+    "dedupe_critic": 245.8,
+    "narrative_synthesizer": 265.3,
+    "final_report": 265.4
+  },
+  "stream_events": 25,
+  "findings": 21,
+  "findings_with_bbox": 21,
+  "counts_by_severity": {
+    "critical": 1,
+    "high": 2,
+    "medium": 8,
+    "low": 9,
+    "informational": 1
+  },
+  "agent_output_order": [
+    "sentinel",
+    "intake",
+    "rules_reviewer",
+    "submitter_advocate",
+    "editorial_reviewer",
+    "medical_reviewer",
+    "legal_reviewer",
+    "regulatory_reviewer",
+    "severity_critic",
+    "gap_critic",
+    "dedupe_critic",
+    "narrative_synthesizer",
+    "final_report"
+  ]
+}

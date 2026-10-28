@@ -1,0 +1,70 @@
+{
+  "gaps_identified": [
+    "Absence of mandatory document control metadata (unique job code/material tracking number and date of preparation/revision) standard across regulated medical device promotional and concept assets.",
+    "Omission of patient interface / signal acquisition mechanism: neither the visual render nor the copy explains how physiological signals (e.g., ECG, SpO2, BP) are captured (e.g., lead wires, optical sensors, skin-contact dry electrodes), obscuring the physical invasiveness and operational workflow.",
+    "Absence of confidentiality and distribution control markings: while the submitter's advocate claims the piece is an internal design prototype, the asset lacks 'Confidential - For Internal Discussion Only' headers or watermarks, leaving it vulnerable to inadvertent external leakage or public interpretation as an active commercial solicitation.",
+    "Lack of contact information, physical corporate address, or accessible destination URL associated with the call-to-action button ('DISCOVER SMARTER CARE')."
+  ],
+  "additional_findings": [
+    {
+      "category": "regulatory_guidance",
+      "severity": "low",
+      "confidence": 0.9,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C1",
+        "C9"
+      ],
+      "quoted_content": null,
+      "observation": "The piece lacks a unique material identification number (job code) and a date of preparation or revision.",
+      "mlr_principle": "Standard healthcare compliance and document governance frameworks require promotional and conceptual collateral to bear unique tracking codes and dates of origination to ensure lifecycle control and auditability.",
+      "discussion": "Whether an asset is distributed externally or utilized for internal stakeholder alignment, formal MLR operations require document identifiers (e.g., job code, item code) and a creation/review date. Without these identifiers, compliance auditing, version control, and eventual retirement of outdated medical claims become difficult to monitor and enforce.",
+      "suggested_questions": [
+        "What internal job or project code is assigned to this creative asset in the electronic document management system?",
+        "Can a standard tracking code and date of preparation (e.g., 'Date of Preparation: MM/YYYY') be added to the bottom margin?"
+      ],
+      "suggested_actions": [
+        "Incorporate a compliant job code and date of preparation in the footer alongside corporate identifiers.",
+        "Ensure the asset is cataloged with an established lifecycle review expiration date."
+      ],
+      "bbox": [
+        0.24,
+        0.94,
+        0.76,
+        0.99
+      ],
+      "review_lens": "regulatory"
+    },
+    {
+      "category": "disclosure",
+      "severity": "medium",
+      "confidence": 0.88,
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C1",
+        "C3",
+        "C9"
+      ],
+      "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+      "observation": "The asset is structured and styled as an external commercial advertisement but lacks explicit internal-use-only or confidentiality demarcations to prevent unauthorized dissemination.",
+      "mlr_principle": "Unapproved product concepts and pre-clearance development materials must maintain explicit confidentiality designations and distribution limitations to prevent inadvertent public exposure.",
+      "discussion": "The defense brief emphasizes that this collateral is an exploratory concept intended for internal alignment and value proposition staging. However, the visual layout mirrors a public commercial digital ad or journal insert without any 'Confidential - For Internal Evaluation Only' header or background watermark. If transmitted without technical and visual access restrictions, it presents a substantial risk of being construed by external observers as premature pre-market promotion.",
+      "suggested_questions": [
+        "What safeguards prevent this concept file from being circulated externally to hospital customers or sales teams?",
+        "Should a prominent watermark or header restrict the distribution to internal design and MLR review teams?"
+      ],
+      "suggested_actions": [
+        "Add a prominent header or semi-transparent background watermark reading 'INTERNAL DESIGN CONCEPT ONLY - NOT FOR EXTERNAL USE OR DISTRIBUTION'.",
+        "Document distribution restrictions clearly in the promotional routing metadata."
+      ],
+      "bbox": [
+        0.18,
+        0.05,
+        0.82,
+        0.98
+      ],
+      "review_lens": "legal"
+    }
+  ],
+  "completeness_assessment": "The initial review panel provided comprehensive, robust coverage across clinical accuracy, pre-approval promotional risk, claim substantiation, and typography. Regulatory and legal reviewers thoroughly dissected the tension between the commercial-style copy ('IS HERE') and the de minimis footer disclaimer, while medical reviewers properly flagged the non-physiological numerical value ('936') and missing ECG calibration. The primary blind spot across all four reviewers was document governance and distribution control: none flagged the absence of tracking job codes, creation dates, or confidentiality demarcations necessary to substantiate the submitter's assertion that this is strictly an internal exploratory artifact."
+}

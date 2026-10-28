@@ -1,0 +1,237 @@
+{
+  "is_promotional": true,
+  "content_summary": "A promotional flyer for a clinical facility titled 'Health Care' advertising general medical services, emergency care, and expert consultations. The layout includes service offerings such as free health screenings, house calls, emergency healthcare, and vaccine tests, accompanied by clinician imagery. Portions of the copy contain repetitive boilerplate and standard placeholder Lorem Ipsum text.",
+  "promotional_intent": "Persuade prospective patients and community members to utilize the clinic's healthcare services, schedule consultations with specialists, and register for free screenings.",
+  "intended_audience": "patient_or_consumer",
+  "audience_rationale": "The flyer targets community members seeking medical services, highlighting free screenings for senior citizens and children under 12, round-the-clock doctor availability, and direct clinic contact channels.",
+  "product_or_topic": "General healthcare and outpatient clinical services (Medical Healthcare Center)",
+  "items": [
+    {
+      "item_id": "C1",
+      "kind": "headline",
+      "text": "Health Care Life Is Good",
+      "location": {
+        "page": 1,
+        "section": "Header logo and tagline",
+        "bbox": [
+          0.16,
+          0.2,
+          0.39,
+          0.24
+        ],
+        "quote": "Health Care Life Is Good"
+      },
+      "notes": "Clinic brand name and tagline accompanied by a stethoscope logo."
+    },
+    {
+      "item_id": "C2",
+      "kind": "headline",
+      "text": "Your Health Is Our Priority",
+      "location": {
+        "page": 1,
+        "section": "Green banner headline",
+        "bbox": [
+          0.16,
+          0.32,
+          0.46,
+          0.38
+        ],
+        "quote": "Your Health Is Our Priority"
+      },
+      "notes": "Primary promotional headline."
+    },
+    {
+      "item_id": "C3",
+      "kind": "product_claim",
+      "text": "Get an Expert Medical Opinion from one of our world-renowned specialists so you can have the answers and, Get an Expert Medical",
+      "location": {
+        "page": 1,
+        "section": "Green banner sub-copy",
+        "bbox": [
+          0.16,
+          0.4,
+          0.46,
+          0.44
+        ],
+        "quote": "Get an Expert Medical Opinion from one of our world-renowned specialists so you can have the answers and, Get an Expert Medical"
+      },
+      "notes": "Contains claim of 'world-renowned specialists' without substantiation; text ends abruptly with repeated phrase."
+    },
+    {
+      "item_id": "C4",
+      "kind": "call_to_action",
+      "text": "Emergency Healthcare +000 12345 6489",
+      "location": {
+        "page": 1,
+        "section": "Green banner callout box",
+        "bbox": [
+          0.16,
+          0.47,
+          0.41,
+          0.51
+        ],
+        "quote": "Emergency Healthcare +000 12345 6489"
+      },
+      "notes": "Emergency contact callout displaying a placeholder phone number."
+    },
+    {
+      "item_id": "C5",
+      "kind": "visual_element",
+      "text": "Color photograph of a male physician wearing a white coat, collared shirt, tie, and stethoscope, holding a smartphone and smiling.",
+      "location": {
+        "page": 1,
+        "section": "Upper right hero image",
+        "bbox": [
+          0.52,
+          0.18,
+          0.86,
+          0.54
+        ],
+        "quote": null
+      },
+      "notes": "Stock visual depicting an HCP/physician."
+    },
+    {
+      "item_id": "C6",
+      "kind": "product_claim",
+      "text": "Free Health Screening / For senior citizen & children for under 12 / www.healthcarecenter.com/register",
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 1",
+        "bbox": [
+          0.16,
+          0.56,
+          0.46,
+          0.61
+        ],
+        "quote": "Free Health Screening For senior citizen & children for under 12"
+      },
+      "notes": "Promotional service offering with demographic eligibility parameters (senior citizens and children under 12) and registration URL."
+    },
+    {
+      "item_id": "C7",
+      "kind": "product_claim",
+      "text": "Emergency / Get an Expert Medical Opinion from one of our world-renowned specialists so you can have the answers and",
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 2",
+        "bbox": [
+          0.16,
+          0.63,
+          0.5,
+          0.68
+        ],
+        "quote": "Emergency Get an Expert Medical Opinion from one of our world-renowned specialists"
+      },
+      "notes": "Description text is truncated and duplicates C3."
+    },
+    {
+      "item_id": "C8",
+      "kind": "product_claim",
+      "text": "House Call / Get an Expert Medical Opinion from one of our world-renowned specialists so you can have the answers and",
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 3",
+        "bbox": [
+          0.16,
+          0.69,
+          0.5,
+          0.74
+        ],
+        "quote": "House Call Get an Expert Medical Opinion from one of our world-renowned specialists"
+      },
+      "notes": "Description text is truncated and identical to C7."
+    },
+    {
+      "item_id": "C9",
+      "kind": "product_claim",
+      "text": "Vaccine Test / Get an Expert Medical Opinion from one of our world-renowned specialists so you can have the answers and",
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 4",
+        "bbox": [
+          0.16,
+          0.75,
+          0.5,
+          0.81
+        ],
+        "quote": "Vaccine Test Get an Expert Medical Opinion from one of our world-renowned specialists"
+      },
+      "notes": "Refers to 'Vaccine Test' with copy identical to C7 and C8."
+    },
+    {
+      "item_id": "C10",
+      "kind": "visual_element",
+      "text": "Photograph of a healthcare provider in teal scrubs speaking with an elderly female patient.",
+      "location": {
+        "page": 1,
+        "section": "Middle right image panel",
+        "bbox": [
+          0.56,
+          0.57,
+          0.84,
+          0.68
+        ],
+        "quote": null
+      },
+      "notes": "Depicts patient-clinician interaction."
+    },
+    {
+      "item_id": "C11",
+      "kind": "headline",
+      "text": "Dedicated Doctors Working Round The Clock",
+      "location": {
+        "page": 1,
+        "section": "Middle right section heading",
+        "bbox": [
+          0.56,
+          0.69,
+          0.81,
+          0.73
+        ],
+        "quote": "Dedicated Doctors Working Round The Clock"
+      },
+      "notes": "Availability claim stating physicians work round the clock."
+    },
+    {
+      "item_id": "C12",
+      "kind": "other",
+      "text": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen",
+      "location": {
+        "page": 1,
+        "section": "Middle right body paragraph",
+        "bbox": [
+          0.56,
+          0.73,
+          0.83,
+          0.81
+        ],
+        "quote": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+      },
+      "notes": "Standard Greeked/placeholder copy under the 'Dedicated Doctors' heading."
+    },
+    {
+      "item_id": "C13",
+      "kind": "other",
+      "text": "Medical Healthcare Center - 2100 Sherpur Sadar Sherpur, Dhaka Bangladesh hello@healthcare.com / www.healthcare.com",
+      "location": {
+        "page": 1,
+        "section": "Bottom footer",
+        "bbox": [
+          0.17,
+          0.83,
+          0.82,
+          0.87
+        ],
+        "quote": "Medical Healthcare Center - 2100 Sherpur Sadar Sherpur, Dhaka Bangladesh"
+      },
+      "notes": "Facility address and placeholder contact information."
+    }
+  ],
+  "open_observations": [
+    "The piece appears to be a graphic design template rather than finalized promotional collateral, as evidenced by placeholder Lorem Ipsum copy, placeholder phone numbers (+000 12345 6489), and placeholder web addresses.",
+    "Multiple service entries (Emergency, House Call, Vaccine Test) use duplicate, incomplete sentence fragments ('...so you can have the answers and') copied directly from the banner subhead.",
+    "Unsubstantiated superlative claims are made regarding clinic personnel ('world-renowned specialists').",
+    "No specific drug product, indication, or prescribing/safety information is present; this material concerns clinical healthcare facility services."
+  ]
+}

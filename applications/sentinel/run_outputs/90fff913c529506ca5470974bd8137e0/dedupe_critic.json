@@ -1,0 +1,110 @@
+{
+  "duplicate_groups": [
+    {
+      "finding_ids": [
+        "F-MED-1",
+        "F-LEG-4",
+        "F-REG-5",
+        "F-ED-4"
+      ],
+      "rationale": "All four findings identify the identical critical defect: item C4 displays an inoperable placeholder telephone number (+000 12345 6489) for emergency care without functional routing or statutory emergency advisories. F-MED-1 is retained as canonical because it articulates the patient safety hazard and emergency clinical care navigation principles with the highest precision.",
+      "keep": "F-MED-1"
+    },
+    {
+      "finding_ids": [
+        "F-LEG-1",
+        "F-REG-3",
+        "F-MED-6",
+        "F-ED-6"
+      ],
+      "rationale": "These findings target the identical superlative representation ('world-renowned specialists') across C3, C7, C8, and C9, raising truth-in-advertising, substantiation, and promotional tone concerns. F-LEG-1 is retained as canonical as it encompasses the full scope of affected content items and establishes the clear legal evidentiary standard required for clinician superiority claims.",
+      "keep": "F-LEG-1"
+    },
+    {
+      "finding_ids": [
+        "F-MED-2",
+        "F-REG-2",
+        "F-LEG-8",
+        "F-ED-7"
+      ],
+      "rationale": "All four findings address the ambiguous nomenclature 'Vaccine Test' in item C9, observing that it violates clinical service clarity and fails to distinguish between routine vaccination, antibody titer screening, and investigational vaccine trials. F-MED-2 is kept as canonical for its clear focus on recognized medical terminology and immunization standards.",
+      "keep": "F-MED-2"
+    },
+    {
+      "finding_ids": [
+        "F-LEG-5",
+        "F-REG-6"
+      ],
+      "rationale": "F-LEG-5 and F-REG-6 both challenge the headline claim that physicians work 'Round The Clock' (C11) on the grounds that unqualified 24/7 doctor availability claims require verifiable operational staffing substantiation under consumer protection laws. F-LEG-5 is retained as canonical due to its thorough legal analysis of implied service warranties.",
+      "keep": "F-LEG-5"
+    },
+    {
+      "finding_ids": [
+        "F-LEG-6",
+        "F-REG-4"
+      ],
+      "rationale": "F-LEG-6 and F-REG-4 both evaluate the 'Free Health Screening' promotion (C6) under truth-in-advertising rules (including FTC Guide 16 CFR Part 251), noting the absence of material terms, diagnostic scope, and fee disclosures. F-LEG-6 is selected as canonical because it additionally highlights relevant healthcare beneficiary inducement compliance considerations.",
+      "keep": "F-LEG-6"
+    },
+    {
+      "finding_ids": [
+        "F-MED-9",
+        "F-ED-2"
+      ],
+      "rationale": "Both findings address the identical defect where multiple distinct service descriptions (C7, C8, C9) reuse an identical incomplete sentence fragment terminating with a dangling conjunction ('...so you can have the answers and'). F-ED-2 is retained as canonical because it provides the most actionable editorial and content clarity guidance.",
+      "keep": "F-ED-2"
+    },
+    {
+      "finding_ids": [
+        "F-LEG-10",
+        "F-REG-1"
+      ],
+      "rationale": "Both findings raise the fundamental governance failure that the piece represents an unfinished wireframe template containing placeholder Greeked text (Lorem Ipsum), dummy contact numbers, and placeholder URLs unready for formal regulatory sign-off. F-LEG-10 is kept as canonical as it establishes the formal legal gating requirements for MLR review readiness.",
+      "keep": "F-LEG-10"
+    }
+  ],
+  "cross_lens_themes": [
+    {
+      "theme": "Comprehensive Gating Failure Due to Template Mockup Status",
+      "related_finding_ids": [
+        "F-LEG-10",
+        "F-ED-1",
+        "F-ED-3",
+        "F-MED-7",
+        "F-LEG-3",
+        "F-ED-12"
+      ],
+      "discussion": "The flyer exhibits systemic draft artifacts across multiple lenses, including raw Latin placeholder copy, truncated sentence fragments, unverified continuous staffing claims, and conflicting generic web domains (healthcarecenter.com vs. third-party healthcare.com). Evaluated collectively, these findings confirm that the asset was submitted prematurely as an unfinalized wireframe rather than production-ready copy, precluding comprehensive substantive review. The MLR committee must hold full clearance until an integrated, finalized copy deck is populated and resubmitted."
+    },
+    {
+      "theme": "Emergency Navigation and Acute Care Patient Safety Hazard",
+      "related_finding_ids": [
+        "F-MED-1",
+        "F-MED-4",
+        "F-LEG-9"
+      ],
+      "discussion": "Beyond the inoperative emergency phone number, the collateral critically distorts acute care navigation by describing emergency medical care as an elective specialist second opinion and promoting house calls without clinical triage boundaries or coverage limits. Taken together, these issues create severe detrimental reliance and clinical delay risks for patients experiencing life-threatening conditions who might rely on this flyer instead of contacting emergency services. Clear acute care disclaimers and verified operational triage protocols are urgently required."
+    },
+    {
+      "theme": "Provider Capability and Operational Availability Substantiation Gap",
+      "related_finding_ids": [
+        "F-LEG-1",
+        "F-LEG-5",
+        "F-MED-7",
+        "F-LEG-7"
+      ],
+      "discussion": "The collateral makes expansive, high-stakes claims regarding clinical staff prestige ('world-renowned specialists'), 24/7 physician availability ('Working Round The Clock'), and clinician authority through visual imagery without providing objective substantiation, roster logs, or commercial model releases. When viewed together, this cluster presents substantial exposure under truth-in-advertising statutes and state consumer protection laws by misleading patients regarding the actual clinical capabilities and physical staffing presence at an outpatient facility."
+    },
+    {
+      "theme": "Preventive Screening Compliance and Vulnerable Population Protections",
+      "related_finding_ids": [
+        "F-LEG-6",
+        "F-MED-3",
+        "F-MED-8",
+        "F-ED-5"
+      ],
+      "discussion": "Promoting 'Free Health Screenings' specifically to vulnerable pediatric (<12) and geriatric cohorts lacks clinical protocol definitions, diagnostic limitation disclosures, and required legal/anti-kickback terms. Looking across medical, legal, and editorial lenses, the offer fails to specify which screening tests are performed, who interprets the data, or how abnormal results are managed, creating both patient over-reliance risks and regulatory exposure under federal beneficiary inducement standards."
+    }
+  ],
+  "rationale": "Deduplication was conducted by grouping findings that identified the exact same factual defects—such as the non-functional emergency phone number, the 'world-renowned specialists' superlative, the ambiguous 'Vaccine Test' label, the 24/7 doctor availability claim, the omitted free screening disclosures, the duplicated copy fragments, and systemic wireframe placeholder copy. In each group, the canonical finding with the sharpest regulatory, legal, or clinical principle was retained to eliminate redundancy while preserving evidentiary rigor. Findings that shared related topics but raised distinct disciplinary concerns (such as clinical safety versus visual layout or grammar) were kept separate and organized into four cross-lens thematic clusters to provide reviewers with unified strategic visibility."
+}

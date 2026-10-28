@@ -1,0 +1,136 @@
+{
+  "reviewer_summary": "Reviewed promotional facility flyer from a regulatory affairs perspective, focusing on jurisdictional framework (service advertising vs. regulated medical products), draft status compliance, truth-in-advertising standards for clinical capabilities, and required consumer disclosures. The piece currently represents an incomplete draft containing placeholder elements, ambiguous clinical terminology, and unsubstantiated superlative claims.",
+  "findings": [
+    {
+      "category": "regulatory_guidance",
+      "severity": "medium",
+      "confidence": 0.95,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C4",
+        "C12",
+        "C13"
+      ],
+      "quoted_content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "observation": "The piece contains placeholder text, dummy telephone contact numbers, and placeholder web URLs, indicating it is an unfinished mock-up rather than finalized promotional collateral.",
+      "mlr_principle": "Readiness for regulatory review and commercial distribution standards",
+      "discussion": "From a regulatory compliance standpoint, promotional assets must be reviewed and approved in their final, intended-to-disseminate form before launch or regulatory submission (e.g., FDA Form 2253 or regional promotional filing requirements). Distributing or filing materials with dummy text (Lorem Ipsum) or invalid emergency phone numbers (+000 12345 6489) prevents full MLR evaluation of risk statements, disclosures, and mandatory contact channels. Finalized copy and verified operational details are required before regulatory clearance.",
+      "suggested_questions": [
+        "What is the target deployment date, and when will finalized, localized copy replace all placeholder elements?",
+        "Does the sponsor intend to submit this material to any regulatory authority or local licensing body prior to distribution?"
+      ],
+      "suggested_actions": [
+        "Replace all Greeked text, dummy telephone numbers, and placeholder URLs with accurate, verified clinical information before routing for final MLR approval.",
+        "Withhold regulatory release sign-off until a production-ready proof is submitted."
+      ]
+    },
+    {
+      "category": "indication_scope",
+      "severity": "medium",
+      "confidence": 0.85,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C9"
+      ],
+      "quoted_content": "Vaccine Test",
+      "observation": "The term 'Vaccine Test' is clinically and regulatory-wise ambiguous regarding whether it refers to diagnostic titer testing, investigational clinical trial participation, or routine vaccine administration.",
+      "mlr_principle": "Clarity of medical service scope and truthful presentation of regulated clinical activities",
+      "discussion": "In regulatory review, terminology must clearly convey the nature of the clinical service or product being offered. If 'Vaccine Test' refers to vaccine administration, characterizing it as a 'test' may cause public health confusion; if it implies investigational clinical trials for unapproved vaccines, strict GCP and FDA/EMA investigational drug advertising prohibitions against direct consumer recruitment without IRB clearance apply. If it refers to serological titer or immunity testing, cleared diagnostic platforms must underpin the service.",
+      "suggested_questions": [
+        "What specific medical procedure or diagnostic test does 'Vaccine Test' designate?",
+        "Is this clinic offering commercial authorized/approved vaccines, serology laboratory tests, or experimental/investigational clinical protocols?"
+      ],
+      "suggested_actions": [
+        "Clarify the service label to unambiguous terminology (e.g., 'Vaccine Administration', 'Immunization', or 'Vaccine Immunity/Titer Testing').",
+        "If recruiting for investigational vaccine trials, route through institutional review board (IRB) review and ensure compliance with regulatory recruitment guidance."
+      ]
+    },
+    {
+      "category": "superlative_claim",
+      "severity": "medium",
+      "confidence": 0.9,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C3",
+        "C7",
+        "C8",
+        "C9"
+      ],
+      "quoted_content": "Get an Expert Medical Opinion from one of our world-renowned specialists",
+      "observation": "The flyer makes prominent, unqualified superlative representations that its staff consists of 'world-renowned specialists.'",
+      "mlr_principle": "Truthful and non-misleading substantiation standards under FTC Act Section 5 and regional medical advertising regulations",
+      "discussion": "Consumer-directed advertising that characterizes clinical staff using superlative descriptors such as 'world-renowned' must be substantiated by objective evidence (e.g., international peer recognition, specific academic appointments, or independent credentialing). Without documented evidence on file supporting this qualification for the practicing staff, regulatory agencies and consumer protection authorities consider such claims unsubstantiated and potentially deceptive.",
+      "suggested_questions": [
+        "What documentation or independent credentialing exists in the promotional master file to substantiate that the clinic's specialists are 'world-renowned'?",
+        "Which specific physicians will be providing these consultations?"
+      ],
+      "suggested_actions": [
+        "Provide credentialing documentation substantiating the 'world-renowned' reputation of the named staff, or soften the phrasing to objective descriptions (e.g., 'board-certified physicians' or 'experienced healthcare providers')."
+      ]
+    },
+    {
+      "category": "disclosure",
+      "severity": "medium",
+      "confidence": 0.88,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C6"
+      ],
+      "quoted_content": "Free Health Screening / For senior citizen & children for under 12",
+      "observation": "The promotional offer of a 'Free Health Screening' specifies age-based eligibility but omits material conditions, scope, and potential ancillary cost disclosures.",
+      "mlr_principle": "FTC Guide Concerning the Use of the Word 'Free' (16 CFR Part 251) and healthcare consumer disclosure requirements",
+      "discussion": "Advertising a medical service as 'free' requires explicit disclosure of all terms, conditions, and limitations. Regulators scrutinize healthcare promotions to ensure consumers understand exactly what procedures are included in the screening (e.g., blood pressure, blood glucose) and that there are no hidden fees, mandatory follow-up purchases, or unstated co-pays. The current copy does not define the screening parameters or outline whether prior appointment/registration criteria apply beyond the URL.",
+      "suggested_questions": [
+        "What specific tests or examinations comprise the 'Free Health Screening'?",
+        "Are there any obligations, exclusions, or downstream costs associated with the screening?"
+      ],
+      "suggested_actions": [
+        "Add qualifying footnote or disclosure copy outlining the specific scope of the free screening (e.g., 'Screening includes vital signs and routine biometric evaluation; additional laboratory testing may incur separate fees').",
+        "Ensure compliance with regional fraud-and-abuse / patient inducement statutes where applicable."
+      ]
+    },
+    {
+      "category": "safety_profile",
+      "severity": "high",
+      "confidence": 0.92,
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C4",
+        "C7"
+      ],
+      "quoted_content": "Emergency Healthcare +000 12345 6489",
+      "observation": "The flyer advertises emergency clinical capabilities alongside a non-functional telephone number and lacks essential safety routing instructions for life-threatening medical emergencies.",
+      "mlr_principle": "Public health safety standards in direct-to-consumer emergency medical communications",
+      "discussion": "Marketing urgent or emergency healthcare directly to consumers carries significant patient safety and regulatory liability. Featuring a non-functional phone number in an 'Emergency Healthcare' callout could delay acute care during life-threatening events. Regulatory expectations for outpatient facility marketing standardly require a prominent directive advising patients experiencing acute emergencies to dial local emergency response services (e.g., 911 or equivalent local emergency number).",
+      "suggested_questions": [
+        "Is this facility a licensed emergency department capable of acute trauma/life-support care, or an urgent/outpatient clinic?",
+        "What is the operational protocol for handling incoming urgent consumer calls?"
+      ],
+      "suggested_actions": [
+        "Include a prominent safety advisory stating: 'If you are experiencing a life-threatening medical emergency, call your local emergency service (e.g., 911) immediately or go to the nearest emergency room.'",
+        "Ensure the emergency telephone contact line is fully verified, operational, and monitored 24/7 before distribution.",
+        "Clarify facility licensing (e.g., 'Urgent Care Center' vs. accredited 'Emergency Department') to ensure regulatory alignment."
+      ]
+    },
+    {
+      "category": "claim_substantiation",
+      "severity": "low",
+      "confidence": 0.85,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C11"
+      ],
+      "quoted_content": "Dedicated Doctors Working Round The Clock",
+      "observation": "The claim of physicians working 'Round The Clock' asserts 24/7 on-site doctor availability without qualification.",
+      "mlr_principle": "Truth-in-advertising substantiation for healthcare availability claims",
+      "discussion": "Promoting 24-hour ('round the clock') physician availability is a concrete service capability claim. Under consumer protection frameworks, advertising round-the-clock availability when physicians are merely on call or when facility hours are limited can be considered deceptive advertising. The material must align with the clinic's verifiable staffing schedule.",
+      "suggested_questions": [
+        "Does the facility maintain dedicated medical doctors on-site 24 hours a day, 7 days a week, or is coverage provided via an on-call triage service?",
+        "What specific hours of operation will be listed in place of the Lorem Ipsum copy in item C12?"
+      ],
+      "suggested_actions": [
+        "Verify that staffing logs substantiate 24/7 on-site physician presence, or adjust copy to reflect actual operational hours (e.g., '24/7 On-Call Medical Support' or 'Extended Hours Urgent Care')."
+      ]
+    }
+  ]
+}

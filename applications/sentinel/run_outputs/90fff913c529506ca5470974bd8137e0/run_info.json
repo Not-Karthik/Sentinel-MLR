@@ -1,0 +1,46 @@
+{
+  "input_image": "C:\\Users\\karthik.kishor\\Downloads\\90fff913c529506ca5470974bd8137e0.jpg",
+  "image_size_bytes": 25394,
+  "endpoint": "message/stream (A2A v0.3), image sent inline as base64",
+  "run": "local app server on port 8000, thinking level medium, single review pass",
+  "total_seconds": 163.5,
+  "artifact_arrival_seconds": {
+    "intake": 51.9,
+    "rules_reviewer (skipped, no rules)": 52.0,
+    "submitter_advocate": 69.7,
+    "regulatory_reviewer": 79.8,
+    "editorial_reviewer": 89.8,
+    "legal_reviewer": 92.4,
+    "medical_reviewer": 94.3,
+    "severity_critic": 122.0,
+    "gap_critic": 124.5,
+    "dedupe_critic": 142.3,
+    "narrative_synthesizer": 163.5,
+    "final_report": 163.5
+  },
+  "stream_events": 25,
+  "findings": 26,
+  "findings_with_bbox": 26,
+  "counts_by_severity": {
+    "critical": 1,
+    "high": 3,
+    "medium": 14,
+    "low": 8,
+    "informational": 0
+  },
+  "agent_output_order": [
+    "sentinel",
+    "intake",
+    "rules_reviewer",
+    "submitter_advocate",
+    "regulatory_reviewer",
+    "editorial_reviewer",
+    "legal_reviewer",
+    "medical_reviewer",
+    "severity_critic",
+    "gap_critic",
+    "dedupe_critic",
+    "narrative_synthesizer",
+    "final_report"
+  ]
+}

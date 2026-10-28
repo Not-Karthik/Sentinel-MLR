@@ -1,0 +1,56 @@
+{
+  "gaps_identified": [
+    "Omission of mandatory manufacturer identity and place of business (e.g., city, state, country) required under 21 CFR § 801.1.",
+    "Absence of standard document control and regulatory lifecycle metadata, including job/material tracking codes, date of creation/revision, and copyright year.",
+    "Lack of an operational destination or contact mechanism (URL, QR code, or inquiry channel) on or adjacent to the call-to-action button, leaving HCPs without a path to technical whitepapers or concept specifications.",
+    "Omission of battery life, charging duration, and power management specifications despite depicting battery indicators on a portable wireless telemetry device.",
+    "Lack of HIPAA / data security and patient privacy qualifications associated with wireless telemetry transmission."
+  ],
+  "additional_findings": [
+    {
+      "category": "regulatory_guidance",
+      "severity": "medium",
+      "confidence": 0.92,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C1"
+      ],
+      "quoted_content": "VITALYNX Medical Technologies",
+      "observation": "The piece identifies the corporate entity as 'VITALYNX Medical Technologies' but omits the corporate place of business and contact details.",
+      "mlr_principle": "Mandatory identification of the manufacturer, packer, or distributor including place of business (21 CFR § 801.1).",
+      "discussion": "Medical device promotional labeling must clearly identify the manufacturer, packer, or distributor along with its place of business (city, state, and zip code or street address). Even in early promotional or conceptual collateral, presenting a brand name without geographic origin or official corporate identification fails baseline statutory labeling standards.",
+      "suggested_questions": [
+        "What is the registered corporate entity address for Vitalynx Medical Technologies?",
+        "Should the formal corporate headquarters location and inquiry contact be appended to the header or footer?"
+      ],
+      "suggested_actions": [
+        "Add the manufacturer's legal entity address (city, state, country) in the footer text adjacent to corporate branding.",
+        "Ensure alignment with 21 CFR § 801.1 device labeling identification requirements."
+      ],
+      "review_lens": "regulatory"
+    },
+    {
+      "category": "clarity",
+      "severity": "low",
+      "confidence": 0.88,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C8"
+      ],
+      "quoted_content": "DISCOVER SMARTER CARE",
+      "observation": "The call-to-action prompt lacks an operational destination, URL, QR code, or contact mechanism to guide the audience to the intended resource.",
+      "mlr_principle": "Functional signposting and operational utility of promotional calls-to-action.",
+      "discussion": "While existing findings critique the comparative tone and outcome implications of 'DISCOVER SMARTER CARE', the panel overlooked the complete absence of functional signposting. In print, PDF, or display environments, HCPs have no indicated destination (such as a website URL, short link, or QR code) to access the underlying technical specifications or pipeline documentation referenced by the submitter advocate.",
+      "suggested_questions": [
+        "In what media formats and channels will this asset be deployed?",
+        "What specific web destination or corporate portal should be designated for HCP inquiries and whitepaper downloads?"
+      ],
+      "suggested_actions": [
+        "Add an explicit URL or QR code adjacent to the action button (e.g., 'vitalynx.com/pipeline-pulsepro').",
+        "Specify the exact destination asset so users understand whether they are requesting technical specifications or viewing a pipeline overview."
+      ],
+      "review_lens": "editorial"
+    }
+  ],
+  "completeness_assessment": "The reviewer panel demonstrated thorough coverage of the primary compliance risks, specifically the tension between pre-market commercialization claims and fine-print concept disclaimers, as well as the implausible visual telemetry readout ('936'). The legal and regulatory reviews were especially rigorous regarding 510(k) pre-clearance promotional boundaries and fair balance omissions. However, the panel focused almost exclusively on existing text and image defects, overlooking standard labeling omissions such as manufacturer geographic identification (21 CFR § 801.1), document control metadata, and operational call-to-action pathways. Overall, collective attention was well-aligned with the piece's legal risk profile, but required supplementation in basic administrative and labeling completeness."
+}

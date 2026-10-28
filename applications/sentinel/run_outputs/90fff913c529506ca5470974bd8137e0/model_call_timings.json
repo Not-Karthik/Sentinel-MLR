@@ -1,0 +1,82 @@
+[
+  {
+    "agent": "intake",
+    "seconds": 51.57,
+    "request_bytes": 28887,
+    "prompt_tokens": 2951,
+    "output_tokens": 2278,
+    "thought_tokens": 916
+  },
+  {
+    "agent": "submitter_advocate",
+    "seconds": 17.74,
+    "request_bytes": 16609,
+    "prompt_tokens": 5062,
+    "output_tokens": 990,
+    "thought_tokens": 660
+  },
+  {
+    "agent": "regulatory_reviewer",
+    "seconds": 27.82,
+    "request_bytes": 19317,
+    "prompt_tokens": 6222,
+    "output_tokens": 2325,
+    "thought_tokens": 530
+  },
+  {
+    "agent": "editorial_reviewer",
+    "seconds": 37.86,
+    "request_bytes": 18313,
+    "prompt_tokens": 5988,
+    "output_tokens": 3298,
+    "thought_tokens": 376
+  },
+  {
+    "agent": "legal_reviewer",
+    "seconds": 40.43,
+    "request_bytes": 18718,
+    "prompt_tokens": 6088,
+    "output_tokens": 3436,
+    "thought_tokens": 1559
+  },
+  {
+    "agent": "medical_reviewer",
+    "seconds": 42.37,
+    "request_bytes": 18853,
+    "prompt_tokens": 6095,
+    "output_tokens": 2967,
+    "thought_tokens": 873
+  },
+  {
+    "agent": "severity_critic",
+    "seconds": 27.62,
+    "request_bytes": 89042,
+    "prompt_tokens": 20419,
+    "output_tokens": 940,
+    "thought_tokens": 2048
+  },
+  {
+    "agent": "gap_critic",
+    "seconds": 30.18,
+    "request_bytes": 90231,
+    "prompt_tokens": 21409,
+    "output_tokens": 1005,
+    "thought_tokens": 2627
+  },
+  {
+    "agent": "dedupe_critic",
+    "seconds": 47.97,
+    "request_bytes": 89467,
+    "prompt_tokens": 20682,
+    "output_tokens": 1784,
+    "thought_tokens": 4512
+  },
+  {
+    "agent": "narrative_synthesizer",
+    "seconds": 21.19,
+    "request_bytes": 39018,
+    "prompt_tokens": 8927,
+    "output_tokens": 806,
+    "thought_tokens": 133
+  }
+]

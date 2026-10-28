@@ -1,0 +1,58 @@
+{
+  "severity_adjustments": [
+    {
+      "finding_id": "F-MED-2",
+      "current_severity": "high",
+      "recommended_severity": "medium",
+      "rationale": "While 'Vaccine Test' is clinically non-standard terminology, it represents ambiguous outpatient service labeling rather than an imminent clinical safety hazard. Downgrading to medium aligns with peer findings F-LEG-8 and F-REG-2."
+    },
+    {
+      "finding_id": "F-MED-3",
+      "current_severity": "high",
+      "recommended_severity": "medium",
+      "rationale": "Omitting explicit diagnostic screening protocols and follow-up criteria in a community flyer is an informational disclosure gap rather than an acute clinical hazard. Downgrading to medium harmonizes with F-LEG-6 and F-REG-4."
+    },
+    {
+      "finding_id": "F-REG-5",
+      "current_severity": "high",
+      "recommended_severity": "critical",
+      "rationale": "Advertising emergency medical care with an inoperative placeholder phone number (+000 12345 6489) creates direct risk of acute patient harm if a patient in distress attempts to contact the facility. Calibrated to critical to match F-MED-1 and F-LEG-4."
+    },
+    {
+      "finding_id": "F-REG-6",
+      "current_severity": "low",
+      "recommended_severity": "medium",
+      "rationale": "An unqualified representation of 24/7 on-site physician availability is a concrete operational claim that creates deceptive advertising exposure if unsubstantiated. Elevating to medium aligns with F-MED-7."
+    },
+    {
+      "finding_id": "F-ED-1",
+      "current_severity": "high",
+      "recommended_severity": "medium",
+      "rationale": "A truncated subhead repeating an introductory clause is an obvious draft composition error, but it poses no independent regulatory or safety liability warranting high severity."
+    },
+    {
+      "finding_id": "F-ED-2",
+      "current_severity": "high",
+      "recommended_severity": "medium",
+      "rationale": "Duplicated placeholder fragments across service cards signify unfinalized draft copy, which should be corrected during copy finishing rather than treated as a high-severity regulatory defect."
+    },
+    {
+      "finding_id": "F-ED-5",
+      "current_severity": "medium",
+      "recommended_severity": "low",
+      "rationale": "Awkward phrasing and redundant prepositions ('For senior citizen & children for under 12') constitute basic copy-editing polish, fitting the low severity rubric."
+    },
+    {
+      "finding_id": "F-ED-8",
+      "current_severity": "medium",
+      "recommended_severity": "low",
+      "rationale": "Visual asymmetry resulting from an inline URL placed in a single service card is a minor layout formatting issue correctly classed as low severity."
+    }
+  ],
+  "confidence_concerns": [
+    "F-MED-3: Reviewer confidence (0.88) is elevated considering the finding presumes formal pediatric and geriatric clinical screening guidelines apply strictly to a high-level community promotional leaflet.",
+    "F-LEG-10: Reviewer confidence (0.99) is excessively high for asserting legal non-readiness on an early-stage creative concept wireframe."
+  ],
+  "advocate_weighed": true,
+  "rationale": "Calibrations were made to align findings across clinical, legal, regulatory, and editorial lenses against the severity rubric. The advocate's defense that this asset is an early-stage wireframe was weighed; while it legitimately explains template artifacts and supports adjusting editorial and service-description findings to medium or low, it cannot mitigate the critical patient-safety risk posed by invalid emergency contact numbers (F-MED-1, F-LEG-4, F-REG-5). Furthermore, clinical and demographic screening claims were standardized to medium severity across all lenses to reflect typical outpatient disclosure expectations."
+}

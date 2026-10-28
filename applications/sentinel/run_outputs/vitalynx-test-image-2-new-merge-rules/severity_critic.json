@@ -1,0 +1,28 @@
+{
+  "severity_adjustments": [
+    {
+      "finding_id": "F-MED-1",
+      "current_severity": "high",
+      "recommended_severity": "medium",
+      "rationale": "The non-physiological value '936' is an uncorrected creative placeholder in an illustrative mockup rather than an intentional falsification of clinical study data or a direct hazard to patient safety. The advocate concedes this was placeholder text and agrees to correct it to standard vitals; downgrading to medium aligns with F-LEG-9 and F-REG-7."
+    },
+    {
+      "finding_id": "F-MED-4",
+      "current_severity": "high",
+      "recommended_severity": "medium",
+      "rationale": "Elevating the brief feature bullet 'ADVANCED ALERTS' to a high clinical safety risk over alarm fatigue is disproportionate for a top-level creative concept piece. Regulators and legal (F-REG-5, F-LEG-4) treat this as a claim substantiation and CDS scoping issue warranting medium severity."
+    },
+    {
+      "finding_id": "F-REG-11",
+      "current_severity": "medium",
+      "recommended_severity": "low",
+      "rationale": "The call-to-action 'DISCOVER SMARTER CARE' represents standard commercial design puffery rather than an empirical comparative outcome claim. Both Legal (F-LEG-8) and Medical (F-MED-7) classified similar broad superlative phrasing as low severity."
+    }
+  ],
+  "confidence_concerns": [
+    "F-MED-4: Confidence of 0.92 is overly elevated given that demanding full alarm management and fatigue mitigation architecture for a two-word promotional bullet ('ADVANCED ALERTS') over-indexes on clinical protocol expectations for an early-stage asset.",
+    "F-REG-3: Confidence of 0.88 assumes full 21 CFR 801 Indications for Use statements are mandatory on an abbreviated concept mockup, discounting the threshold question of whether the asset is an internal exploratory prototype or commercial promotional labeling."
+  ],
+  "advocate_weighed": true,
+  "rationale": "Calibrations were made to balance the regulatory gravity of pre-market commercialization against the reality of an exploratory design concept. The submitter advocate's concessions regarding placeholder UI values confirmed that display anomalies (F-MED-1) represent creative production errors rather than high-risk clinical misrepresentations. High severities were preserved for core pre-approval and fair balance compliance risks (F-REG-1, F-LEG-1, F-REG-4), while technical substantiation and alarm claims on concept bullet points were moderated to medium."
+}

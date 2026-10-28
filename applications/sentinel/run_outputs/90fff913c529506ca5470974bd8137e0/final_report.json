@@ -1,0 +1,996 @@
+{
+  "content_summary": "A promotional flyer for a clinical facility titled 'Health Care' advertising general medical services, emergency care, and expert consultations. The layout includes service offerings such as free health screenings, house calls, emergency healthcare, and vaccine tests, accompanied by clinician imagery. Portions of the copy contain repetitive boilerplate and standard placeholder Lorem Ipsum text.",
+  "intended_audience": "patient_or_consumer",
+  "promotional_intent": "Persuade prospective patients and community members to utilize the clinic's healthcare services, schedule consultations with specialists, and register for free screenings.",
+  "executive_summary": "This promotional flyer is intended to introduce community members and prospective patients to outpatient healthcare services, highlighting accessible clinical consultations, home visits, and free preventive screenings for pediatric and senior populations. The commercial team's intent—as highlighted in your defense—was to establish an early conceptual layout and validate visual hierarchy before investing agency hours in localized copy. While this iterative design approach is standard commercial practice, the submission contains several critical clinical safety and substantiation gaps that need alignment before print production.\n\nThe dominant character of the findings reflects a tension between an early wireframe layout and live healthcare communication standards. Most critically, advertising emergency care alongside a placeholder phone number (+000 12345 6489) without triage guidance or national emergency routing (F-MED-1) creates immediate patient safety risks if a patient in acute distress encounters this collateral. Similarly, draft template artifacts—such as Greeked 'Lorem Ipsum' text (F-ED-1, F-LEG-2) and duplicated incomplete sentence fragments across service cards (F-MED-4, F-MED-5, F-ED-3)—prevent the MLR committee from conducting a full, definitive regulatory review.\n\nTo prepare for a constructive MLR meeting, the brand team should prioritize three key areas:\n1. Emergency Navigation and Operational Realism: Replace dummy emergency contact channels with functioning numbers and standard emergency navigation language ('In case of emergency, call 911 or visit the nearest emergency room') (F-MED-1). Clarify clinical staffing representations, replacing unqualified continuous coverage claims like 'Working Round The Clock' (F-LEG-1, F-MED-6) with verifiable operational models (e.g., '24/7 On-Call Physician Availability').\n2. Clinical Nomenclature and Superlatives: Adopt objective, verifiable descriptors for clinical staff rather than ungrounded superlatives like 'world-renowned specialists' (F-LEG-3), and replace ambiguous medical phrasing such as 'Vaccine Test' (F-MED-2) with recognized clinical services like 'Immunizations & Antibody Titer Testing'.\n3. Vulnerable Population Protections and Disclosures: For the free health screening initiative (F-MED-3, F-LEG-6), define the specific non-diagnostic parameters (e.g., routine blood pressure and glucose checks) and ensure that online pediatric registration includes clear parental/guardian consent notices in accordance with minor privacy standards (F-LEG-7).",
+  "themes": [
+    "Comprehensive Gating Failure Due to Template Mockup Status: The flyer exhibits systemic draft artifacts across multiple lenses, including raw Latin placeholder copy, truncated sentence fragments, unverified continuous staffing claims, and conflicting generic web domains (healthcarecenter.com vs. third-party healthcare.com). Evaluated collectively, these findings confirm that the asset was submitted prematurely as an unfinalized wireframe rather than production-ready copy, precluding comprehensive substantive review. The MLR committee must hold full clearance until an integrated, finalized copy deck is populated and resubmitted.",
+    "Emergency Navigation and Acute Care Patient Safety Hazard: Beyond the inoperative emergency phone number, the collateral critically distorts acute care navigation by describing emergency medical care as an elective specialist second opinion and promoting house calls without clinical triage boundaries or coverage limits. Taken together, these issues create severe detrimental reliance and clinical delay risks for patients experiencing life-threatening conditions who might rely on this flyer instead of contacting emergency services. Clear acute care disclaimers and verified operational triage protocols are urgently required.",
+    "Provider Capability and Operational Availability Substantiation Gap: The collateral makes expansive, high-stakes claims regarding clinical staff prestige ('world-renowned specialists'), 24/7 physician availability ('Working Round The Clock'), and clinician authority through visual imagery without providing objective substantiation, roster logs, or commercial model releases. When viewed together, this cluster presents substantial exposure under truth-in-advertising statutes and state consumer protection laws by misleading patients regarding the actual clinical capabilities and physical staffing presence at an outpatient facility.",
+    "Preventive Screening Compliance and Vulnerable Population Protections: Promoting 'Free Health Screenings' specifically to vulnerable pediatric (<12) and geriatric cohorts lacks clinical protocol definitions, diagnostic limitation disclosures, and required legal/anti-kickback terms. Looking across medical, legal, and editorial lenses, the offer fails to specify which screening tests are performed, who interprets the data, or how abnormal results are managed, creating both patient over-reliance risks and regulatory exposure under federal beneficiary inducement standards."
+  ],
+  "findings": [
+    {
+      "finding_id": "F-MED-1",
+      "review_lens": "medical",
+      "category": "safety_profile",
+      "severity": "critical",
+      "confidence": 0.95,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C4"
+      ],
+      "quoted_content": "Emergency Healthcare +000 12345 6489",
+      "observation": "Emergency healthcare contact displays an invalid placeholder phone number without triage instructions or direction to national emergency services.",
+      "mlr_principle": "Patient safety and clear emergency care navigation",
+      "discussion": "In an acute medical emergency, patients or caregivers relying on promotional collateral may attempt to call the listed number. Displaying a dummy or non-functional telephone number (+000 12345 6489) can cause critical delays in emergency care, potentially resulting in adverse clinical outcomes or death. Materials directing patients in acute distress must provide immediate, operational routing or explicitly instruct patients to call local emergency dispatch.",
+      "suggested_questions": [
+        "What is the dedicated, operational 24/7 emergency phone line for this clinical site?",
+        "Should this material include standard advice directing patients experiencing life-threatening symptoms (e.g., chest pain, acute dyspnea) to contact national emergency medical services (such as 911 or local dispatch)?"
+      ],
+      "suggested_actions": [
+        "Replace the placeholder phone number with the validated 24/7 clinical hotline.",
+        "Add explicit instructions: 'If you are experiencing a life-threatening medical emergency, call your local emergency services or proceed to the nearest emergency department immediately.'"
+      ],
+      "location": {
+        "page": 1,
+        "section": "Green banner callout box",
+        "bbox": [
+          0.16,
+          0.47,
+          0.41,
+          0.51
+        ],
+        "quote": "Emergency Healthcare +000 12345 6489"
+      },
+      "also_raised_by": [
+        "legal",
+        "regulatory",
+        "editorial"
+      ]
+    },
+    {
+      "finding_id": "F-LEG-1",
+      "review_lens": "legal",
+      "category": "claim_substantiation",
+      "severity": "high",
+      "confidence": 0.93,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C11"
+      ],
+      "quoted_content": "Dedicated Doctors Working Round The Clock",
+      "observation": "Headline claims that clinic physicians are 'Working Round The Clock'.",
+      "mlr_principle": "Operational availability claims must reflect actual clinical coverage to avoid deceptive practices and breach of implied warranty of service.",
+      "discussion": "Stating that doctors are working round the clock creates a legally binding representation of 24/7 continuous on-site physician availability. If the facility operates on standard outpatient clinic hours, relies on on-call mid-level providers after hours, or restricts doctor hours, this representation constitutes false advertising under consumer protection regulations and creates substantial liability for failure to provide promised access.",
+      "suggested_questions": [
+        "Does the facility maintain on-site, licensed medical doctors 24 hours a day, 7 days a week, 365 days a year?",
+        "Is round-the-clock availability limited to telephone triage, emergency intake, or telehealth?"
+      ],
+      "suggested_actions": [
+        "Provide documentation of 24/7 physician staffing rosters to substantiate the literal claim.",
+        "Qualify the claim (e.g., '24/7 Emergency Triage' or 'Extended Hours Available') if physical physician presence is not continuous."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Middle right section heading",
+        "bbox": [
+          0.56,
+          0.69,
+          0.81,
+          0.73
+        ],
+        "quote": "Dedicated Doctors Working Round The Clock"
+      },
+      "also_raised_by": [
+        "regulatory"
+      ]
+    },
+    {
+      "finding_id": "F-LEG-2",
+      "review_lens": "legal",
+      "category": "clarity",
+      "severity": "high",
+      "confidence": 0.99,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C3",
+        "C7",
+        "C8",
+        "C12"
+      ],
+      "quoted_content": "Lorem Ipsum is simply dummy text... and, Get an Expert Medical",
+      "observation": "The submission contains unfinalized template placeholder text (Lorem Ipsum) and incomplete, duplicated sentence fragments across multiple service listings.",
+      "mlr_principle": "Promotional material submitted for formal MLR approval must represent finalized, uncorrupted copy to ensure complete legal compliance evaluation.",
+      "discussion": "The presence of Greeked placeholder text (C12) and truncated, repetitive fragments (C3, C7, C8) indicates this asset is a preliminary layout template rather than production-ready copy. Legal review cannot formally clear collateral when substantive descriptions of critical services (Emergency, House Calls, Doctor qualifications) remain unwritten, as the missing text may introduce undisclosed liability, off-label risks, or unsupported efficacy claims.",
+      "suggested_questions": [
+        "What finalized promotional body copy is scheduled to replace the Lorem Ipsum paragraph and duplicated sub-lines?",
+        "Has the marketing team established a final copy deck for this layout?"
+      ],
+      "suggested_actions": [
+        "Issue a conditional rejection / hold pending resubmission with fully drafted, finalized clinical copy.",
+        "Require a resubmission to MLR once all placeholder blocks and truncated sentences are populated with real clinical service descriptions."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Green banner sub-copy, Services list - Item 2, Services list - Item 3",
+        "bbox": [
+          0.16,
+          0.4,
+          0.83,
+          0.81
+        ],
+        "quote": null
+      },
+      "also_raised_by": [
+        "regulatory"
+      ]
+    },
+    {
+      "finding_id": "F-ED-1",
+      "review_lens": "editorial",
+      "category": "visual_design",
+      "severity": "high",
+      "confidence": 0.99,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C12"
+      ],
+      "quoted_content": "Lorem Ipsum is simply dummy text of the printing and typesetting industry.",
+      "observation": "A prominent explanatory section contains standard Greeked/Lorem Ipsum placeholder body copy.",
+      "mlr_principle": "Collateral submitted for clinical and operational review must contain finalized copy rather than typesetting placeholders.",
+      "discussion": "Under the heading 'Dedicated Doctors Working Round The Clock', the entire descriptive paragraph is Latin placeholder text. Prospective patients reading this section will find no actionable details regarding physician qualifications, shift coverage, or clinic availability. Placeholder body copy should never appear in review-ready consumer assets.",
+      "suggested_questions": [
+        "What finalized content describes the 24/7 physician coverage and provider specialties?"
+      ],
+      "suggested_actions": [
+        "Replace the entire Lorem Ipsum paragraph with finalized, verified descriptive text outlining the clinic's continuous care model."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Middle right body paragraph",
+        "bbox": [
+          0.56,
+          0.73,
+          0.83,
+          0.81
+        ],
+        "quote": "Lorem Ipsum is simply dummy text of the printing and typesetting industry."
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-MED-2",
+      "review_lens": "medical",
+      "category": "clinical_accuracy",
+      "severity": "medium",
+      "confidence": 0.9,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C9"
+      ],
+      "quoted_content": "Vaccine Test",
+      "observation": "The term 'Vaccine Test' is clinically ambiguous and does not reflect recognized medical terminology or standard immunization practices.",
+      "mlr_principle": "Clinical clarity and accuracy of medical service nomenclature",
+      "discussion": "From a clinical perspective, 'Vaccine Test' could be misinterpreted by consumers as antibody/titer serology testing, pre-vaccination allergy evaluation, experimental clinical vaccine trials, or routine vaccine administration. Utilizing non-standard clinical phrasing risks confusing patients regarding whether they are receiving preventive immunization, diagnostic laboratory work, or investigational interventions.",
+      "suggested_questions": [
+        "What specific clinical service is intended by 'Vaccine Test' (e.g., routine vaccination, antibody titer testing, vaccine allergy screening)?",
+        "Which vaccines or serologic assays are being offered under this heading?"
+      ],
+      "suggested_actions": [
+        "Revise the heading to standard clinical terminology, such as 'Immunization & Vaccination Services' or 'Vaccine Immunity / Antibody Titer Testing'.",
+        "Provide explicit description of the vaccines offered or the diagnostic scope of the tests."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 4",
+        "bbox": [
+          0.16,
+          0.75,
+          0.5,
+          0.81
+        ],
+        "quote": "Vaccine Test Get an Expert Medical Opinion from one of our world-renowned specialists"
+      },
+      "also_raised_by": [
+        "legal",
+        "regulatory",
+        "editorial"
+      ]
+    },
+    {
+      "finding_id": "F-MED-3",
+      "review_lens": "medical",
+      "category": "patient_population",
+      "severity": "medium",
+      "confidence": 0.88,
+      "confidence_band": "high",
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C6"
+      ],
+      "quoted_content": "Free Health Screening / For senior citizen & children for under 12",
+      "observation": "Health screenings are promoted to vulnerable populations (geriatric and pediatric patients under 12) without defining the clinical screening panel, guidelines, or physician follow-up protocols.",
+      "mlr_principle": "Appropriate clinical definition of preventive care for vulnerable populations",
+      "discussion": "Preventive screenings in pediatric (<12 years) and geriatric populations must align with established clinical guidelines (e.g., AAP Bright Futures, USPSTF). Advertising non-specific 'free health screenings' to these cohorts without specifying target conditions, diagnostic modalities, or clinical referral pathways creates a risk of false reassurance or inappropriate over-testing. Consumers need to know what clinical evaluations are conducted and who will interpret the findings.",
+      "suggested_questions": [
+        "What specific evidence-based screening assessments are included for children under 12 and for senior citizens?",
+        "How are abnormal screening results triaged, communicated, and integrated with the patient's primary care provider?"
+      ],
+      "suggested_actions": [
+        "Detail the specific clinical screening parameters offered (e.g., vision screening, developmental checks, blood pressure, fasting glucose).",
+        "Include a clinical disclosure stating that screenings do not replace comprehensive annual wellness visits with a pediatrician or geriatric specialist."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 1",
+        "bbox": [
+          0.16,
+          0.56,
+          0.46,
+          0.61
+        ],
+        "quote": "Free Health Screening For senior citizen & children for under 12"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-MED-4",
+      "review_lens": "medical",
+      "category": "clinical_accuracy",
+      "severity": "medium",
+      "confidence": 0.85,
+      "confidence_band": "high",
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C7"
+      ],
+      "quoted_content": "Emergency / Get an Expert Medical Opinion from one of our world-renowned specialists so you can have the answers and",
+      "observation": "Emergency service description uses incomplete, placeholder text about second opinions rather than detailing emergency clinical triage or facility capabilities.",
+      "mlr_principle": "Accurate representation of emergency medical scope and clinical level of care",
+      "discussion": "Describing an emergency department or urgent care facility using language framed around 'getting an expert medical opinion' misrepresents the clinical function of acute emergency medicine. A patient requiring acute stabilization needs urgent resuscitation and diagnostic intervention, not an elective consultation. The level of emergency capability (e.g., Level I Trauma, Emergency Department, or basic Urgent Care) must be clinically accurate.",
+      "suggested_questions": [
+        "What is the actual clinical licensure and capability of the facility's emergency department (e.g., 24/7 full-service ED, urgent care clinic, minor injury unit)?",
+        "Does the facility maintain on-site emergency medicine physicians, resuscitation equipment, and surgical coverage?"
+      ],
+      "suggested_actions": [
+        "Replace the duplicated 'expert opinion' copy with clear, factual statements regarding emergency care capabilities (e.g., '24/7 Urgent Care and Emergency Assessment').",
+        "Explicitly delineate whether the facility handles trauma, pediatric emergencies, or acute cardiac events."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 2",
+        "bbox": [
+          0.16,
+          0.63,
+          0.5,
+          0.68
+        ],
+        "quote": "Emergency Get an Expert Medical Opinion from one of our world-renowned specialists"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-MED-5",
+      "review_lens": "medical",
+      "category": "clinical_accuracy",
+      "severity": "medium",
+      "confidence": 0.82,
+      "confidence_band": "high",
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C8"
+      ],
+      "quoted_content": "House Call / Get an Expert Medical Opinion from one of our world-renowned specialists so you can have the answers and",
+      "observation": "House call services lack clinical scope definition, triage criteria, and geographic coverage parameters.",
+      "mlr_principle": "Clear delineation of outpatient and home-based clinical care scope",
+      "discussion": "Home visits have strict clinical indications and limitations. Conflating house calls with specialist second opinions via placeholder copy fails to inform patients whether these visits are designed for homebound chronic disease management, palliative care, or non-acute urgent complaints. A clinician would want patients to understand that house calls cannot substitute for hospital-level acute care.",
+      "suggested_questions": [
+        "What clinical services can safely be rendered during a house call (e.g., mobile nursing, general practitioner exam, palliative consultation)?",
+        "What acute conditions are excluded from home visits and redirected to hospital care?"
+      ],
+      "suggested_actions": [
+        "Define the scope of home care services (e.g., 'In-home general medical consultations for chronic condition management and homebound patients').",
+        "State response times, scheduling limitations, and boundary exclusions for home-based care."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 3",
+        "bbox": [
+          0.16,
+          0.69,
+          0.5,
+          0.74
+        ],
+        "quote": "House Call Get an Expert Medical Opinion from one of our world-renowned specialists"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-MED-6",
+      "review_lens": "medical",
+      "category": "clinical_accuracy",
+      "severity": "medium",
+      "confidence": 0.84,
+      "confidence_band": "high",
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C11",
+        "C12"
+      ],
+      "quoted_content": "Dedicated Doctors Working Round The Clock",
+      "observation": "The claim of 24/7 physician availability is accompanied solely by placeholder 'Lorem Ipsum' text, leaving clinical coverage and staffing model unverified.",
+      "mlr_principle": "Truthful representation of clinical staffing and continuous coverage",
+      "discussion": "Promising that physicians work 'Round The Clock' implies physical on-site presence of licensed medical doctors 24 hours a day, 7 days a week. If nighttime coverage relies solely on nursing triage, telehealth, or on-call physicians with delayed arrival times, presenting this as continuous doctor coverage is clinically misleading and may compromise patient decision-making in off-hours emergencies.",
+      "suggested_questions": [
+        "Are fully licensed medical doctors physically present on-site 24/7, or is off-hours coverage provided via on-call/telemedicine services?",
+        "Which specialties maintain 24-hour active coverage at this facility?"
+      ],
+      "suggested_actions": [
+        "Replace the placeholder Lorem Ipsum paragraph with accurate details on physician shift coverage, triage protocols, and facility operating hours.",
+        "Clarify if 'round the clock' applies to specific departments (e.g., 'Emergency triage open 24/7; outpatient specialist clinics by appointment')."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Middle right section heading, Middle right body paragraph",
+        "bbox": [
+          0.56,
+          0.69,
+          0.83,
+          0.81
+        ],
+        "quote": null
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-LEG-3",
+      "review_lens": "legal",
+      "category": "superlative_claim",
+      "severity": "medium",
+      "confidence": 0.95,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C3",
+        "C7",
+        "C8",
+        "C9"
+      ],
+      "quoted_content": "world-renowned specialists",
+      "observation": "The flyer describes clinic medical staff as 'world-renowned specialists' across multiple service descriptions without identifying the physicians or supplying substantiating credentials.",
+      "mlr_principle": "Objective professional superiority and superlative claims require prior, verifiable substantiation under truth-in-advertising standards.",
+      "discussion": "Under FTC standards and state consumer protection statutes, claims representing practitioners as 'world-renowned' are treated as objective statements of fact rather than mere puffery because consumers rely heavily on perceived clinical prestige when selecting care. Without objective third-party recognitions, international board certifications, or peer-reviewed standing for the specific attending clinicians, this statement creates exposure to deceptive advertising challenges.",
+      "suggested_questions": [
+        "Do the specific practitioners providing these services hold documented international reputations, awards, or recognized faculty appointments?",
+        "Can we replace the superlative with verifiable, descriptive terms such as 'board-certified physicians' or 'experienced specialists'?"
+      ],
+      "suggested_actions": [
+        "Provide factual substantiation (e.g., CVs, credentialing files, published honors) to MLR for file retention.",
+        "Modify copy to claim 'qualified specialists' or 'board-certified physicians' unless global renown is documented."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Green banner sub-copy, Services list - Item 2, Services list - Item 3",
+        "bbox": [
+          0.16,
+          0.4,
+          0.5,
+          0.81
+        ],
+        "quote": null
+      },
+      "also_raised_by": [
+        "medical",
+        "regulatory",
+        "editorial"
+      ]
+    },
+    {
+      "finding_id": "F-LEG-4",
+      "review_lens": "legal",
+      "category": "intellectual_property",
+      "severity": "medium",
+      "confidence": 0.92,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C1"
+      ],
+      "quoted_content": "Life Is Good",
+      "observation": "The header pairs the generic facility name with the phrase 'Life Is Good' as an institutional tagline.",
+      "mlr_principle": "Avoid unauthorized adoption of marks identical to famous or widely registered commercial trademarks under Lanham Act § 32 and § 43(a).",
+      "discussion": "'Life is Good' is a famous, heavily enforced federally registered trademark held by The Life is Good Company across numerous commercial classes. While healthcare services may occupy a distinct International Class, prominent use of an identical commercial slogan as a brand tagline creates potential likelihood-of-confusion and trademark dilution arguments.",
+      "suggested_questions": [
+        "Has a trademark clearance search been conducted for 'Health Care Life Is Good'?",
+        "Is there a registered trademark or pending application owned by the clinic for this specific phrasing?"
+      ],
+      "suggested_actions": [
+        "Replace the slogan with an original tagline tailored to clinical care that does not incorporate well-known consumer brand marks.",
+        "Commission a formal trademark clearance search if the facility intends to adopt this slogan permanently."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Header logo and tagline",
+        "bbox": [
+          0.16,
+          0.2,
+          0.39,
+          0.24
+        ],
+        "quote": "Health Care Life Is Good"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-LEG-5",
+      "review_lens": "legal",
+      "category": "intellectual_property",
+      "severity": "medium",
+      "confidence": 0.9,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C13"
+      ],
+      "quoted_content": "www.healthcare.com",
+      "observation": "The footer references 'www.healthcare.com' and 'hello@healthcare.com' as direct contact channels.",
+      "mlr_principle": "Use of domain names owned by third parties presents Lanham Act, cybersquatting, and false designation of origin liabilities.",
+      "discussion": "'Healthcare.com' is an active, well-known third-party corporate domain owned by HealthCare, Inc. (an insurance marketplace). Directing consumers to a domain not owned by the advertising facility risks consumer confusion, diversion of prospective patients, and potential trademark infringement or unfair competition claims under Lanham Act § 43(a).",
+      "suggested_questions": [
+        "Does the clinic have a proprietary registered domain to substitute for this generic placeholder?",
+        "What is the actual digital home and patient intake portal for this facility?"
+      ],
+      "suggested_actions": [
+        "Replace all placeholder URLs and email domains with the verified, registered web domain owned by the clinical entity.",
+        "Ensure all live URLs resolve to authenticated, secure clinic landing pages."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Bottom footer",
+        "bbox": [
+          0.17,
+          0.83,
+          0.82,
+          0.87
+        ],
+        "quote": "Medical Healthcare Center - 2100 Sherpur Sadar Sherpur, Dhaka Bangladesh"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-LEG-6",
+      "review_lens": "legal",
+      "category": "disclosure",
+      "severity": "medium",
+      "confidence": 0.91,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C6"
+      ],
+      "quoted_content": "Free Health Screening / For senior citizen & children for under 12",
+      "observation": "Offers 'Free Health Screening' for defined age demographics without disclosing material terms, limitations, or screening scope.",
+      "mlr_principle": "Promotional offers of free healthcare services require conspicuous disclosure of material terms, conditions, and anti-kickback compliance parameters.",
+      "discussion": "Under FTC Guides Concerning the Use of the Word 'Free' and healthcare fraud statutes, offering 'free' clinical services to prospective patients (particularly senior citizens eligible for Medicare or state benefits) triggers strict regulatory scrutiny regarding beneficiary inducements and Stark Law/Anti-Kickback rules if third-party payors are subsequently billed for follow-on diagnostic tests. The advertisement omits material limitations: what specific screenings are included, appointment prerequisites, and copay/insurance billing parameters.",
+      "suggested_questions": [
+        "What specific screening panels are included under this promotion (e.g., basic vitals, glucose, lipid panel)?",
+        "Will any federal healthcare programs or commercial insurers be billed for tests arising from this screening?",
+        "Are there geographic or income restrictions applicable?"
+      ],
+      "suggested_actions": [
+        "Add an asteristered disclaimer outlining eligibility requirements, exact tests covered, and clear wording indicating that no purchase or insurance billing is required for the free screening.",
+        "Review program structure against state and federal healthcare beneficiary inducement regulations."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 1",
+        "bbox": [
+          0.16,
+          0.56,
+          0.46,
+          0.61
+        ],
+        "quote": "Free Health Screening For senior citizen & children for under 12"
+      },
+      "also_raised_by": [
+        "regulatory"
+      ]
+    },
+    {
+      "finding_id": "F-LEG-7",
+      "review_lens": "legal",
+      "category": "disclosure",
+      "severity": "medium",
+      "confidence": 0.92,
+      "confidence_band": "high",
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C6"
+      ],
+      "quoted_content": "www.healthcarecenter.com/register",
+      "observation": "Promotional call to register online for children under 12 lacks parental consent mechanisms and data privacy disclosures.",
+      "mlr_principle": "Online collection of personal and health information from minors requires strict compliance with child privacy laws (e.g., COPPA) and conspicuous privacy disclosures.",
+      "discussion": "Item C6 promotes free health screenings specifically for 'children for under 12' and provides a direct registration URL. Under regulatory data privacy standards such as COPPA, GDPR, and regional consumer health privacy frameworks, soliciting registrations for minors under 13 requires explicit parental/guardian consent and a conspicuous link to privacy practices. Directing pediatric patients to register online without clarifying that a parent or guardian must complete the intake risks regulatory scrutiny regarding unlawful data collection from minors.",
+      "suggested_questions": [
+        "Does the online registration portal mandate parental/guardian authentication before capturing minor demographic or clinical data?",
+        "Is there a compliant privacy policy disclosure linked directly adjacent to the registration call to action?"
+      ],
+      "suggested_actions": [
+        "Add explicit qualifying text stating: 'Parental or legal guardian registration required for children under 12.'",
+        "Ensure the registration web destination features an accessible privacy policy outlining how pediatric health data is protected."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 1",
+        "bbox": [
+          0.16,
+          0.56,
+          0.46,
+          0.61
+        ],
+        "quote": "Free Health Screening For senior citizen & children for under 12"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-ED-2",
+      "review_lens": "editorial",
+      "category": "clarity",
+      "severity": "medium",
+      "confidence": 0.99,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C3"
+      ],
+      "quoted_content": "so you can have the answers and, Get an Expert Medical",
+      "observation": "Subhead ends with an unfinished sentence fragment and repeats its opening clause.",
+      "mlr_principle": "Patient-facing marketing copy must present complete, coherent thoughts free of composition errors or garbled syntax.",
+      "discussion": "The copy cuts off mid-thought with 'and,' immediately followed by a repetition of the opening words 'Get an Expert Medical'. This signals an unedited draft or layout overflow error. In healthcare communications, syntactic incoherence directly degrades patient trust and damages facility credibility.",
+      "suggested_questions": [
+        "What was the intended full concluding thought for this introductory hero paragraph?"
+      ],
+      "suggested_actions": [
+        "Rewrite the subhead to form a complete, polished sentence, deleting the trailing comma and duplicate phrase."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Green banner sub-copy",
+        "bbox": [
+          0.16,
+          0.4,
+          0.46,
+          0.44
+        ],
+        "quote": "Get an Expert Medical Opinion from one of our world-renowned specialists so you can have the answers and, Get an Expert Medical"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-ED-3",
+      "review_lens": "editorial",
+      "category": "clarity",
+      "severity": "medium",
+      "confidence": 0.98,
+      "confidence_band": "high",
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C7",
+        "C8",
+        "C9"
+      ],
+      "quoted_content": "Get an Expert Medical Opinion from one of our world-renowned specialists so you can have the answers and",
+      "observation": "Multiple distinct service offerings use identical, truncated placeholder copy terminating with a dangling conjunction.",
+      "mlr_principle": "Distinct clinical offerings require distinct, accurate descriptions so patients understand what care is being provided.",
+      "discussion": "Under 'Emergency', 'House Call', and 'Vaccine Test', the exact same unfinished sentence fragment ('...so you can have the answers and') is repeated verbatim. A reader attempting to understand how house calls work or what emergency capabilities exist receives zero substantive information. Truncated boilerplate impairs patient decision-making and reveals an unfinished draft.",
+      "suggested_questions": [
+        "What are the specific operational scopes, hours, and booking processes for Emergency care, House Calls, and Vaccine testing?"
+      ],
+      "suggested_actions": [
+        "Provide tailored, 1-2 sentence descriptions for each specific service line explaining what the service entails and how to access it."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 2, Services list - Item 3, Services list - Item 4",
+        "bbox": [
+          0.16,
+          0.63,
+          0.5,
+          0.81
+        ],
+        "quote": null
+      },
+      "also_raised_by": [
+        "medical"
+      ]
+    },
+    {
+      "finding_id": "F-ED-4",
+      "review_lens": "editorial",
+      "category": "accessibility",
+      "severity": "medium",
+      "confidence": 0.84,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C13"
+      ],
+      "quoted_content": "Medical Healthcare Center - 2100 Sherpur Sadar Sherpur, Dhaka Bangladesh hello@healthcare.com / www.healthcare.com",
+      "observation": "Small footer text with condensed layout across bottom margin risks low legibility for older readers.",
+      "mlr_principle": "Contact details and operational addresses must remain highly legible, especially when targeting senior populations.",
+      "discussion": "Because the piece explicitly targets senior citizens (item C6), critical contact channels including the facility address, email, and website must maintain adequate font size and strong contrast against the background. Condensing all facility identification into a single small footer line reduces accessibility for visually impaired readers.",
+      "suggested_questions": [
+        "Does the footer copy meet minimum print body sizing guidelines (e.g., 9-10 pt minimum) for older adult readership?"
+      ],
+      "suggested_actions": [
+        "Increase font size and line spacing in the footer contact block, separating address and digital contact channels into distinct lines."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Bottom footer",
+        "bbox": [
+          0.17,
+          0.83,
+          0.82,
+          0.87
+        ],
+        "quote": "Medical Healthcare Center - 2100 Sherpur Sadar Sherpur, Dhaka Bangladesh"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-ED-5",
+      "review_lens": "editorial",
+      "category": "clarity",
+      "severity": "medium",
+      "confidence": 0.91,
+      "confidence_band": "high",
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C6",
+        "C13"
+      ],
+      "quoted_content": "www.healthcarecenter.com/register vs www.healthcare.com",
+      "observation": "Inconsistent web domains presented across the flyer.",
+      "mlr_principle": "Brand touchpoints, URLs, and navigational links must be consistent throughout a single promotional collateral piece.",
+      "discussion": "Item C6 directs users to 'www.healthcarecenter.com/register', whereas the footer (C13) directs users to 'www.healthcare.com'. Displaying competing root domains within the same flyer creates consumer confusion, risks traffic misdirection, and looks like an inadvertent template oversight.",
+      "suggested_questions": [
+        "What is the single canonical web domain for the healthcare center?"
+      ],
+      "suggested_actions": [
+        "Harmonize all URLs across the piece to use the identical official root domain."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 1, Bottom footer",
+        "bbox": [
+          0.16,
+          0.56,
+          0.82,
+          0.87
+        ],
+        "quote": null
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-MED-7",
+      "review_lens": "medical",
+      "category": "disclosure",
+      "severity": "low",
+      "confidence": 0.8,
+      "confidence_band": "high",
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C6"
+      ],
+      "quoted_content": "Free Health Screening",
+      "observation": "Promotional health screening does not include disclosure of diagnostic limitations or the necessity of clinical correlation.",
+      "mlr_principle": "Informed consent and disclosure of screening limitations",
+      "discussion": "Clinical screening tests have inherent false-positive and false-negative rates and are not diagnostic determinations on their own. Best clinical communication practice ensures patients understand that screening tests require physician interpretation, clinical correlation, and further definitive workup if findings are abnormal.",
+      "suggested_questions": [
+        "Will clinical staff provide written post-screening counseling and advice on necessary follow-up care?",
+        "Is there an informed consent or medical disclaimer provided prior to administering the screening?"
+      ],
+      "suggested_actions": [
+        "Include a brief medical disclaimer: 'Screenings are for preliminary risk assessment and do not constitute a definitive medical diagnosis. Consult your physician for comprehensive clinical evaluation.'"
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 1",
+        "bbox": [
+          0.16,
+          0.56,
+          0.46,
+          0.61
+        ],
+        "quote": "Free Health Screening For senior citizen & children for under 12"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-LEG-8",
+      "review_lens": "legal",
+      "category": "endorsement",
+      "severity": "low",
+      "confidence": 0.85,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C5",
+        "C10"
+      ],
+      "quoted_content": null,
+      "observation": "Visual imagery displays models portraying clinical physicians and patients in clinical settings.",
+      "mlr_principle": "Stock photography portraying healthcare professionals and patients must possess valid commercial licenses, model releases, and clear representation to avoid deceptive testimonial or endorsement claims.",
+      "discussion": "Commercial depictions of doctors and patients require verified stock photo licenses that permit commercial advertising usage. Furthermore, if imagery implies that the pictured individuals are actual practicing clinic specialists or real patients sharing positive outcomes, consumer protection guidance may require clarifying that the images depict professional models rather than actual staff.",
+      "suggested_questions": [
+        "Are the images verified licensed stock assets with full commercial and advertising rights releases?",
+        "Do any images depict actual clinic staff members, and if so, do we have signed employee media release forms on file?"
+      ],
+      "suggested_actions": [
+        "Verify license documentation and model releases for assets C5 and C10 in the MLR asset vault.",
+        "If local regulations require, include an unobtrusive 'Posed by models' or 'Actor depiction' disclosure."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Upper right hero image, Middle right image panel",
+        "bbox": [
+          0.52,
+          0.18,
+          0.86,
+          0.68
+        ],
+        "quote": null
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-LEG-9",
+      "review_lens": "legal",
+      "category": "regulatory_guidance",
+      "severity": "low",
+      "confidence": 0.82,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C8"
+      ],
+      "quoted_content": "House Call",
+      "observation": "Offers a 'House Call' clinical service without specifying geographic delivery zones or jurisdictional licensure parameters.",
+      "mlr_principle": "Mobile and in-home clinical services must disclose jurisdictional boundaries and scope of clinical licensure.",
+      "discussion": "Promoting in-home medical visits creates implied service commitments. Failure to disclose service radius, travel fees, or physician licensing jurisdictions can mislead consumers seeking home visits outside the clinic's legitimate practice territory.",
+      "suggested_questions": [
+        "What is the operational radius and physician licensing coverage for the house call program?",
+        "Are house calls conducted by physicians, nurse practitioners, or home health aides?"
+      ],
+      "suggested_actions": [
+        "Add a qualifying disclosure defining the geographic zone (e.g., 'Available within municipal limits') and practitioner type.",
+        "Ensure house call clinical protocols comply with local in-home care delivery statutes."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 3",
+        "bbox": [
+          0.16,
+          0.69,
+          0.5,
+          0.74
+        ],
+        "quote": "House Call Get an Expert Medical Opinion from one of our world-renowned specialists"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-REG-1",
+      "review_lens": "regulatory",
+      "category": "regulatory_guidance",
+      "severity": "low",
+      "confidence": 0.9,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C13"
+      ],
+      "quoted_content": null,
+      "observation": "The collateral completely lacks a regulatory tracking code, date of preparation, or document version identifier.",
+      "mlr_principle": "Promotional material governance requires documented piece identification, review dates, and version control for regulatory auditing.",
+      "discussion": "Standard healthcare promotional compliance guidelines require all disseminable materials to display a traceable piece identifier (such as a unique job code or material control number) alongside the date of preparation or revision (e.g., 'Date of preparation: MM/YYYY'). Without these identifiers, compliance auditors and commercial teams cannot verify document lifecycle status, manage withdrawal dates, or confirm that the distributed version matches the approved MLR master file.",
+      "suggested_questions": [
+        "What system job code or asset tracking number is assigned to this piece in the MLR electronic management system?",
+        "What formal date of preparation or approval will be applied to the final distribution asset?"
+      ],
+      "suggested_actions": [
+        "Incorporate a standard administrative reference block in the bottom margin (e.g., 'Job Code: HC-2024-001 | Date of Preparation: October 2024')."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Bottom footer",
+        "bbox": [
+          0.17,
+          0.83,
+          0.82,
+          0.87
+        ],
+        "quote": "Medical Healthcare Center - 2100 Sherpur Sadar Sherpur, Dhaka Bangladesh"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-ED-6",
+      "review_lens": "editorial",
+      "category": "readability",
+      "severity": "low",
+      "confidence": 0.92,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C6"
+      ],
+      "quoted_content": "For senior citizen & children for under 12",
+      "observation": "Demographic eligibility phrasing contains awkward syntax and redundant prepositions.",
+      "mlr_principle": "Patient eligibility criteria must be grammatically precise to prevent ambiguity and ensure effortless reading.",
+      "discussion": "The phrase 'For senior citizen & children for under 12' mixes singular and plural nouns ('senior citizen' vs 'children') and includes a redundant preposition ('for under 12'). While understandable, this unpolished grammar detracts from the professional standard expected of an accredited healthcare center.",
+      "suggested_questions": [
+        "What are the precise age thresholds for senior citizen eligibility (e.g., 60+, 65+)?"
+      ],
+      "suggested_actions": [
+        "Revise the eligibility line to: 'For senior citizens (65+) and children under 12'."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 1",
+        "bbox": [
+          0.16,
+          0.56,
+          0.46,
+          0.61
+        ],
+        "quote": "Free Health Screening For senior citizen & children for under 12"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-ED-7",
+      "review_lens": "editorial",
+      "category": "visual_design",
+      "severity": "low",
+      "confidence": 0.87,
+      "confidence_band": "high",
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C6"
+      ],
+      "quoted_content": "www.healthcarecenter.com/register",
+      "observation": "A specific registration URL is nested directly into the descriptive body of only one service item, disrupting visual symmetry.",
+      "mlr_principle": "Visual rhythm and call-to-action placement across bulleted service cards should remain balanced and predictable.",
+      "discussion": "Service item 1 contains a three-line block including a website link, whereas items 2, 3, and 4 only contain headers and two-line descriptions. Furthermore, inserting a detailed URL inline within a service listing rather than providing a unified CTA or QR code creates visual clutter and disrupts scanability.",
+      "suggested_questions": [
+        "Should screening registration be grouped with general appointment scheduling at the base of the flyer?"
+      ],
+      "suggested_actions": [
+        "Standardize the layout of the four service cards and create a dedicated CTA button or QR code module for registration."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Services list - Item 1",
+        "bbox": [
+          0.16,
+          0.56,
+          0.46,
+          0.61
+        ],
+        "quote": "Free Health Screening For senior citizen & children for under 12"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-ED-8",
+      "review_lens": "editorial",
+      "category": "typography",
+      "severity": "low",
+      "confidence": 0.85,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C1"
+      ],
+      "quoted_content": "Health Care Life Is Good",
+      "observation": "Header combines facility name and tagline without clear typographic distinction or punctuation.",
+      "mlr_principle": "Brand hierarchy should visually differentiate institutional names from marketing slogans.",
+      "discussion": "The string 'Health Care Life Is Good' reads as a run-on phrase. Without a visual separator, color shift, or punctuation mark between 'Health Care' (the facility name) and 'Life Is Good' (the tagline), the brand identity appears unpolished.",
+      "suggested_questions": [
+        "What is the official registered brand logotype and tagline lockup guideline?"
+      ],
+      "suggested_actions": [
+        "Separate the clinic name and tagline visually using font weight, scale, or a subtle dividing rule (e.g., 'Health Care | Life Is Good')."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Header logo and tagline",
+        "bbox": [
+          0.16,
+          0.2,
+          0.39,
+          0.24
+        ],
+        "quote": "Health Care Life Is Good"
+      },
+      "also_raised_by": []
+    },
+    {
+      "finding_id": "F-ED-9",
+      "review_lens": "editorial",
+      "category": "visual_design",
+      "severity": "low",
+      "confidence": 0.86,
+      "confidence_band": "high",
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C5"
+      ],
+      "quoted_content": null,
+      "observation": "Hero image depicts a clinician posing with a smartphone rather than engaging in direct clinical care.",
+      "mlr_principle": "Hero imagery should reinforce the primary value proposition and therapeutic focus of the material.",
+      "discussion": "The prominent hero visual shows a physician holding up a smartphone and smiling, which visually suggests telemedicine or mobile health apps. However, the flyer text emphasizes on-site emergency care, house calls, and physical health screenings. Aligning the primary image with in-person clinical excellence would better support the copy.",
+      "suggested_questions": [
+        "Is mobile app access or telehealth a core focus of this marketing campaign?"
+      ],
+      "suggested_actions": [
+        "Consider replacing the hero photo with imagery demonstrating compassionate in-person clinician-patient engagement or modern diagnostic facilities."
+      ],
+      "location": {
+        "page": 1,
+        "section": "Upper right hero image",
+        "bbox": [
+          0.52,
+          0.18,
+          0.86,
+          0.54
+        ],
+        "quote": null
+      },
+      "also_raised_by": []
+    }
+  ],
+  "open_questions_for_reviewers": [
+    "What specific emergency and after-hours staffing models are operational at the facility to substantiate round-the-clock clinical availability?",
+    "What specific non-diagnostic screening tests are included in the 'Free Health Screening' offering for seniors and pediatric patients, and how will diagnostic limitations be communicated to attendees?",
+    "Does the proposed online registration flow (www.healthcarecenter.com/register) include verified parental or legal guardian consent controls prior to capturing data from minors under age 12?",
+    "What is the intended clinical scope and geographic service radius for the advertised 'House Call' medical service?",
+    "What unique administrative tracking number (e.g., job code) and formal date of preparation will be assigned to this asset for document lifecycle control?"
+  ],
+  "recommended_discussion_topics": [
+    "Protocols for MLR review gating: Defining submission criteria and readiness thresholds for early creative concepts versus production-ready collateral.",
+    "Standardized institutional disclaimers for acute care and emergency service touchpoints across consumer outpatient advertising.",
+    "Guidelines for communicating community outreach and free preventive screenings in alignment with healthcare anti-kickback and beneficiary inducement frameworks.",
+    "Policy regarding clinical superiority claims, physician credentials, and substantiation documentation for promotional facility marketing."
+  ],
+  "counts_by_lens": {
+    "medical": 7,
+    "legal": 9,
+    "regulatory": 1,
+    "editorial": 9,
+    "custom": 0
+  },
+  "counts_by_severity": {
+    "critical": 1,
+    "high": 3,
+    "medium": 14,
+    "low": 8,
+    "informational": 0
+  },
+  "counts_raised_by_lens": {
+    "medical": 9,
+    "legal": 11,
+    "regulatory": 7,
+    "editorial": 12,
+    "custom": 0
+  }
+}

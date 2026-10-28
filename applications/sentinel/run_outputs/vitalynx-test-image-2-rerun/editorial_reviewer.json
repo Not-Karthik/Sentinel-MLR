@@ -1,0 +1,156 @@
+{
+  "reviewer_summary": "Conducted an editorial review focused on visual hierarchy, typographical scanability, disclaimer legibility, and communication clarity for an HCP audience. The piece presents a sleek, modern layout, but relies heavily on uppercase styling, vague feature descriptors, and contradictory messaging between the definitive headline and conceptual fine print.",
+  "findings": [
+    {
+      "category": "accessibility",
+      "severity": "medium",
+      "confidence": 0.9,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C9"
+      ],
+      "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+      "observation": "The critical qualifying disclaimer at the bottom occupies minimal vertical space and appears styled in diminutive fine print.",
+      "mlr_principle": "Essential context and qualifying statements must meet baseline standards for contrast, font size, and visual prominence.",
+      "discussion": "Because this line qualifies the entire asset as a non-clinical concept, its legibility is critical to prevent viewers from mistaking the ad for a commercially cleared diagnostic monitor. Placing it in low-profile fine print at the extreme bottom edge reduces the likelihood of HCPs noticing it upon initial scan.",
+      "suggested_questions": [
+        "Does the footer text satisfy minimum font size (e.g., 8–10 pt minimum equivalent) and WCAG contrast thresholds across digital display environments?",
+        "Should the conceptual nature of the device be integrated more prominently in the body layout?"
+      ],
+      "suggested_actions": [
+        "Increase font size and ensure high contrast against the background canvas.",
+        "Consider placing a clear concept badge or subtitle near the product name rather than relying solely on extreme bottom fine print."
+      ]
+    },
+    {
+      "category": "readability",
+      "severity": "low",
+      "confidence": 0.85,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C3",
+        "C4",
+        "C5",
+        "C6",
+        "C7",
+        "C8"
+      ],
+      "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+      "observation": "Nearly all textual elements across the piece, including the main headline, feature grid, and call to action, are formatted in all-caps.",
+      "mlr_principle": "Sentence case or title case improves reading fluency and visual hierarchy compared to sustained uppercase blocks.",
+      "discussion": "Setting headlines, feature bullets, and buttons entirely in capital letters removes distinctive ascenders and descenders, making rapid scanning harder for busy clinicians. It also imparts an assertive, shouting tone that can feel less professional in clinical communications.",
+      "suggested_questions": [
+        "Would sentence case or title case soften the aesthetic and improve scannability across the feature list?"
+      ],
+      "suggested_actions": [
+        "Convert the feature list (C4–C7) to Title Case or Sentence case.",
+        "Evaluate title case for the primary headline (C3) to establish a more polished editorial tone."
+      ],
+      "bbox": [
+        0.13,
+        0.61,
+        0.87,
+        0.93
+      ]
+    },
+    {
+      "category": "clarity",
+      "severity": "low",
+      "confidence": 0.88,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C4",
+        "C5",
+        "C6",
+        "C7"
+      ],
+      "quoted_content": "ADVANCED ALERTS",
+      "observation": "Feature callouts consist of abrupt, generic phrases without descriptive context or metrics.",
+      "mlr_principle": "Copy directed to healthcare professionals should provide informative, precise descriptions rather than generic marketing buzzwords.",
+      "discussion": "Phrases like 'ADVANCED ALERTS' and 'REAL-TIME VITALS' communicate minimal actionable information to an HCP or biomedical procurement officer who evaluates devices based on protocol compliance, latency, or alarm fatigue mitigation. Adding brief explanatory sub-bullets would significantly elevate the informational value of the piece.",
+      "suggested_questions": [
+        "What specific alarm management capabilities or wireless standards (e.g., Wi-Fi, BLE, HL7 integration) are meant by these claims?",
+        "Can one-line subheadings be added beneath each bullet to ground the technology?"
+      ],
+      "suggested_actions": [
+        "Add short descriptive support lines beneath each feature bullet (e.g., specifying connectivity protocols or alarm customization).",
+        "Replace ambiguous adjectives like 'Advanced' and 'Intuitive' with concrete functional descriptors."
+      ],
+      "bbox": [
+        0.13,
+        0.75,
+        0.87,
+        0.83
+      ]
+    },
+    {
+      "category": "clarity",
+      "severity": "medium",
+      "confidence": 0.85,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C2"
+      ],
+      "quoted_content": "936, 99, 60, 128",
+      "observation": "The mock display includes ambiguous numerical telemetry, notably an unexplained readout of '936'.",
+      "mlr_principle": "Simulated clinical interfaces must portray physiologically plausible values and clear parameter units to preserve clinical credibility.",
+      "discussion": "Healthcare professionals instinctively scan monitor displays for standard physiological parameters such as heart rate, SpO2, and non-invasive blood pressure. A prominent value of '936' without visible units or parameter labels appears anomalous or glitchy, which distracts from the device presentation.",
+      "suggested_questions": [
+        "What clinical parameter is the number '936' intended to represent?",
+        "Are all parameters labeled with appropriate clinical nomenclature and standard units (e.g., bpm, % SpO2, mmHg)?"
+      ],
+      "suggested_actions": [
+        "Adjust numerical readouts to reflect standard, physiologically coherent patient telemetry.",
+        "Ensure clear labeling for each metric on the UI graphic to avoid confusing clinical viewers."
+      ]
+    },
+    {
+      "category": "tone",
+      "severity": "low",
+      "confidence": 0.8,
+      "evidence_depth": "moderate",
+      "related_item_ids": [
+        "C3",
+        "C9"
+      ],
+      "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+      "observation": "A tonal tension exists between the definitive, commercially assertive headline and the disclaimer identifying the piece as a fictional concept.",
+      "mlr_principle": "Promotional tone and copy should align harmoniously with the true commercial and regulatory status of the depicted technology.",
+      "discussion": "Proclaiming that 'THE FUTURE... IS HERE' strongly signals a market-ready, commercially available breakthrough. Juxtaposing this with a disclaimer that the product is a fictional concept not for clinical use creates a jarring disconnect for the audience, weakening editorial coherence.",
+      "suggested_questions": [
+        "Is this piece intended as a design vision/concept showcase or a pre-launch teaser?",
+        "Can the headline be reframed to celebrate innovation or technological exploration rather than immediate availability?"
+      ],
+      "suggested_actions": [
+        "Consider reframing the headline to 'Envisioning the Future of Patient Monitoring' or 'The Next Horizon in Patient Monitoring' to align with the conceptual nature of the device."
+      ],
+      "bbox": [
+        0.18,
+        0.61,
+        0.82,
+        0.98
+      ]
+    },
+    {
+      "category": "visual_design",
+      "severity": "low",
+      "confidence": 0.75,
+      "evidence_depth": "surface",
+      "related_item_ids": [
+        "C8"
+      ],
+      "quoted_content": "DISCOVER SMARTER CARE",
+      "observation": "The call-to-action button offers an abstract value statement rather than a clear functional directive.",
+      "mlr_principle": "User-action components should provide clear signposting of expected outcomes or next destinations.",
+      "discussion": "While 'DISCOVER SMARTER CARE' serves well as a brand tagline, as an action button it leaves the user uncertain whether clicking opens a technical whitepaper, schedules a product demo, or leads to a corporate microsite.",
+      "suggested_questions": [
+        "What specific user journey follows this call to action?",
+        "Should a directional indicator (e.g., arrow icon or URL) accompany the button text?"
+      ],
+      "suggested_actions": [
+        "Refine CTA text to clarify action (e.g., 'Explore the Concept', 'Learn More', or 'View Tech Specs').",
+        "Add a subtle directional chevron or URL cue to reinforce interactivity."
+      ]
+    }
+  ]
+}

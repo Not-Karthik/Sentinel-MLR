@@ -1,0 +1,128 @@
+{
+  "duplicate_groups": [
+    {
+      "finding_ids": [
+        "F-MED-1",
+        "F-LEG-9",
+        "F-REG-6",
+        "F-ED-4"
+      ],
+      "rationale": "All four findings address the identical defect: the simulated telemetry interface on the central hero image (C2) displays an ambiguous, clinically implausible numerical value ('936') alongside standard vitals without physiological context or units.",
+      "keep": "F-MED-1"
+    },
+    {
+      "finding_ids": [
+        "F-LEG-8",
+        "F-REG-8",
+        "F-ED-1"
+      ],
+      "rationale": "All three findings cite the same physical deficiency regarding C9: the qualifying disclaimer is sequestered at the bottom margin in diminutive, low-contrast fine print, failing legal, regulatory, and editorial standards for prominence and legibility.",
+      "keep": "F-REG-8"
+    },
+    {
+      "finding_ids": [
+        "F-LEG-2",
+        "F-REG-4"
+      ],
+      "rationale": "Both findings raise the same substantive concern regarding C4: 'REAL-TIME VITALS' makes an express technical telemetry performance claim regarding continuous streaming and latency without substantiation or operational qualification.",
+      "keep": "F-REG-4"
+    },
+    {
+      "finding_ids": [
+        "F-MED-4",
+        "F-LEG-3",
+        "F-REG-5"
+      ],
+      "rationale": "Each finding challenges the claim 'ADVANCED ALERTS' (C7) on the identical grounds that it asserts enhanced, safety-critical medical alarm functionality without defining parameters, algorithms, or compliance with alarm standards such as IEC 60601-1-8.",
+      "keep": "F-REG-5"
+    },
+    {
+      "finding_ids": [
+        "F-LEG-6",
+        "F-REG-9"
+      ],
+      "rationale": "Both findings evaluate the descriptor 'INTUITIVE' in C6 as an unsubstantiated subjective ease-of-use and usability claim requiring human factors engineering validation under FDA guidance.",
+      "keep": "F-REG-9"
+    },
+    {
+      "finding_ids": [
+        "F-MED-5",
+        "F-LEG-5",
+        "F-REG-10"
+      ],
+      "rationale": "All three findings identify that the call-to-action 'DISCOVER SMARTER CARE' (C8) makes an unsubstantiated comparative and clinical outcome superiority claim implying enhanced patient care delivery over existing standards.",
+      "keep": "F-REG-10"
+    },
+    {
+      "finding_ids": [
+        "F-LEG-1",
+        "F-REG-1"
+      ],
+      "rationale": "Both findings target the overarching compliance failure of using commercial launch language ('THE FUTURE... IS HERE') to promote an unapproved, unmarketed medical device, where an inconspicuous non-clinical footer disclaimer fails to cure premarket misbranding.",
+      "keep": "F-LEG-1"
+    },
+    {
+      "finding_ids": [
+        "F-MED-7",
+        "F-ED-5"
+      ],
+      "rationale": "Both findings identify the direct editorial and communicative tension between the definitive commercial headline proclaiming availability and the fine-print footnote stating the device is a fictional concept.",
+      "keep": "F-MED-7"
+    }
+  ],
+  "cross_lens_themes": [
+    {
+      "theme": "Pre-Commercial Launch Positioning vs. Non-Clinical Concept Disclaimer",
+      "related_finding_ids": [
+        "F-LEG-1",
+        "F-REG-1",
+        "F-MED-7",
+        "F-ED-5",
+        "F-LEG-4",
+        "F-LEG-8",
+        "F-REG-8",
+        "F-ED-1"
+      ],
+      "discussion": "The promotional material exhibits an irreconcilable structural conflict by employing commercial product release language ('The future... is here', 'Discover Smarter Care') while attempting to shield itself via a buried footer disclaimer stating it is a fictional concept not for clinical use. Reviewers across legal, regulatory, medical, and editorial disciplines agree that fine-print disclaimers cannot cure affirmative commercial solicitation of an uncleared medical device. To resolve this, the sponsor must systematically rebrand the asset as an early-stage investigational pipeline preview or internal concept rather than an off-the-shelf product ad."
+    },
+    {
+      "theme": "Unsubstantiated High-Acuity Telemetry and Performance Specifications",
+      "related_finding_ids": [
+        "F-MED-3",
+        "F-MED-4",
+        "F-MED-6",
+        "F-LEG-2",
+        "F-LEG-3",
+        "F-REG-2",
+        "F-REG-3",
+        "F-REG-4",
+        "F-REG-5",
+        "F-REG-7",
+        "F-ED-3"
+      ],
+      "discussion": "The asset presents standard medical device specifications ('Real-Time Vitals', 'Advanced Alerts', 'Wireless Connectivity') as brief marketing slogans without defining intended use environments, target patient populations, or operational parameters. Because continuous physiological telemetry and alarm notification represent high-consequence clinical functions governed by strict safety consensus standards (such as IEC 60601-1-8 and FDA cybersecurity guidance), treating these capabilities as generic commercial buzzwords creates substantial regulatory misbranding exposure and clinical skepticism."
+    },
+    {
+      "theme": "Clinical Telemetry Interface Detached from Physiological Reality",
+      "related_finding_ids": [
+        "F-MED-1",
+        "F-MED-2",
+        "F-LEG-9",
+        "F-REG-6",
+        "F-ED-4"
+      ],
+      "discussion": "The central hardware rendering seeks to establish clinical authenticity but depicts physiologically nonsensical telemetry values (such as '936') and diagnostic rhythm strips that omit mandatory clinical markers like lead identifiers, amplitude calibration, and sweep speed. While the submitter framed these as design placeholders, reviewers across all lenses emphasized that simulated UI elements in HCP-directed materials are evaluated as factual depictions of device functionality. Presenting arbitrary graphic artifacts damages institutional credibility and violates fair, non-misleading visual presentation standards."
+    },
+    {
+      "theme": "Complete Absence of Fair Balance and Operational Risk Disclosures",
+      "related_finding_ids": [
+        "F-REG-2",
+        "F-MED-6",
+        "F-LEG-8",
+        "F-REG-8"
+      ],
+      "discussion": "The asset promotes multiple high-performance features while omitting all operational boundaries, warning statements, contraindications, and known failure modes (such as telemetry latency, RF interference, or battery discharge). Medical device promotional rules under 21 CFR 801 require fair balance between benefit claims and risk disclosures. Foregrounding advanced capabilities while providing zero safety context creates an actionable imbalance that cannot be defended as standard commercial puffery."
+    }
+  ],
+  "rationale": "Redundant findings across the four lenses were consolidated where reviewers evaluated the exact same text or visual element under essentially identical principles, such as the implausible '936' UI metric, the legibility of the footer disclaimer, and individual feature claim substantiations (real-time vitals, advanced alerts, intuitive display, smarter care). Findings that raised distinct technical dimensions—such as F-MED-2 regarding missing ECG calibration markers or F-ED-6 regarding CTA navigational functionality—were preserved as separate items. Four cohesive cross-lens themes were identified to capture high-level systemic challenges: the pre-commercial launch posture conflicting with concept status, ungrounded high-acuity performance claims, unvetted graphical telemetry, and the absolute absence of a fair balance risk architecture."
+}

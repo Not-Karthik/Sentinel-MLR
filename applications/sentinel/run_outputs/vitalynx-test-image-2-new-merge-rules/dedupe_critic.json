@@ -1,0 +1,91 @@
+{
+  "duplicate_groups": [
+    {
+      "finding_ids": [
+        "F-MED-1",
+        "F-LEG-9",
+        "F-REG-7"
+      ],
+      "rationale": "All three findings identify the identical graphical defect in item C2: the monitor display includes an impossible, non-physiological numerical vital reading of '936'. F-MED-1 provides the most direct and clinically detailed evaluation.",
+      "keep": "F-MED-1"
+    },
+    {
+      "finding_ids": [
+        "F-MED-3",
+        "F-LEG-3",
+        "F-REG-8"
+      ],
+      "rationale": "All three findings make the identical observation that the claim 'REAL-TIME VITALS' (C4) is unqualified regarding data transmission latency, refresh rates, and clinical accuracy standards. F-MED-3 captures both the technical and clinical performance implications.",
+      "keep": "F-MED-3"
+    },
+    {
+      "finding_ids": [
+        "F-LEG-4",
+        "F-REG-5"
+      ],
+      "rationale": "Both findings raise the same substantive concern that 'ADVANCED ALERTS' (C7) asserts or implies clinical decision support (CDS) or predictive algorithmic functionality without technical substantiation or regulatory qualification under CDS standards. F-REG-5 is anchored directly in the applicable FDA CDS regulatory framework.",
+      "keep": "F-REG-5"
+    },
+    {
+      "finding_ids": [
+        "F-LEG-6",
+        "F-REG-10"
+      ],
+      "rationale": "Both findings challenge the term 'INTUITIVE' in 'INTUITIVE OLED DISPLAY' (C5) as an unsubstantiated human factors usability claim requiring validation testing. F-REG-10 provides the sharper standard reference under FDA Human Factors guidance.",
+      "keep": "F-REG-10"
+    },
+    {
+      "finding_ids": [
+        "F-LEG-7",
+        "F-REG-9"
+      ],
+      "rationale": "Both findings observe that the claim 'WIRELESS CONNECTIVITY' (C6) lacks specification of communication protocols, hospital network integration, and cybersecurity/encryption standards. F-REG-9 articulates the broader device interoperability and cybersecurity requirements.",
+      "keep": "F-REG-9"
+    },
+    {
+      "finding_ids": [
+        "F-REG-2",
+        "F-ED-5"
+      ],
+      "rationale": "Both findings observe that the concept disclaimer (C9) is rendered in an impermissibly small font size positioned tightly against the bottom margin, compromising legibility and prominence. F-REG-2 connects this directly to mandatory regulatory qualification standards under 21 CFR 801.",
+      "keep": "F-REG-2"
+    }
+  ],
+  "cross_lens_themes": [
+    {
+      "theme": "Pre-Approval Commercialization vs Concept Disclaimer Dissonance",
+      "related_finding_ids": [
+        "F-REG-1",
+        "F-LEG-1",
+        "F-MED-8",
+        "F-ED-4"
+      ],
+      "discussion": "The submission creates an irreconcilable conflict between active, present-tense commercial solicitation ('THE FUTURE... IS HERE', 'DISCOVER SMARTER CARE', realistic clinical hardware rendering) and a de minimis footer disclaimer disclaiming clinical use. Reviewers across regulatory, legal, medical, and editorial lenses converge on the conclusion that fine-print disclaimers cannot cure affirmative promotional representations of commercial availability for an uncleared medical device."
+    },
+    {
+      "theme": "Absence of Core Clinical Safety & Regulatory Labeling Apparatus",
+      "related_finding_ids": [
+        "F-REG-3",
+        "F-REG-4",
+        "F-MED-4",
+        "F-MED-5",
+        "F-MED-6"
+      ],
+      "discussion": "The collateral depicts an active diagnostic patient monitor while omitting all baseline regulatory and clinical risk structures. This spans the complete absence of an Indications for Use (IFU) statement, lack of Important Safety Information (ISI) or operational contraindications, missing patient population boundaries, and failure to address clinical alarm fatigue mitigation."
+    },
+    {
+      "theme": "Superlative Category Leadership & Outcome Claims",
+      "related_finding_ids": [
+        "F-MED-7",
+        "F-LEG-2",
+        "F-REG-6",
+        "F-LEG-8",
+        "F-REG-11",
+        "F-ED-1",
+        "F-ED-6"
+      ],
+      "discussion": "The promotional hierarchy relies on sweeping superiority claims ('THE FUTURE OF PATIENT MONITORING IS HERE', 'DISCOVER SMARTER CARE') that cross from design puffery into measurable assertions of improved clinical care and category leadership. Across legal, regulatory, medical, and editorial viewpoints, these claims lack comparative trial data or outcome evidence, exposing the asset to Lanham Act challenges and FDA misbranding scrutiny."
+    }
+  ],
+  "rationale": "Deduplication focused on consolidating exact factual duplicates where reviewers from different lenses noted identical technical or visual oversights (such as the '936' readout anomaly, unqualified 'real-time' telemetry, CDS implications of 'advanced alerts', usability assertions in 'intuitive', unspecified wireless standards, and disclaimer legibility). Multidisciplinary concerns regarding pre-market promotional positioning, missing safety labeling infrastructure, and unsubstantiated superlative claims were preserved as distinct findings and clustered into strategic cross-lens themes, ensuring each reviewer's unique legal, medical, regulatory, or editorial principle remains actionable."
+}

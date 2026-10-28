@@ -1,0 +1,2706 @@
+{
+  "order": [
+    "sentinel",
+    "intake",
+    "rules_reviewer",
+    "submitter_advocate",
+    "medical_reviewer",
+    "legal_reviewer",
+    "regulatory_reviewer",
+    "editorial_reviewer",
+    "severity_critic",
+    "gap_critic",
+    "dedupe_critic",
+    "narrative_synthesizer",
+    "final_report"
+  ],
+  "outputs": {
+    "sentinel": "Review the attached image for MLR compliance.",
+    "intake": {
+      "is_promotional": true,
+      "content_summary": "The submission is a promotional advertisement concept for Vitalynx Medical Technologies highlighting a portable patient monitoring device labeled 'PulsePro X1'. The piece features a prominent headline heralding the 'future of patient monitoring' alongside key device capabilities including real-time vitals, OLED display, wireless connectivity, and advanced alerts. A footer disclaimer notes that the piece represents a fictional product concept not for clinical use.",
+      "promotional_intent": "Promote the technological advancement and clinical monitoring capabilities of Vitalynx's portable patient monitoring device to encourage adoption or interest in 'smarter care'.",
+      "intended_audience": "healthcare_professional",
+      "audience_rationale": "The terminology ('patient monitoring', 'vitals', 'clinical use') and waveform/metric display target healthcare providers, clinical administrators, or health-tech decision-makers.",
+      "product_or_topic": "PulsePro X1 portable patient monitor (Vitalynx Medical Technologies)",
+      "items": [
+        {
+          "item_id": "C1",
+          "kind": "headline",
+          "text": "VITALYNX Medical Technologies",
+          "location": {
+            "page": null,
+            "section": "Header",
+            "bbox": [
+              0.33,
+              0.06,
+              0.67,
+              0.15
+            ],
+            "quote": "VITALYNX Medical Technologies"
+          },
+          "notes": "Company and brand identification header."
+        },
+        {
+          "item_id": "C2",
+          "kind": "visual_element",
+          "text": "Render of a white handheld or wearable patient monitor displaying 'VITALYNX PulsePro X1' with an active OLED screen showing ECG waveforms, numerical vitals (936, 99, 60, 128), connectivity status, and battery indicators on a clinical/hospital background.",
+          "location": {
+            "page": null,
+            "section": "Central image",
+            "bbox": [
+              0.32,
+              0.21,
+              0.68,
+              0.53
+            ],
+            "quote": null
+          },
+          "notes": "Device display depicts clinical parameters including heart rhythm tracing and physiological metrics."
+        },
+        {
+          "item_id": "C3",
+          "kind": "headline",
+          "text": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+          "location": {
+            "page": null,
+            "section": "Mid-page headline",
+            "bbox": [
+              0.18,
+              0.61,
+              0.82,
+              0.72
+            ],
+            "quote": "THE FUTURE OF PATIENT MONITORING IS HERE."
+          },
+          "notes": "Primary promotional claim / bold headline asserting forward-looking superiority."
+        },
+        {
+          "item_id": "C4",
+          "kind": "product_claim",
+          "text": "REAL-TIME VITALS",
+          "location": {
+            "page": null,
+            "section": "Feature list - top left",
+            "bbox": [
+              0.14,
+              0.76,
+              0.39,
+              0.78
+            ],
+            "quote": "REAL-TIME VITALS"
+          },
+          "notes": "Product capability claim regarding real-time physiological telemetry."
+        },
+        {
+          "item_id": "C5",
+          "kind": "product_claim",
+          "text": "INTUITIVE OLED DISPLAY",
+          "location": {
+            "page": null,
+            "section": "Feature list - top right",
+            "bbox": [
+              0.55,
+              0.76,
+              0.87,
+              0.78
+            ],
+            "quote": "INTUITIVE OLED DISPLAY"
+          },
+          "notes": "Hardware and user-interface capability claim."
+        },
+        {
+          "item_id": "C6",
+          "kind": "product_claim",
+          "text": "WIRELESS CONNECTIVITY",
+          "location": {
+            "page": null,
+            "section": "Feature list - bottom left",
+            "bbox": [
+              0.14,
+              0.8,
+              0.49,
+              0.83
+            ],
+            "quote": "WIRELESS CONNECTIVITY"
+          },
+          "notes": "Connectivity capability claim."
+        },
+        {
+          "item_id": "C7",
+          "kind": "product_claim",
+          "text": "ADVANCED ALERTS",
+          "location": {
+            "page": null,
+            "section": "Feature list - bottom right",
+            "bbox": [
+              0.55,
+              0.8,
+              0.8,
+              0.83
+            ],
+            "quote": "ADVANCED ALERTS"
+          },
+          "notes": "Clinical decision support or alarm capability claim."
+        },
+        {
+          "item_id": "C8",
+          "kind": "call_to_action",
+          "text": "DISCOVER SMARTER CARE",
+          "location": {
+            "page": null,
+            "section": "CTA button",
+            "bbox": [
+              0.28,
+              0.87,
+              0.72,
+              0.93
+            ],
+            "quote": "DISCOVER SMARTER CARE"
+          },
+          "notes": "Primary call-to-action pill button."
+        },
+        {
+          "item_id": "C9",
+          "kind": "disclaimer",
+          "text": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "location": {
+            "page": null,
+            "section": "Footer disclaimer",
+            "bbox": [
+              0.24,
+              0.96,
+              0.76,
+              0.98
+            ],
+            "quote": "Fictional product concept • Illustrative specifications • Not for clinical use."
+          },
+          "notes": "Limiting disclaimer indicating concept status and disclaiming clinical utility."
+        }
+      ],
+      "open_observations": [
+        "The material explicitly states at the bottom: 'Fictional product concept • Illustrative specifications • Not for clinical use.'",
+        "No regulatory statements, 510(k) clearance indications, CE marks, or specific indications for use are referenced.",
+        "No safety warnings, contraindications, or Important Safety Information (ISI) blocks are present on the piece."
+      ]
+    },
+    "rules_reviewer": {
+      "lens": "custom",
+      "reviewer_summary": "No custom rules file was supplied for this review pass.",
+      "findings": []
+    },
+    "submitter_advocate": {
+      "overall_framing": "This piece was developed as an exploratory creative concept to demonstrate the brand's industrial design vision and user-experience direction, rather than an active commercial solicitation for an unapproved device. The team proactively included clear qualifying language ('Fictional product concept • Illustrative specifications • Not for clinical use') precisely to establish that this is a forward-looking design prototype intended for early stakeholder alignment.",
+      "defenses": [
+        {
+          "addresses_topic": "pre-market promotion and clearance status",
+          "related_item_ids": [
+            "C3",
+            "C8",
+            "C9"
+          ],
+          "argument": "The piece explicitly states on its face that it is a 'Fictional product concept • Illustrative specifications • Not for clinical use,' precluding any reasonable commercial expectation of imminent clinical delivery or purchase. Brand teams routinely create visionary concept mockups to test design language and value propositions before entering the formal pre-market clearance pathway. Rather than an unlawful pre-clearance promotional push, this is early conceptual staging designed to explore messaging hierarchy.",
+          "charitable_interpretation": "The submitter intended this layout as an internal or exploratory conceptual prototype illustrating Vitalynx's design philosophy, with the footer disclaimer signaling transparently that the device is not cleared or currently commercially available.",
+          "proposed_compromise": "Reinforce the concept nature by adding 'Technology Concept — In Development — Not Available for Commercial Distribution' in prominent header text or watermarking the creative as 'Concept Prototype Only', and ensure distribution is strictly controlled to internal or non-promotional R&D testing.",
+          "likely_to_dispute": [
+            "regulatory",
+            "legal"
+          ]
+        },
+        {
+          "addresses_topic": "the futuristic headline and perceived superiority",
+          "related_item_ids": [
+            "C3"
+          ],
+          "argument": "The statement 'THE FUTURE OF PATIENT MONITORING IS HERE' is classic commercial design puffery signaling innovation and modern design aesthetics, not an empirical comparative superiority claim over specific competitor monitors. In the context of a technology concept showcase, readers naturally interpret such thematic headlines as forward-looking brand positioning rather than head-to-head clinical efficacy claims.",
+          "charitable_interpretation": "The team sought an engaging, standard tech-industry headline to highlight the shift toward compact, connected monitoring interfaces rather than asserting documented clinical superiority over existing hospital telemetry.",
+          "proposed_compromise": "Soft-pedal the headline to focus on design innovation (e.g., 'Advancing the Next Generation of Patient Monitoring Design') to reduce any inference of established superiority.",
+          "likely_to_dispute": [
+            "regulatory",
+            "editorial"
+          ]
+        },
+        {
+          "addresses_topic": "functional capability claims without clinical validation",
+          "related_item_ids": [
+            "C4",
+            "C5",
+            "C6",
+            "C7"
+          ],
+          "argument": "The bulleted points—'REAL-TIME VITALS', 'INTUITIVE OLED DISPLAY', 'WIRELESS CONNECTIVITY', and 'ADVANCED ALERTS'—describe the architectural feature set and intended hardware capabilities of the prototype rather than therapeutic outcome claims. Medical device concepts must be permitted to articulate intended engineering specifications and interface capabilities during product planning.",
+          "charitable_interpretation": "The submitter listed core design requirements and functional targets for the device hardware and software stack to frame what the product is engineered to do.",
+          "proposed_compromise": "Prefix the feature block with 'Target Specifications' or 'Intended Capabilities' to clarify that these reflect design goals subject to engineering verification and regulatory clearance.",
+          "likely_to_dispute": [
+            "medical",
+            "regulatory"
+          ]
+        },
+        {
+          "addresses_topic": "anomalous clinical vitals displayed on the screen render",
+          "related_item_ids": [
+            "C2"
+          ],
+          "argument": "The interface rendering is an illustrative 3D graphic asset using placeholder numerical data (such as '936', '99', '60', '128') to demonstrate typographic contrast and screen layout on an OLED canvas. In early creative comps, creative agencies frequently populate visual fields with placeholder numbers to test legibility rather than simulate an exact physiological crisis or validated telemetry output.",
+          "charitable_interpretation": "The designer populated the screen with arbitrary placeholder numbers to illustrate visual hierarchy and UI element density on the display panel.",
+          "proposed_compromise": "Update the UI graphic to depict realistic, clinically coherent physiological values (e.g., HR 72, SpO2 98%, BP 120/80) so the comp maintains clinical credibility and eliminates confusion.",
+          "likely_to_dispute": [
+            "medical",
+            "editorial"
+          ]
+        }
+      ]
+    },
+    "medical_reviewer": {
+      "reviewer_summary": "This medical review focused on the clinical fidelity of displayed physiological metrics, the substantiation and validity of real-time monitoring and alerting claims, and the clinical implications of marketing a conceptual telemetry device to healthcare professionals. While presented as a concept piece, the clinical depiction contains non-physiological numerical readouts and unsubstantiated claims regarding clinical superiority and alarm performance that require remediation.",
+      "findings": [
+        {
+          "category": "clinical_accuracy",
+          "severity": "high",
+          "confidence": 0.95,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C2"
+          ],
+          "quoted_content": "numerical vitals (936, 99, 60, 128)",
+          "observation": "The physiological readout depicted on the device display includes a value of '936', which is non-physiological for any standard patient monitoring parameter.",
+          "mlr_principle": "Factual representation of clinical parameters and diagnostic metrics",
+          "discussion": "In patient monitoring interfaces, values displayed adjacent to heart rate, oxygen saturation, or blood pressure must reflect plausible physiological data or standard units (e.g., 93.6°F for temperature). Displaying an unlabelled integer of '936' undermines clinical credibility and could confuse clinical evaluators assessing interface legibility and parameter prioritization. Clinicians expect accurate contextual units and clinically valid ranges on any interface representation.",
+          "suggested_questions": [
+            "What clinical parameter was '936' intended to represent (e.g., temperature of 93.6°F, or an index value)?",
+            "Can standard medical units (mmHg, bpm, %, °C/°F) and appropriate decimal delimiters be added to all numerical values?"
+          ],
+          "suggested_actions": [
+            "Correct the numerical display to reflect plausible physiological parameters with standard clinical units (e.g., Temp: 98.6°F, SpO2: 99%, PR: 60 bpm, BP: 128/80 mmHg).",
+            "Ensure standard labeling of lead configuration for the displayed ECG waveform."
+          ],
+          "bbox": [
+            0.32,
+            0.21,
+            0.68,
+            0.53
+          ]
+        },
+        {
+          "category": "clinical_accuracy",
+          "severity": "medium",
+          "confidence": 0.88,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C2"
+          ],
+          "quoted_content": null,
+          "observation": "The ECG rhythm tracing lacks lead identification, gain/calibration markers, and sweep speed standard in clinical telemetry.",
+          "mlr_principle": "Scientific rigor in physiological waveform presentation",
+          "discussion": "When presenting diagnostic or monitoring waveforms to healthcare professionals, standard electrocardiographic conventions (such as lead specification, e.g., Lead II, and calibration indicators) establish whether the trace represents a diagnostic-quality rhythm or indicative telemetry. Displaying an uncalibrated waveform without lead context can mislead clinicians regarding the diagnostic capabilities of the device.",
+          "suggested_questions": [
+            "Is the PulsePro X1 intended for diagnostic ECG interpretation or basic heart rate rhythm monitoring?",
+            "Can a standard lead designation (e.g., Lead II) and scale reference be incorporated into the mock interface?"
+          ],
+          "suggested_actions": [
+            "Add standard clinical waveform labeling (e.g., Lead II, 25 mm/s, 10 mm/mV) to the visual display render.",
+            "Clarify whether the device is indicated for rhythm assessment or simple heart rate tracking."
+          ],
+          "bbox": [
+            0.32,
+            0.21,
+            0.68,
+            0.53
+          ]
+        },
+        {
+          "category": "efficacy_claim",
+          "severity": "medium",
+          "confidence": 0.9,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C4"
+          ],
+          "quoted_content": "REAL-TIME VITALS",
+          "observation": "The claim of 'REAL-TIME VITALS' is unqualified with respect to transmission latency, parameter refresh rates, and clinical accuracy standards.",
+          "mlr_principle": "Precision in diagnostic and telemetry efficacy performance claims",
+          "discussion": "In clinical telemetry, 'real-time' implies continuous, zero-latency or near-zero latency streaming capable of capturing emergent hemodynamic instability, such as lethal arrhythmias or sudden desaturation. Without defining latency limits, sensor sampling rates, or transmission protocols, the claim risks overpromising telemetry capability in acute care settings where delay could jeopardize patient safety.",
+          "suggested_questions": [
+            "What is the actual latency and update interval for each monitored parameter?",
+            "Has bench testing or clinical validation demonstrated continuous real-time transmission under hospital network loads?"
+          ],
+          "suggested_actions": [
+            "Qualify the claim to define transmission frequency (e.g., 'Continuous physiological telemetry with near real-time updates').",
+            "Provide supporting bench or clinical validation data demonstrating latency metrics."
+          ],
+          "bbox": [
+            0.14,
+            0.76,
+            0.39,
+            0.78
+          ]
+        },
+        {
+          "category": "safety_profile",
+          "severity": "high",
+          "confidence": 0.92,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C7"
+          ],
+          "quoted_content": "ADVANCED ALERTS",
+          "observation": "The promotion of 'ADVANCED ALERTS' fails to describe alarm parameters, notification priority tiers, or mechanisms to mitigate alarm fatigue.",
+          "mlr_principle": "Clinical safety and risk disclosure in physiological alarm systems",
+          "discussion": "Alarm fatigue is a recognized Joint Commission National Patient Safety Goal and a major source of clinical risk in patient monitoring. Promoting 'advanced alerts' without qualifying whether the system uses algorithmic artifact filtering, predictive trend analysis, or standard threshold alarms leaves clinicians unable to evaluate alert specificity and clinical utility versus the risk of nuisance alarms.",
+          "suggested_questions": [
+            "What constitutes 'advanced alerts'—does this refer to arrhythmia detection algorithms, early warning scores (e.g., MEWS/NEWS), or multi-parameter thresholding?",
+            "What data exist regarding alarm sensitivity, specificity, and false alarm reduction?"
+          ],
+          "suggested_actions": [
+            "Specify the nature of the alerting capability (e.g., 'Intelligent multi-parameter threshold alerts designed to minimize false alarms').",
+            "Incorporate a brief statement acknowledging the clinician's role in verifying alarms and setting individualized patient thresholds."
+          ],
+          "bbox": [
+            0.55,
+            0.8,
+            0.8,
+            0.83
+          ]
+        },
+        {
+          "category": "fair_balance",
+          "severity": "medium",
+          "confidence": 0.89,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C3",
+            "C4",
+            "C6",
+            "C7",
+            "C8"
+          ],
+          "quoted_content": null,
+          "observation": "The piece emphasizes advanced technological capabilities without any accompanying discussion of clinical limitations, environmental constraints, or failure modes.",
+          "mlr_principle": "Fair balance of clinical utility and operational risk",
+          "discussion": "From a clinical perspective, an honest assessment of patient monitoring technology must counterbalance monitoring benefits with operational prerequisites. For example, wireless telemetry is vulnerable to dropouts, dead zones, and motion artifact. Presenting seamless wireless connectivity and advanced alerts without acknowledging clinical oversight requirements fails to provide balanced context to the prescribing or procuring healthcare provider.",
+          "suggested_questions": [
+            "What are the device's operational limitations regarding wireless range, motion artifact rejection, and critical alert fail-safes?",
+            "Are there critical clinical environments (e.g., MRI suite, high-electrocautery surgical suites) where the device cannot be used?"
+          ],
+          "suggested_actions": [
+            "Include concise risk context or operational prerequisites (e.g., 'Requires compatible enterprise Wi-Fi infrastructure; not intended as a substitute for primary bedside monitoring in critical care').",
+            "Ensure marketing materials balance claims of wireless freedom with guidance on telemetry oversight."
+          ],
+          "bbox": [
+            0.14,
+            0.61,
+            0.87,
+            0.93
+          ]
+        },
+        {
+          "category": "patient_population",
+          "severity": "medium",
+          "confidence": 0.85,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C3",
+            "C8"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+          "observation": "The piece lacks definition of the target patient population or clinical care setting (e.g., intensive care, general medical-surgical floor, ambulatory, or home use).",
+          "mlr_principle": "Clear demarcation of intended patient population and clinical use environment",
+          "discussion": "Patient monitoring standards differ drastically between continuous ICU telemetry, med-surg step-down units, and outpatient ambulatory settings. By proclaiming the 'future of patient monitoring' without defining whether this device is intended for adult, pediatric, or neonatal patients, or for high-acuity versus low-acuity environments, clinicians cannot assess whether the technology meets appropriate clinical standards of care for their specific patient cohort.",
+          "suggested_questions": [
+            "For which patient populations (adult, pediatric, neonatal) is this device clinically validated?",
+            "In which care settings (ICU, general ward, ambulatory transport) is the device intended to function as a primary monitor?"
+          ],
+          "suggested_actions": [
+            "Clearly indicate intended patient demographics and clinical care environments in the body copy or subheadline.",
+            "Add explicit indication bounds (e.g., 'Designed for continuous vital signs surveillance in adult medical-surgical wards')."
+          ],
+          "bbox": [
+            0.18,
+            0.61,
+            0.82,
+            0.72
+          ]
+        },
+        {
+          "category": "superlative_claim",
+          "severity": "low",
+          "confidence": 0.91,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C3",
+            "C8"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE. / DISCOVER SMARTER CARE",
+          "observation": "The broad assertions of 'the future of patient monitoring' and 'smarter care' imply superior clinical outcomes without evidence of clinical benefit.",
+          "mlr_principle": "Substantiation of outcome-based clinical claims",
+          "discussion": "Phrases like 'smarter care' and 'the future of patient monitoring' imply improved diagnostic yield, reduced adverse events, or superior workflow efficiency compared to current standard monitoring solutions. While common in conceptual branding, healthcare professionals interpret these phrases as assertions of clinical superiority or enhanced patient outcomes, which must be supported by clinical utility studies.",
+          "suggested_questions": [
+            "What comparative clinical evidence supports the claim that this system delivers 'smarter care' or improved outcomes over standard-of-care telemetry?",
+            "Can the language be reframed around specific technological design features rather than outcome-laden superlatives?"
+          ],
+          "suggested_actions": [
+            "Moderate the headline to focus on technological features (e.g., 'Advancing Portable Patient Monitoring').",
+            "Retain clinical validation dossiers to support any forward-looking claims prior to formal commercial launch."
+          ],
+          "bbox": [
+            0.18,
+            0.61,
+            0.82,
+            0.93
+          ]
+        },
+        {
+          "category": "disclosure",
+          "severity": "medium",
+          "confidence": 0.94,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C9"
+          ],
+          "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "observation": "The disclaimer stating 'Not for clinical use' contradicts the HCP-targeted promotional claims and clinical setting imagery.",
+          "mlr_principle": "Consistency of promotional context and investigational/concept disclosures",
+          "discussion": "When promotional material simulates an active medical device marketed to HCPs with specific physiological claims ('Real-Time Vitals', 'Advanced Alerts'), relegating 'Not for clinical use' to an unobtrusive footer creates clinical dissonance. If this is an investigational or fictional concept, that status must be prominent enough to prevent clinical decision-makers from assuming the device is an available, cleared diagnostic tool.",
+          "suggested_questions": [
+            "Is this material intended solely for internal R&D/concept testing, or is it intended for pre-market commercial display at scientific congresses?",
+            "If intended for external audiences, what regulatory framework (e.g., investigational device display) governs the piece?"
+          ],
+          "suggested_actions": [
+            "Increase the prominence and clarity of the concept/investigational disclosure if displayed externally.",
+            "Add clear language stating: 'Investigational Device. Limited by Federal (or applicable) law to investigational use. Not available for sale or clinical use.'"
+          ],
+          "bbox": [
+            0.24,
+            0.96,
+            0.76,
+            0.98
+          ]
+        }
+      ]
+    },
+    "legal_reviewer": {
+      "reviewer_summary": "Reviewed promotional concept for Vitalynx PulsePro X1 focusing on claim substantiation, forward-looking superlative assertions, trademark and IP protection, and the legal adequacy of the concept disclaimer. The piece is promotional in tone and structure but lacks any substantiating references or clearing disclosures, presenting significant commercialization risks if distributed externally without clarifying its investigational or conceptual status.",
+      "findings": [
+        {
+          "category": "disclosure",
+          "severity": "high",
+          "confidence": 0.95,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C3",
+            "C4",
+            "C7",
+            "C8",
+            "C9"
+          ],
+          "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "observation": "The piece promotes explicit clinical monitoring functionality ('REAL-TIME VITALS', 'ADVANCED ALERTS') while attempting to negate all promotional effect with a tiny, low-contrast footer disclaimer.",
+          "mlr_principle": "Disclaimers cannot cure affirmative representations that are otherwise misleading or suggest an unapproved commercial medical device is currently available for clinical practice.",
+          "discussion": "Under FDA regulations (21 CFR 801/807) and FTC truth-in-advertising guidance, fine-print disclaimers cannot contradict prominent headlines and feature lists that present a device as ready for market adoption. While the footer asserts 'Fictional product concept... Not for clinical use', the prominent mid-page copy claims 'THE FUTURE OF PATIENT MONITORING IS HERE' with a clear commercial CTA ('DISCOVER SMARTER CARE'). If distributed in a commercial setting or presented to HCPs, this material could be viewed as pre-approval commercialization or off-label pre-market promotion of an uncleared medical device.",
+          "suggested_questions": [
+            "Is this document solely for internal conceptual testing, or is it intended for external market research or trade shows?",
+            "If external, has the regulatory affairs team reviewed investigational device exemption (IDE) or pre-market disclosure requirements?"
+          ],
+          "suggested_actions": [
+            "Ensure prominent watermarking ('FOR INTERNAL DISCUSSION ONLY - NOT FOR EXTERNAL DISTRIBUTION') across the body of the piece if intended for internal use.",
+            "If intended for pre-market investor or industry engagement, include clear investigational device disclaimers in prominent font compliant with 21 CFR 812.7."
+          ]
+        },
+        {
+          "category": "superlative_claim",
+          "severity": "medium",
+          "confidence": 0.88,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C3"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+          "observation": "The headline asserts category leadership and transformative future standard-of-care status without substantiation.",
+          "mlr_principle": "Superlative, category-defining claims must be substantiated or clearly qualified to avoid creating actionable false expectations under competitor challenge frameworks (Lanham Act).",
+          "discussion": "While frequently defended as mere puffery, claims stating that the 'future of [a therapeutic or diagnostic area] is here' can cross into measurable representations of superiority over existing monitors when paired with specific functional claims (real-time vitals, advanced alerts). Competitors could challenge this statement under Lanham Act § 43(a) if the device's technical specifications do not demonstrably exceed current standard-of-care telemetry systems.",
+          "suggested_questions": [
+            "What market or technical data supports the assertion that this device represents the 'future' compared to incumbent patient monitors?",
+            "Can the headline be softened or framed around the company's innovation journey?"
+          ],
+          "suggested_actions": [
+            "Review substantiation file for technical feature comparisons against leading bedside/portable monitors.",
+            "Consider qualifying the headline to emphasize design innovation rather than absolute category evolution (e.g., 'Advancing the possibilities of patient monitoring')."
+          ]
+        },
+        {
+          "category": "claim_substantiation",
+          "severity": "medium",
+          "confidence": 0.9,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C4"
+          ],
+          "quoted_content": "REAL-TIME VITALS",
+          "observation": "The claim 'REAL-TIME VITALS' is stated without definition, technical parameters, or latency substantiation.",
+          "mlr_principle": "Objective technical claims regarding clinical diagnostic performance require verifiable technical specifications and validation testing.",
+          "discussion": "'Real-time' implies zero or near-zero clinical latency in physiological data capture and transmission. In a healthcare environment, failure of a monitor to transmit true continuous, zero-latency vitals could carry clinical and liability implications. Legal review requires documentation on data transmission refresh rates, latency limits, and clinical validation protocols demonstrating continuous real-time capability.",
+          "suggested_questions": [
+            "What is the verified telemetry latency and sampling rate of the PulsePro X1?",
+            "Does the device continuously stream or intermittently poll vitals?"
+          ],
+          "suggested_actions": [
+            "Document the engineering bench testing and latency validation in the MLR promotional file.",
+            "Add clarifying parameters (e.g., continuous streaming telemetry) if necessary."
+          ]
+        },
+        {
+          "category": "claim_substantiation",
+          "severity": "medium",
+          "confidence": 0.9,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C7"
+          ],
+          "quoted_content": "ADVANCED ALERTS",
+          "observation": "The phrase 'ADVANCED ALERTS' implies sophisticated algorithmic or predictive clinical decision support (CDS) functionality.",
+          "mlr_principle": "Statements suggesting proprietary algorithmic capability, predictive alerts, or clinical decision support must specify alert criteria and maintain documented clinical validation.",
+          "discussion": "Claiming 'ADVANCED ALERTS' without explanation leaves the claim open to broad interpretation by HCPs, who may assume algorithmic arrhythmia detection, hemodynamic instability early warning, or AI-driven predictive alarms. If the product only provides standard threshold-breach threshold alarms (e.g., heart rate > 100), the term 'advanced' is misleading and vulnerable to regulatory and competitor scrutiny.",
+          "suggested_questions": [
+            "What specific alerting capabilities exist beyond standard threshold limit alarms?",
+            "Are these alert functions classified as Clinical Decision Support (CDS) software under FDA digital health guidance?"
+          ],
+          "suggested_actions": [
+            "Clarify the nature of the alerts in accompanying body copy (e.g., customizable threshold telemetry notifications).",
+            "Ensure algorithmic alert claims align with regulatory classification and CDS clearance."
+          ]
+        },
+        {
+          "category": "intellectual_property",
+          "severity": "low",
+          "confidence": 0.85,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C1",
+            "C2"
+          ],
+          "quoted_content": "VITALYNX Medical Technologies",
+          "observation": "Brand and product names 'VITALYNX' and 'PulsePro X1' are displayed without trademark symbols (™ or ®).",
+          "mlr_principle": "Trademarks and product trade names should be appropriately marked with ™ or ® on first prominent commercial use to preserve and protect intellectual property rights.",
+          "discussion": "Neither 'VITALYNX' nor 'PulsePro X1' bear trademark designation symbols in the headline, logo header, or device render screen. Failing to consistently mark new proprietary brand and product designations can weaken trademark distinctiveness and create enforcement vulnerabilities against third-party infringement.",
+          "suggested_questions": [
+            "Has a trademark clearance search been performed for 'PulsePro' and 'Vitalynx' in medical device classes (IC 010)?",
+            "Are trademark applications filed or registrations issued?"
+          ],
+          "suggested_actions": [
+            "Apply appropriate trademark symbols (™ or ®) on first prominent appearance in text and within device branding.",
+            "Verify status with IP counsel."
+          ]
+        },
+        {
+          "category": "claim_substantiation",
+          "severity": "low",
+          "confidence": 0.82,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C5"
+          ],
+          "quoted_content": "INTUITIVE OLED DISPLAY",
+          "observation": "The adjective 'INTUITIVE' represents a usability claim regarding human factors and user interface design.",
+          "mlr_principle": "User-interface and human-factors claims ('intuitive', 'easy-to-use') require user testing validation to withstand substantiation challenges.",
+          "discussion": "While frequently considered puffery, describing a medical device user interface as 'intuitive' to clinicians can imply human-factors usability validation showing rapid onboarding or reduced cognitive workload. If challenged by a competitor under comparative marketing rules, subjective usability assertions should be backed by documented human factors or formative usability testing.",
+          "suggested_questions": [
+            "Has human-factors testing or user acceptance testing been conducted evaluating interface usability?",
+            "Can 'intuitive' be replaced with descriptive hardware specifications?"
+          ],
+          "suggested_actions": [
+            "Maintain usability evaluation reports in the substantiation binder, or replace with objective physical descriptors (e.g., 'High-Contrast OLED Touchscreen')."
+          ]
+        },
+        {
+          "category": "claim_substantiation",
+          "severity": "low",
+          "confidence": 0.8,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C6"
+          ],
+          "quoted_content": "WIRELESS CONNECTIVITY",
+          "observation": "The piece states 'WIRELESS CONNECTIVITY' without indicating protocol, security compliance, or hospital network integration.",
+          "mlr_principle": "Medical device connectivity claims require specification of transmission standards and appropriate cybersecurity/encryption disclosures.",
+          "discussion": "In modern hospital IT environments, wireless connectivity claims in promotional materials imply compatibility with hospital enterprise EHR systems, Wi-Fi/BLE standards, and HIPAA-compliant data encryption. Unqualified claims may misrepresent the device's actual network integration capabilities.",
+          "suggested_questions": [
+            "What wireless protocols are supported (e.g., Bluetooth LE, Wi-Fi 802.11, cellular)?",
+            "Is communication encrypted to protect protected health information (PHI)?"
+          ],
+          "suggested_actions": [
+            "Specify connectivity standards in product documentation or footnotes (e.g., 'Secure BLE and Wi-Fi data export')."
+          ]
+        },
+        {
+          "category": "comparative_claim",
+          "severity": "low",
+          "confidence": 0.82,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C8"
+          ],
+          "quoted_content": "DISCOVER SMARTER CARE",
+          "observation": "The CTA slogan 'DISCOVER SMARTER CARE' sets up an implicit comparative claim against standard care technologies.",
+          "mlr_principle": "Comparative claims implying that an offering delivers 'smarter' clinical outcomes require comparative clinical evidence or risk Lanham Act challenge.",
+          "discussion": "Calling the solution 'smarter care' implies that using PulsePro X1 yields superior clinical workflow or care quality compared to alternative standard-of-care patient monitoring equipment. While often defensible as aspirational brand puffery, in medical marketing it can be scrutinized if presented alongside clinical features as an outcome-based efficacy promise.",
+          "suggested_questions": [
+            "Is 'Smarter Care' intended as an overarching corporate marketing tagline or a specific product outcome claim?"
+          ],
+          "suggested_actions": [
+            "Ensure accompanying landing pages and digital destinations linked to this CTA do not make unsubstantiated clinical comparative efficacy assertions."
+          ]
+        },
+        {
+          "category": "clinical_accuracy",
+          "severity": "medium",
+          "confidence": 0.87,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C2"
+          ],
+          "quoted_content": "936, 99, 60, 128",
+          "observation": "The simulated monitor screen displays clinical numerical vitals including an aberrant metric '936'.",
+          "mlr_principle": "Depictions of clinical physiological values in promotional device visuals must be medically plausible and clinically accurate.",
+          "discussion": "The display render shows numerical values alongside ECG traces, including an alarming value of '936' (presumably an unintended placeholder or corrupted blood pressure/heart rate value). Publishing clinically absurd or unphysiological vitals on a promotional asset undermines device credibility and could raise concerns regarding clinical oversight and advertising accuracy.",
+          "suggested_questions": [
+            "What physiological parameter does '936' represent on the screen mock-up?",
+            "Can design replace mock telemetry values with standard physiological norms (e.g., HR 72, SpO2 98, BP 120/80)?"
+          ],
+          "suggested_actions": [
+            "Update the graphical interface mock-up to depict realistic clinical values and labeled measurement units."
+          ]
+        }
+      ]
+    },
+    "regulatory_reviewer": {
+      "reviewer_summary": "This regulatory review evaluated the promotional concept for the Vitalynx PulsePro X1 against FDA/EMA pre-market and promotional standards for medical devices and physiological monitors. The material strongly conveys clinical readiness, automated alarm capabilities, and real-time telemetry while disclaiming clinical utility only in a de minimis footer, raising substantial questions around pre-approval commercialization, missing indications for use, and absent risk/contraindication disclosures.",
+      "findings": [
+        {
+          "category": "regulatory_guidance",
+          "severity": "high",
+          "confidence": 0.95,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C3",
+            "C8",
+            "C9"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+          "observation": "The piece uses definite present-tense commercial promotional language ('IS HERE', 'DISCOVER SMARTER CARE') while simultaneously claiming the device is a 'fictional product concept' and 'not for clinical use'.",
+          "mlr_principle": "Prohibition of pre-approval promotion and misleading promotional claims under 21 CFR 801/812 and FD&C Act Section 502",
+          "discussion": "Under FDA regulations (21 CFR 812.7 and related compliance policy guides), a sponsor or manufacturer may not promote or commercialize an unapproved or uncleared investigational device, nor represent that an investigational or concept device is safe or effective for the purposes for which it is being investigated. Even if intended as an early concept showcase, present-tense commercial positioning ('IS HERE') coupled with a direct call to action ('DISCOVER SMARTER CARE') risks being interpreted by regulatory authorities as unlawful pre-market commercialization or solicitation prior to 510(k) clearance or De Novo authorization.",
+          "suggested_questions": [
+            "What is the current regulatory status of the PulsePro X1 (e.g., cleared 510(k), investigational device under IDE, or purely internal conceptual design)?",
+            "What is the intended distribution channel and audience for this collateral (e.g., internal presentation, investor deck, trade show, or public-facing marketing)?",
+            "Has regulatory counsel reviewed the use of active commercial verbs for an uncleared product concept?"
+          ],
+          "suggested_actions": [
+            "If the device is not cleared/approved, revise headline copy to avoid implying commercial availability (e.g., 'Exploring the Future of Monitoring Concepts').",
+            "Ensure prominent pre-market / investigational disclosures appear in close conjunction with the primary headline rather than as a faint footer disclaimer.",
+            "Clarify whether commercial promotion is legally permissible at this development milestone."
+          ]
+        },
+        {
+          "category": "disclosure",
+          "severity": "high",
+          "confidence": 0.9,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C9"
+          ],
+          "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "observation": "The regulatory disclaimer regarding concept status and clinical restriction is positioned in minimal font size at the bottom margin.",
+          "mlr_principle": "Prominence and legibility of mandatory regulatory qualifications and disclaimers (21 CFR 202.1 / 21 CFR 801)",
+          "discussion": "Regulators evaluate promotional materials based on their 'net impression'. When the predominant visual hierarchy communicates a functional, clinically deployed device with live ECG waveforms and specific numerical vitals, a small single-line footer disclaimer disclaiming clinical use is generally insufficient to cure an overall misleading impression of commercial and clinical availability. Regulatory bodies frequently cite footnote-only disclaimers as inadequate to neutralize bold, affirmative promotional headers.",
+          "suggested_questions": [
+            "Does the current font size, contrast, and visual prominence of the concept disclaimer satisfy corporate compliance guidelines for non-commercial demonstrations?",
+            "Can the 'Not for Clinical Use' designation be elevated to the primary viewing area?"
+          ],
+          "suggested_actions": [
+            "Increase the font size and contrast of the concept disclaimer.",
+            "Position the non-clinical status in direct visual proximity to the device render (C2) or the primary headline (C3).",
+            "Standardize the disclaimer language to align with recognized regulatory wording (e.g., 'Device Concept – Not Available for Sale or Clinical Use in the United States')."
+          ]
+        },
+        {
+          "category": "indication_scope",
+          "severity": "high",
+          "confidence": 0.88,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C2",
+            "C4"
+          ],
+          "quoted_content": "REAL-TIME VITALS",
+          "observation": "The asset implies comprehensive physiological monitoring (ECG tracing, pulse, SpO2/blood pressure numbers) without articulating an approved or cleared Indication for Use (IFU) statement.",
+          "mlr_principle": "Adequate directions for use and defined Indications for Use statement (21 CFR 801.5 / 21 CFR 801.109)",
+          "discussion": "Promotional materials directed to healthcare professionals for diagnostic and monitoring devices must clearly state the intended patient population (e.g., adult, pediatric, neonatal), monitoring environment (e.g., hospital, transport, ambulatory, home care), and specific physiological parameters cleared for diagnostic utility. Depicting multi-parameter waveforms alongside broad claims of 'REAL-TIME VITALS' without articulating the intended use leaves the scope ambiguous and risks misbranding under Section 502(f)(1).",
+          "suggested_questions": [
+            "What specific indications for use and patient populations are specified in the cleared labeling or draft 510(k) submission?",
+            "Is the monitor intended for diagnostic-grade ECG monitoring or general telemetry trend monitoring?"
+          ],
+          "suggested_actions": [
+            "Incorporate a concise Indications for Use summary defining the validated parameters and target patient populations.",
+            "Explicitly state the intended clinical environment (e.g., acute care, step-down, ambulatory)."
+          ]
+        },
+        {
+          "category": "important_safety_info",
+          "severity": "high",
+          "confidence": 0.92,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C4",
+            "C6",
+            "C7"
+          ],
+          "quoted_content": null,
+          "observation": "The piece lacks an Important Safety Information (ISI) section, warnings, precautions, or contraindications associated with physiological monitoring and telemetry.",
+          "mlr_principle": "Fair balance and requirement for risk disclosure in promotional materials (21 CFR 202.1 / 21 CFR 801)",
+          "discussion": "Even in abbreviated or promotional display materials, medical device communications that feature specific clinical capabilities and benefits must present balanced risk information. For patient monitors, critical safety considerations typically include limitations of wireless transmission, requirements for secondary visual/audible alarms, contraindications during MRI/defibrillation, or prerequisites for user verification. The complete absence of safety or warning information creates an impermissible imbalance between claimed capabilities and safe operational boundaries.",
+          "suggested_questions": [
+            "What boxed warnings, contraindications, or critical precautions are outlined in the device's labeling or risk management file?",
+            "What format of brief summary or risk disclosure is required for this communication vehicle?"
+          ],
+          "suggested_actions": [
+            "Add a dedicated brief safety statement or link/reference to Important Safety Information.",
+            "Specify critical precautions, such as wireless dropout dependencies or defibrillation protection status."
+          ]
+        },
+        {
+          "category": "claim_substantiation",
+          "severity": "medium",
+          "confidence": 0.85,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C7"
+          ],
+          "quoted_content": "ADVANCED ALERTS",
+          "observation": "The claim 'ADVANCED ALERTS' asserts diagnostic or clinical alarm sophistication without clarifying whether the system provides clinical decision support (CDS) or simple threshold-based alarms.",
+          "mlr_principle": "Substantiation of clinical decision support and alarm performance claims under FDA CDS Guidance",
+          "discussion": "Under FDA guidance on Clinical Decision Support Software, software functions that provide automated alerts, predictive deterioration scoring, or algorithmic recommendations are scrutinized carefully to determine whether they qualify as regulated device software functions or non-device CDS. Claiming 'ADVANCED ALERTS' without qualifying the underlying clearance, sensitivity/specificity, or alarm latency leaves the claim unsubstantiated and open to regulatory challenge regarding whether the device performs automated clinical triage.",
+          "suggested_questions": [
+            "What specific algorithm or feature does 'ADVANCED ALERTS' describe?",
+            "Has the alert functionality been cleared as a Software as a Medical Device (SaMD) or as part of a 510(k) monitor system?",
+            "Are the alerts threshold-based, predictive, or AI/ML-driven?"
+          ],
+          "suggested_actions": [
+            "Qualify 'ADVANCED ALERTS' to define the functional capability (e.g., 'Configurable physiological threshold alerts').",
+            "Ensure substantiating technical performance data or 510(k) summary references support the terminology."
+          ]
+        },
+        {
+          "category": "superlative_claim",
+          "severity": "medium",
+          "confidence": 0.82,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C3"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+          "observation": "The headline presents an absolute forward-looking superiority claim characterizing the device as 'the future of patient monitoring'.",
+          "mlr_principle": "Truthful and non-misleading promotional claims; prohibition of unsubstantiated superlative or superiority claims",
+          "discussion": "While frequently viewed by marketing teams as generalized puffery, absolute statements regarding technological advancement ('THE FUTURE... IS HERE') in healthcare advertising are evaluated by OPDP and CDRH within the context of whether they imply clinical or technological superiority over existing cleared standards of care. Without head-to-head evidence demonstrating that PulsePro X1 establishes a new clinical standard, regulators may consider the claim misleading.",
+          "suggested_questions": [
+            "Does the company possess comparative evidence demonstrating technological or clinical superiority over existing market-standard patient monitors?",
+            "Is legal/regulatory comfortable defending this as non-actionable puffery, or should it be framed around innovation rather than categorical leadership?"
+          ],
+          "suggested_actions": [
+            "Moderate the headline to focus on the company's continuous innovation (e.g., 'Advancing the Next Generation of Patient Monitoring').",
+            "If retained as marketing concept copy, ensure clear contextualization showing it refers to design vision rather than proven clinical superiority."
+          ]
+        },
+        {
+          "category": "clinical_accuracy",
+          "severity": "medium",
+          "confidence": 0.87,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C2"
+          ],
+          "quoted_content": "Render of a white handheld or wearable patient monitor displaying 'VITALYNX PulsePro X1' with an active OLED screen showing ECG waveforms, numerical vitals (936, 99, 60, 128)",
+          "observation": "The device render displays physiological metrics including an implausible numerical value ('936') alongside typical clinical vitals (99, 60, 128).",
+          "mlr_principle": "Accuracy and clinical validity of promotional illustrations and imagery (21 CFR 801 / FDA Promotional Guidance)",
+          "discussion": "Illustrative screen graphics depicting clinical monitoring devices must portray physiologically plausible parameters to maintain credibility and avoid presenting inaccurate or confusing clinical scenarios to HCP audiences. A value of '936' is outside standard physiological telemetry metrics (e.g., heart rate, SpO2, NIBP, respiration rate) and may indicate poor visual quality control or an unverified placeholder graphic, which undermines promotional compliance.",
+          "suggested_questions": [
+            "What physiological parameter does the displayed value '936' represent?",
+            "Was this screen graphic derived from actual bench testing/software GUI or fabricated by a graphic designer?"
+          ],
+          "suggested_actions": [
+            "Replace the screen render graphic with verified, clinically plausible physiological metrics and standard labeled parameters (e.g., HR, SpO2, BP, RR).",
+            "Ensure telemetry waveforms accurately match the associated numerical indicators."
+          ]
+        },
+        {
+          "category": "claim_substantiation",
+          "severity": "medium",
+          "confidence": 0.8,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C4"
+          ],
+          "quoted_content": "REAL-TIME VITALS",
+          "observation": "The term 'REAL-TIME' conveys instantaneous data transmission and display without specifying latency, update rates, or transmission boundaries.",
+          "mlr_principle": "Substantiation of technical specifications and performance claims in medical device advertising",
+          "discussion": "In wireless patient monitoring systems, 'real-time' is a technical performance specification governed by defined data latency limits and transmission reliability standards. In acute or sub-acute clinical environments, claiming real-time telemetry implies continuous active monitoring suitable for life-critical event detection, which requires robust engineering verification and labeling disclosures regarding potential network delay or buffering.",
+          "suggested_questions": [
+            "What latency and sampling frequency benchmarks substantiate the 'real-time' claim?",
+            "Does labeling describe latency or transmission delay under varying wireless bandwidth conditions?"
+          ],
+          "suggested_actions": [
+            "Ensure technical documentation supports the real-time transmission claim.",
+            "Consider qualifying the claim if data transmission is subject to periodic polling, synchronization delays, or network limitations."
+          ]
+        },
+        {
+          "category": "claim_substantiation",
+          "severity": "low",
+          "confidence": 0.82,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C6"
+          ],
+          "quoted_content": "WIRELESS CONNECTIVITY",
+          "observation": "The claim 'WIRELESS CONNECTIVITY' does not specify supported protocols, cybersecurity standards, or telemetry network compatibility.",
+          "mlr_principle": "Clarity of device interoperability, cybersecurity, and networking capabilities in device promotion",
+          "discussion": "Hospital procurement committees and healthcare providers require clarity regarding the wireless communication standards utilized (e.g., Wi-Fi 802.11, Bluetooth LE, proprietary RF) and cybersecurity architecture. An unqualified wireless claim can obscure whether the device connects directly to hospital Electronic Health Record (EHR) systems, central nursing stations, or proprietary gateways.",
+          "suggested_questions": [
+            "What wireless protocols are utilized by PulsePro X1?",
+            "Is integration with hospital networks and EHR systems supported and cleared?"
+          ],
+          "suggested_actions": [
+            "Clarify the nature of the wireless connectivity (e.g., 'Hospital-grade Wi-Fi & Bluetooth telemetry integration').",
+            "Ensure cybersecurity and wireless coexistence validation are documented in the design history file."
+          ]
+        },
+        {
+          "category": "clarity",
+          "severity": "low",
+          "confidence": 0.78,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C5"
+          ],
+          "quoted_content": "INTUITIVE OLED DISPLAY",
+          "observation": "The claim 'INTUITIVE OLED DISPLAY' combines an objective hardware specification (OLED display) with an unsubstantiated usability descriptor ('INTUITIVE').",
+          "mlr_principle": "Usability and human factors engineering claim substantiation (FDA Human Factors Guidance)",
+          "discussion": "Describing a medical device user interface as 'intuitive' implies that formal human factors usability testing has verified that clinical users can operate the interface safely and effectively with minimal training. If human factors validation or summative testing has not specifically demonstrated interface intuitiveness, the descriptor may be challenged as an unsubstantiated usability claim.",
+          "suggested_questions": [
+            "Has summative human factors usability testing been completed to substantiate the intuitive nature of the interface?",
+            "Is the descriptor intended as descriptive marketing copy or a verified design attribute?"
+          ],
+          "suggested_actions": [
+            "Verify that human factors study data supports user interface usability claims, or simplify the claim to 'High-Resolution OLED Display'.",
+            "Ensure the user interface claims match the cleared human factors labeling."
+          ]
+        },
+        {
+          "category": "regulatory_guidance",
+          "severity": "medium",
+          "confidence": 0.85,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C8"
+          ],
+          "quoted_content": "DISCOVER SMARTER CARE",
+          "observation": "The call-to-action 'DISCOVER SMARTER CARE' links the monitoring hardware to overarching clinical care quality improvement without outcome evidence.",
+          "mlr_principle": "Substantiation of clinical outcome claims versus product feature promotion",
+          "discussion": "Claims that a device delivers 'smarter care' subtly cross from device operational capability into clinical outcome and standard-of-care claims. Under FDA and FTC guidance, claims implying superior clinical outcomes or care delivery must be substantiated by sound clinical evidence demonstrating improved diagnostic turnaround, reduced alarm fatigue, or enhanced patient outcomes.",
+          "suggested_questions": [
+            "Does the brand team possess clinical utility studies or health economic data showing PulsePro X1 delivers measurably improved care?",
+            "Is there an active landing page or portal linked to this CTA, and what claims are hosted on that destination?"
+          ],
+          "suggested_actions": [
+            "Review the target landing page associated with 'DISCOVER SMARTER CARE' to verify all downstream claims are appropriately substantiated and balanced.",
+            "Consider tailoring the CTA to device exploration (e.g., 'Discover PulsePro X1 Technology') rather than broad clinical care claims."
+          ]
+        }
+      ]
+    },
+    "editorial_reviewer": {
+      "reviewer_summary": "I focused on editorial craft, typographic hierarchy, visual-verbal coherence, accessibility, and overall communication clarity for an HCP audience. The piece relies heavily on high-impact tech-marketing conventions—such as pervasive uppercase styling and broad superlatives—which create visual noise and diminish clinical specificity.",
+      "findings": [
+        {
+          "category": "typography",
+          "severity": "low",
+          "confidence": 0.95,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C3"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+          "observation": "The primary headline is set entirely in uppercase with terminal punctuation.",
+          "mlr_principle": "Sentence case enhances readability and avoids an aggressive, shouting tone in professional medical communications.",
+          "discussion": "Long lines of all-caps text reduce character shape differentiation, which slows down reading comprehension and feels overly forceful for a clinical audience. Additionally, terminal periods on isolated headline banners often create an abrupt visual stop rather than guiding the eye down the page.",
+          "suggested_questions": [
+            "Would sentence case or title case align better with a refined, professional healthcare aesthetic?"
+          ],
+          "suggested_actions": [
+            "Change the headline to sentence case or title case (e.g., 'The future of patient monitoring is here' or 'The Future of Patient Monitoring Is Here') and consider omitting the terminal period."
+          ]
+        },
+        {
+          "category": "typography",
+          "severity": "low",
+          "confidence": 0.9,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C4",
+            "C5",
+            "C6",
+            "C7"
+          ],
+          "observation": "All four product capability bullet points are styled in uniform uppercase sans-serif text without hierarchical secondary descriptors.",
+          "mlr_principle": "Typographic contrast between labels and descriptions improves scannability and information retention.",
+          "discussion": "Presenting feature callouts entirely in capitalized bold phrases makes them blend into visual blocks of similar visual weight. Adding sentence-case explanatory sub-lines would clarify how these capabilities operate while improving reading comfort.",
+          "suggested_questions": [
+            "Can these feature callouts include brief clarifying sub-copy to provide meaningful clinical context?"
+          ],
+          "suggested_actions": [
+            "Switch the feature labels to title or sentence case and add 1–2 lines of supporting descriptive copy underneath each item."
+          ],
+          "bbox": [
+            0.14,
+            0.76,
+            0.87,
+            0.83
+          ]
+        },
+        {
+          "category": "clarity",
+          "severity": "medium",
+          "confidence": 0.85,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C2"
+          ],
+          "observation": "The device render displays physiological numeric values without clearly legible measurement units or physiological context.",
+          "mlr_principle": "Clinical visuals must depict physiological parameters accurately with clear units of measure to avoid confusion.",
+          "discussion": "The screen mock-up depicts numbers such as '936', '99', '60', and '128' alongside an ECG tracing. While an HCP may infer standard vitals like heart rate or SpO2, a value like '936' is clinically nonsensical or alarming without an explicit unit (such as steps, device telemetry ID, or battery status).",
+          "suggested_questions": [
+            "What specific metric does the value '936' represent on this interface?",
+            "Are units of measure (e.g., bpm, %, mmHg) clearly visible to the user at native viewing resolution?"
+          ],
+          "suggested_actions": [
+            "Add explicit units of measurement next to each numerical read-out on the simulated display screen.",
+            "Ensure all rendered values reflect realistic, clinically plausible physiological states."
+          ]
+        },
+        {
+          "category": "visual_design",
+          "severity": "medium",
+          "confidence": 0.9,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C2",
+            "C9"
+          ],
+          "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "observation": "A highly realistic product rendering is juxtaposed with a tiny, understated footer disclaimer stating the device is fictional.",
+          "mlr_principle": "Visual realism should not contradict or overpower qualifying disclosures regarding product status.",
+          "discussion": "The central image presents a polished, production-ready hospital monitor in an authentic clinical environment, yet the qualification that this is a fictional concept appears in minimal font at the very bottom edge. This disparity can lead readers to mistakenly believe the device is an available, cleared medical device.",
+          "suggested_questions": [
+            "Should the concept status be integrated more visibly near the device name or render?"
+          ],
+          "suggested_actions": [
+            "Include a clear 'Concept Prototype' badge or subtitle near the product name on the device or header.",
+            "Increase the prominence and font size of the disclaimer relative to the hero imagery."
+          ],
+          "bbox": [
+            0.24,
+            0.21,
+            0.76,
+            0.98
+          ]
+        },
+        {
+          "category": "accessibility",
+          "severity": "medium",
+          "confidence": 0.9,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C9"
+          ],
+          "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "observation": "The footer disclaimer is set in a very small font size positioned tightly against the bottom margin.",
+          "mlr_principle": "Essential qualifying disclaimers must meet minimum legible type size and contrast standards.",
+          "discussion": "The disclaimer occupies less than 2% of the vertical page space and appears in low-prominence text. If this material is viewed on mobile screens or printed at standard collaterals, readers with visual impairments or standard reading distances will struggle to read these critical qualifications.",
+          "suggested_questions": [
+            "Does the footer text satisfy minimum font size recommendations (e.g., 8–10 pt print equivalent) and contrast ratios across viewing formats?"
+          ],
+          "suggested_actions": [
+            "Increase the type size of the footer text and provide sufficient breathing room from the bottom page boundary."
+          ]
+        },
+        {
+          "category": "clarity",
+          "severity": "low",
+          "confidence": 0.85,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C8"
+          ],
+          "quoted_content": "DISCOVER SMARTER CARE",
+          "observation": "The call-to-action button uses vague, generic language without indicating the destination or action.",
+          "mlr_principle": "Action prompts should clearly communicate what the user will receive or where the action leads.",
+          "discussion": "'Discover Smarter Care' sounds like an inspirational tagline rather than an actionable digital prompt. Healthcare professionals benefit from direct signposting—such as whether the button leads to technical specifications, a demonstration request, or a downloadable brochure.",
+          "suggested_questions": [
+            "What specific asset or page does this call to action lead to?"
+          ],
+          "suggested_actions": [
+            "Refine the button text to be more explicit (e.g., 'Explore Product Specifications', 'Request a Concept Demo', or 'Learn More at vitalynx.com')."
+          ]
+        },
+        {
+          "category": "tone",
+          "severity": "low",
+          "confidence": 0.8,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C7"
+          ],
+          "quoted_content": "ADVANCED ALERTS",
+          "observation": "The term 'ADVANCED ALERTS' relies on broad marketing terminology without clinical grounding.",
+          "mlr_principle": "Feature claims for HCP audiences should favor clinical precision over generic buzzwords.",
+          "discussion": "To a clinician or biomedical engineer, 'advanced alerts' is ambiguous; it could mean threshold-based alarms, predictive arrhythmia detection, multi-parameter scoring, or remote notification routing. Grounding this in specific functionality builds professional credibility.",
+          "suggested_questions": [
+            "What clinical mechanism or algorithm makes the alerts 'advanced'?"
+          ],
+          "suggested_actions": [
+            "Replace or qualify 'ADVANCED ALERTS' with specific clinical functionality, such as 'Customizable Alarm Thresholds' or 'Early Warning Notifications'."
+          ]
+        },
+        {
+          "category": "typography",
+          "severity": "low",
+          "confidence": 0.85,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C3",
+            "C4",
+            "C5",
+            "C6",
+            "C7",
+            "C8"
+          ],
+          "observation": "Inconsistent end-punctuation across major textual elements on the page.",
+          "mlr_principle": "Typographic styling and punctuation conventions should remain consistent across display copy.",
+          "discussion": "The main headline (C3) concludes with a period, whereas the feature claims (C4–C7) and call-to-action (C8) omit end punctuation. Display copy usually adopts a consistent standard—either headline-style open punctuation without periods, or full sentences with consistent terminal punctuation.",
+          "suggested_questions": [
+            "Does the brand style guide mandate open punctuation for display headers?"
+          ],
+          "suggested_actions": [
+            "Remove the terminal period from C3 to align with the open punctuation used throughout the rest of the display copy."
+          ],
+          "bbox": [
+            0.14,
+            0.61,
+            0.87,
+            0.93
+          ]
+        },
+        {
+          "category": "visual_design",
+          "severity": "low",
+          "confidence": 0.8,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C4",
+            "C5",
+            "C6",
+            "C7"
+          ],
+          "observation": "Feature claims are arranged in a 2x2 grid without supporting icons or bullet markers, making them feel floating and disconnected.",
+          "mlr_principle": "Visual grouping and structured lists guide reader eye movement efficiently.",
+          "discussion": "The four feature callouts span across two horizontal columns under the headline without clear bounding, numbering, or iconography. This loose alignment makes it slightly ambiguous whether the content should be read horizontally row-by-row or vertically down columns.",
+          "suggested_questions": [
+            "Could micro-icons or subtle divider lines improve scan order for these four core features?"
+          ],
+          "suggested_actions": [
+            "Introduce subtle bullet indicators, icons, or a clearer column grid to define the reading path."
+          ],
+          "bbox": [
+            0.14,
+            0.76,
+            0.87,
+            0.83
+          ]
+        },
+        {
+          "category": "clarity",
+          "severity": "low",
+          "confidence": 0.8,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C1"
+          ],
+          "quoted_content": "VITALYNX Medical Technologies",
+          "observation": "Mixed capitalization styles are combined within the company brand name.",
+          "mlr_principle": "Brand identity styling should follow consistent typographic hierarchy.",
+          "discussion": "The header pairs an all-caps brand name ('VITALYNX') with a title-case descriptor ('Medical Technologies'). While this may reflect trademark styling, verifying that the weight and tracking are calibrated prevents visual clunkiness at the top of the layout.",
+          "suggested_questions": [
+            "Is 'VITALYNX' strictly styled in full capitals in the brand identity guidelines, or is small-caps intended?"
+          ],
+          "suggested_actions": [
+            "Verify font tracking and styling against the corporate identity guide to ensure the lockup feels intentional and cohesive."
+          ]
+        }
+      ]
+    },
+    "severity_critic": {
+      "severity_adjustments": [
+        {
+          "finding_id": "F-MED-1",
+          "current_severity": "high",
+          "recommended_severity": "medium",
+          "rationale": "The non-physiological value '936' is an uncorrected creative placeholder in an illustrative mockup rather than an intentional falsification of clinical study data or a direct hazard to patient safety. The advocate concedes this was placeholder text and agrees to correct it to standard vitals; downgrading to medium aligns with F-LEG-9 and F-REG-7."
+        },
+        {
+          "finding_id": "F-MED-4",
+          "current_severity": "high",
+          "recommended_severity": "medium",
+          "rationale": "Elevating the brief feature bullet 'ADVANCED ALERTS' to a high clinical safety risk over alarm fatigue is disproportionate for a top-level creative concept piece. Regulators and legal (F-REG-5, F-LEG-4) treat this as a claim substantiation and CDS scoping issue warranting medium severity."
+        },
+        {
+          "finding_id": "F-REG-11",
+          "current_severity": "medium",
+          "recommended_severity": "low",
+          "rationale": "The call-to-action 'DISCOVER SMARTER CARE' represents standard commercial design puffery rather than an empirical comparative outcome claim. Both Legal (F-LEG-8) and Medical (F-MED-7) classified similar broad superlative phrasing as low severity."
+        }
+      ],
+      "confidence_concerns": [
+        "F-MED-4: Confidence of 0.92 is overly elevated given that demanding full alarm management and fatigue mitigation architecture for a two-word promotional bullet ('ADVANCED ALERTS') over-indexes on clinical protocol expectations for an early-stage asset.",
+        "F-REG-3: Confidence of 0.88 assumes full 21 CFR 801 Indications for Use statements are mandatory on an abbreviated concept mockup, discounting the threshold question of whether the asset is an internal exploratory prototype or commercial promotional labeling."
+      ],
+      "advocate_weighed": true,
+      "rationale": "Calibrations were made to balance the regulatory gravity of pre-market commercialization against the reality of an exploratory design concept. The submitter advocate's concessions regarding placeholder UI values confirmed that display anomalies (F-MED-1) represent creative production errors rather than high-risk clinical misrepresentations. High severities were preserved for core pre-approval and fair balance compliance risks (F-REG-1, F-LEG-1, F-REG-4), while technical substantiation and alarm claims on concept bullet points were moderated to medium."
+    },
+    "gap_critic": {
+      "gaps_identified": [
+        "Absence of mandatory document control metadata (unique job code/material tracking number and date of preparation/revision) standard across regulated medical device promotional and concept assets.",
+        "Omission of patient interface / signal acquisition mechanism: neither the visual render nor the copy explains how physiological signals (e.g., ECG, SpO2, BP) are captured (e.g., lead wires, optical sensors, skin-contact dry electrodes), obscuring the physical invasiveness and operational workflow.",
+        "Absence of confidentiality and distribution control markings: while the submitter's advocate claims the piece is an internal design prototype, the asset lacks 'Confidential - For Internal Discussion Only' headers or watermarks, leaving it vulnerable to inadvertent external leakage or public interpretation as an active commercial solicitation.",
+        "Lack of contact information, physical corporate address, or accessible destination URL associated with the call-to-action button ('DISCOVER SMARTER CARE')."
+      ],
+      "additional_findings": [
+        {
+          "category": "regulatory_guidance",
+          "severity": "low",
+          "confidence": 0.9,
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C1",
+            "C9"
+          ],
+          "quoted_content": null,
+          "observation": "The piece lacks a unique material identification number (job code) and a date of preparation or revision.",
+          "mlr_principle": "Standard healthcare compliance and document governance frameworks require promotional and conceptual collateral to bear unique tracking codes and dates of origination to ensure lifecycle control and auditability.",
+          "discussion": "Whether an asset is distributed externally or utilized for internal stakeholder alignment, formal MLR operations require document identifiers (e.g., job code, item code) and a creation/review date. Without these identifiers, compliance auditing, version control, and eventual retirement of outdated medical claims become difficult to monitor and enforce.",
+          "suggested_questions": [
+            "What internal job or project code is assigned to this creative asset in the electronic document management system?",
+            "Can a standard tracking code and date of preparation (e.g., 'Date of Preparation: MM/YYYY') be added to the bottom margin?"
+          ],
+          "suggested_actions": [
+            "Incorporate a compliant job code and date of preparation in the footer alongside corporate identifiers.",
+            "Ensure the asset is cataloged with an established lifecycle review expiration date."
+          ],
+          "bbox": [
+            0.24,
+            0.94,
+            0.76,
+            0.99
+          ],
+          "review_lens": "regulatory"
+        },
+        {
+          "category": "disclosure",
+          "severity": "medium",
+          "confidence": 0.88,
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C1",
+            "C3",
+            "C9"
+          ],
+          "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "observation": "The asset is structured and styled as an external commercial advertisement but lacks explicit internal-use-only or confidentiality demarcations to prevent unauthorized dissemination.",
+          "mlr_principle": "Unapproved product concepts and pre-clearance development materials must maintain explicit confidentiality designations and distribution limitations to prevent inadvertent public exposure.",
+          "discussion": "The defense brief emphasizes that this collateral is an exploratory concept intended for internal alignment and value proposition staging. However, the visual layout mirrors a public commercial digital ad or journal insert without any 'Confidential - For Internal Evaluation Only' header or background watermark. If transmitted without technical and visual access restrictions, it presents a substantial risk of being construed by external observers as premature pre-market promotion.",
+          "suggested_questions": [
+            "What safeguards prevent this concept file from being circulated externally to hospital customers or sales teams?",
+            "Should a prominent watermark or header restrict the distribution to internal design and MLR review teams?"
+          ],
+          "suggested_actions": [
+            "Add a prominent header or semi-transparent background watermark reading 'INTERNAL DESIGN CONCEPT ONLY - NOT FOR EXTERNAL USE OR DISTRIBUTION'.",
+            "Document distribution restrictions clearly in the promotional routing metadata."
+          ],
+          "bbox": [
+            0.18,
+            0.05,
+            0.82,
+            0.98
+          ],
+          "review_lens": "legal"
+        }
+      ],
+      "completeness_assessment": "The initial review panel provided comprehensive, robust coverage across clinical accuracy, pre-approval promotional risk, claim substantiation, and typography. Regulatory and legal reviewers thoroughly dissected the tension between the commercial-style copy ('IS HERE') and the de minimis footer disclaimer, while medical reviewers properly flagged the non-physiological numerical value ('936') and missing ECG calibration. The primary blind spot across all four reviewers was document governance and distribution control: none flagged the absence of tracking job codes, creation dates, or confidentiality demarcations necessary to substantiate the submitter's assertion that this is strictly an internal exploratory artifact."
+    },
+    "dedupe_critic": {
+      "duplicate_groups": [
+        {
+          "finding_ids": [
+            "F-MED-1",
+            "F-LEG-9",
+            "F-REG-7"
+          ],
+          "rationale": "All three findings identify the identical graphical defect in item C2: the monitor display includes an impossible, non-physiological numerical vital reading of '936'. F-MED-1 provides the most direct and clinically detailed evaluation.",
+          "keep": "F-MED-1"
+        },
+        {
+          "finding_ids": [
+            "F-MED-3",
+            "F-LEG-3",
+            "F-REG-8"
+          ],
+          "rationale": "All three findings make the identical observation that the claim 'REAL-TIME VITALS' (C4) is unqualified regarding data transmission latency, refresh rates, and clinical accuracy standards. F-MED-3 captures both the technical and clinical performance implications.",
+          "keep": "F-MED-3"
+        },
+        {
+          "finding_ids": [
+            "F-LEG-4",
+            "F-REG-5"
+          ],
+          "rationale": "Both findings raise the same substantive concern that 'ADVANCED ALERTS' (C7) asserts or implies clinical decision support (CDS) or predictive algorithmic functionality without technical substantiation or regulatory qualification under CDS standards. F-REG-5 is anchored directly in the applicable FDA CDS regulatory framework.",
+          "keep": "F-REG-5"
+        },
+        {
+          "finding_ids": [
+            "F-LEG-6",
+            "F-REG-10"
+          ],
+          "rationale": "Both findings challenge the term 'INTUITIVE' in 'INTUITIVE OLED DISPLAY' (C5) as an unsubstantiated human factors usability claim requiring validation testing. F-REG-10 provides the sharper standard reference under FDA Human Factors guidance.",
+          "keep": "F-REG-10"
+        },
+        {
+          "finding_ids": [
+            "F-LEG-7",
+            "F-REG-9"
+          ],
+          "rationale": "Both findings observe that the claim 'WIRELESS CONNECTIVITY' (C6) lacks specification of communication protocols, hospital network integration, and cybersecurity/encryption standards. F-REG-9 articulates the broader device interoperability and cybersecurity requirements.",
+          "keep": "F-REG-9"
+        },
+        {
+          "finding_ids": [
+            "F-REG-2",
+            "F-ED-5"
+          ],
+          "rationale": "Both findings observe that the concept disclaimer (C9) is rendered in an impermissibly small font size positioned tightly against the bottom margin, compromising legibility and prominence. F-REG-2 connects this directly to mandatory regulatory qualification standards under 21 CFR 801.",
+          "keep": "F-REG-2"
+        }
+      ],
+      "cross_lens_themes": [
+        {
+          "theme": "Pre-Approval Commercialization vs Concept Disclaimer Dissonance",
+          "related_finding_ids": [
+            "F-REG-1",
+            "F-LEG-1",
+            "F-MED-8",
+            "F-ED-4"
+          ],
+          "discussion": "The submission creates an irreconcilable conflict between active, present-tense commercial solicitation ('THE FUTURE... IS HERE', 'DISCOVER SMARTER CARE', realistic clinical hardware rendering) and a de minimis footer disclaimer disclaiming clinical use. Reviewers across regulatory, legal, medical, and editorial lenses converge on the conclusion that fine-print disclaimers cannot cure affirmative promotional representations of commercial availability for an uncleared medical device."
+        },
+        {
+          "theme": "Absence of Core Clinical Safety & Regulatory Labeling Apparatus",
+          "related_finding_ids": [
+            "F-REG-3",
+            "F-REG-4",
+            "F-MED-4",
+            "F-MED-5",
+            "F-MED-6"
+          ],
+          "discussion": "The collateral depicts an active diagnostic patient monitor while omitting all baseline regulatory and clinical risk structures. This spans the complete absence of an Indications for Use (IFU) statement, lack of Important Safety Information (ISI) or operational contraindications, missing patient population boundaries, and failure to address clinical alarm fatigue mitigation."
+        },
+        {
+          "theme": "Superlative Category Leadership & Outcome Claims",
+          "related_finding_ids": [
+            "F-MED-7",
+            "F-LEG-2",
+            "F-REG-6",
+            "F-LEG-8",
+            "F-REG-11",
+            "F-ED-1",
+            "F-ED-6"
+          ],
+          "discussion": "The promotional hierarchy relies on sweeping superiority claims ('THE FUTURE OF PATIENT MONITORING IS HERE', 'DISCOVER SMARTER CARE') that cross from design puffery into measurable assertions of improved clinical care and category leadership. Across legal, regulatory, medical, and editorial viewpoints, these claims lack comparative trial data or outcome evidence, exposing the asset to Lanham Act challenges and FDA misbranding scrutiny."
+        }
+      ],
+      "rationale": "Deduplication focused on consolidating exact factual duplicates where reviewers from different lenses noted identical technical or visual oversights (such as the '936' readout anomaly, unqualified 'real-time' telemetry, CDS implications of 'advanced alerts', usability assertions in 'intuitive', unspecified wireless standards, and disclaimer legibility). Multidisciplinary concerns regarding pre-market promotional positioning, missing safety labeling infrastructure, and unsubstantiated superlative claims were preserved as distinct findings and clustered into strategic cross-lens themes, ensuring each reviewer's unique legal, medical, regulatory, or editorial principle remains actionable."
+    },
+    "narrative_synthesizer": {
+      "executive_summary": "This submission presents an early creative concept for the PulsePro X1, a portable patient monitoring device under development by Vitalynx Medical Technologies. Styled as an HCP-targeted digital display advertisement, the piece showcases industrial design rendering, high-level device capabilities (such as real-time vitals and advanced alerts), and visionary branding. Across regulatory, legal, and medical lenses, the primary tension stems from the contrast between active, present-tense commercial solicitation copy ('THE FUTURE... IS HERE', 'DISCOVER SMARTER CARE') and a de minimis footer disclaimer stating the device is a fictional concept not for clinical use (F-LEG-1, F-REG-1, F-REG-2). The review team recognized the brand advocate's defense that this collateral was constructed as an exploratory concept mockup to align internal teams on industrial design rather than an external commercial promotion. Acknowledging this intent reframes several clinical and regulatory observations from intentional misbranding risks to asset-governance and contextualization priorities. Before entering the formal MLR committee discussion, the team recommends focusing on three key refinements: first, establish unambiguous document guardrails by adding prominent 'Internal Concept Prototype — Not for Commercial Distribution' headers or watermarks (F-LEG-3) along with standard tracking metadata (F-REG-10); second, clean up the screen visual by replacing the placeholder '936' readout with realistic, physiological vitals and standard waveform markings (F-MED-1, F-MED-2); and third, temper the headline and feature copy from definitive, present-tense claims toward target design specifications (F-LEG-2, F-REG-5, F-MED-3) to ensure appropriate alignment with the product's pre-clearance developmental stage.",
+      "open_questions_for_reviewers": [
+        "What is the intended distribution and usage channel for this creative asset (e.g., purely internal R&D alignment, executive concept showcase, or early market-research testing)?",
+        "If intended solely for internal or non-promotional evaluation, would the brand team support applying a semi-transparent 'Concept Prototype Only' background watermark to eliminate external compliance risk?",
+        "What target clinical indications for use (IFU), intended patient population, and care settings (e.g., ICU, med-surg, ambulatory) are anticipated when formal 510(k) or regulatory clearance is initiated?",
+        "What specific internal job code and lifecycle review timeframe should be assigned to this asset within the document management system?"
+      ],
+      "recommended_discussion_topics": [
+        "Governance framework for early pipeline and industrial design concepts: establishing standardized routing criteria, disclaimers, and watermarking rules for pre-clearance medical device collateral.",
+        "Best practices for navigating the boundary between permissible pipeline technology showcases and prohibited pre-approval commercialization under 21 CFR 801/812.",
+        "Guidelines for illustrative user-interface renders: ensuring placeholder UI graphics and simulated diagnostic traces consistently reflect clinical plausibility even in early-stage conceptual drafts.",
+        "Alignment on qualifying language and substantiation requirements for hardware specifications versus clinical decision support (CDS) claims during product incubation."
+      ]
+    },
+    "final_report": {
+      "content_summary": "The submission is a promotional advertisement concept for Vitalynx Medical Technologies highlighting a portable patient monitoring device labeled 'PulsePro X1'. The piece features a prominent headline heralding the 'future of patient monitoring' alongside key device capabilities including real-time vitals, OLED display, wireless connectivity, and advanced alerts. A footer disclaimer notes that the piece represents a fictional product concept not for clinical use.",
+      "intended_audience": "healthcare_professional",
+      "promotional_intent": "Promote the technological advancement and clinical monitoring capabilities of Vitalynx's portable patient monitoring device to encourage adoption or interest in 'smarter care'.",
+      "executive_summary": "This submission presents an early creative concept for the PulsePro X1, a portable patient monitoring device under development by Vitalynx Medical Technologies. Styled as an HCP-targeted digital display advertisement, the piece showcases industrial design rendering, high-level device capabilities (such as real-time vitals and advanced alerts), and visionary branding. Across regulatory, legal, and medical lenses, the primary tension stems from the contrast between active, present-tense commercial solicitation copy ('THE FUTURE... IS HERE', 'DISCOVER SMARTER CARE') and a de minimis footer disclaimer stating the device is a fictional concept not for clinical use (F-LEG-1, F-REG-1, F-REG-2). The review team recognized the brand advocate's defense that this collateral was constructed as an exploratory concept mockup to align internal teams on industrial design rather than an external commercial promotion. Acknowledging this intent reframes several clinical and regulatory observations from intentional misbranding risks to asset-governance and contextualization priorities. Before entering the formal MLR committee discussion, the team recommends focusing on three key refinements: first, establish unambiguous document guardrails by adding prominent 'Internal Concept Prototype — Not for Commercial Distribution' headers or watermarks (F-LEG-3) along with standard tracking metadata (F-REG-10); second, clean up the screen visual by replacing the placeholder '936' readout with realistic, physiological vitals and standard waveform markings (F-MED-1, F-MED-2); and third, temper the headline and feature copy from definitive, present-tense claims toward target design specifications (F-LEG-2, F-REG-5, F-MED-3) to ensure appropriate alignment with the product's pre-clearance developmental stage.",
+      "themes": [
+        "Pre-Approval Commercialization vs Concept Disclaimer Dissonance: The submission creates an irreconcilable conflict between active, present-tense commercial solicitation ('THE FUTURE... IS HERE', 'DISCOVER SMARTER CARE', realistic clinical hardware rendering) and a de minimis footer disclaimer disclaiming clinical use. Reviewers across regulatory, legal, medical, and editorial lenses converge on the conclusion that fine-print disclaimers cannot cure affirmative promotional representations of commercial availability for an uncleared medical device.",
+        "Absence of Core Clinical Safety & Regulatory Labeling Apparatus: The collateral depicts an active diagnostic patient monitor while omitting all baseline regulatory and clinical risk structures. This spans the complete absence of an Indications for Use (IFU) statement, lack of Important Safety Information (ISI) or operational contraindications, missing patient population boundaries, and failure to address clinical alarm fatigue mitigation.",
+        "Superlative Category Leadership & Outcome Claims: The promotional hierarchy relies on sweeping superiority claims ('THE FUTURE OF PATIENT MONITORING IS HERE', 'DISCOVER SMARTER CARE') that cross from design puffery into measurable assertions of improved clinical care and category leadership. Across legal, regulatory, medical, and editorial viewpoints, these claims lack comparative trial data or outcome evidence, exposing the asset to Lanham Act challenges and FDA misbranding scrutiny."
+      ],
+      "findings": [
+        {
+          "finding_id": "F-LEG-1",
+          "review_lens": "legal",
+          "category": "disclosure",
+          "severity": "high",
+          "confidence": 0.95,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C3",
+            "C4",
+            "C7",
+            "C8",
+            "C9"
+          ],
+          "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "observation": "The piece promotes explicit clinical monitoring functionality ('REAL-TIME VITALS', 'ADVANCED ALERTS') while attempting to negate all promotional effect with a tiny, low-contrast footer disclaimer.",
+          "mlr_principle": "Disclaimers cannot cure affirmative representations that are otherwise misleading or suggest an unapproved commercial medical device is currently available for clinical practice.",
+          "discussion": "Under FDA regulations (21 CFR 801/807) and FTC truth-in-advertising guidance, fine-print disclaimers cannot contradict prominent headlines and feature lists that present a device as ready for market adoption. While the footer asserts 'Fictional product concept... Not for clinical use', the prominent mid-page copy claims 'THE FUTURE OF PATIENT MONITORING IS HERE' with a clear commercial CTA ('DISCOVER SMARTER CARE'). If distributed in a commercial setting or presented to HCPs, this material could be viewed as pre-approval commercialization or off-label pre-market promotion of an uncleared medical device.",
+          "suggested_questions": [
+            "Is this document solely for internal conceptual testing, or is it intended for external market research or trade shows?",
+            "If external, has the regulatory affairs team reviewed investigational device exemption (IDE) or pre-market disclosure requirements?"
+          ],
+          "suggested_actions": [
+            "Ensure prominent watermarking ('FOR INTERNAL DISCUSSION ONLY - NOT FOR EXTERNAL DISTRIBUTION') across the body of the piece if intended for internal use.",
+            "If intended for pre-market investor or industry engagement, include clear investigational device disclaimers in prominent font compliant with 21 CFR 812.7."
+          ],
+          "location": {
+            "page": null,
+            "section": "Mid-page headline, Feature list - top left, Feature list - bottom right",
+            "bbox": [
+              0.14,
+              0.61,
+              0.82,
+              0.98
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-REG-1",
+          "review_lens": "regulatory",
+          "category": "regulatory_guidance",
+          "severity": "high",
+          "confidence": 0.95,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C3",
+            "C8",
+            "C9"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+          "observation": "The piece uses definite present-tense commercial promotional language ('IS HERE', 'DISCOVER SMARTER CARE') while simultaneously claiming the device is a 'fictional product concept' and 'not for clinical use'.",
+          "mlr_principle": "Prohibition of pre-approval promotion and misleading promotional claims under 21 CFR 801/812 and FD&C Act Section 502",
+          "discussion": "Under FDA regulations (21 CFR 812.7 and related compliance policy guides), a sponsor or manufacturer may not promote or commercialize an unapproved or uncleared investigational device, nor represent that an investigational or concept device is safe or effective for the purposes for which it is being investigated. Even if intended as an early concept showcase, present-tense commercial positioning ('IS HERE') coupled with a direct call to action ('DISCOVER SMARTER CARE') risks being interpreted by regulatory authorities as unlawful pre-market commercialization or solicitation prior to 510(k) clearance or De Novo authorization.",
+          "suggested_questions": [
+            "What is the current regulatory status of the PulsePro X1 (e.g., cleared 510(k), investigational device under IDE, or purely internal conceptual design)?",
+            "What is the intended distribution channel and audience for this collateral (e.g., internal presentation, investor deck, trade show, or public-facing marketing)?",
+            "Has regulatory counsel reviewed the use of active commercial verbs for an uncleared product concept?"
+          ],
+          "suggested_actions": [
+            "If the device is not cleared/approved, revise headline copy to avoid implying commercial availability (e.g., 'Exploring the Future of Monitoring Concepts').",
+            "Ensure prominent pre-market / investigational disclosures appear in close conjunction with the primary headline rather than as a faint footer disclaimer.",
+            "Clarify whether commercial promotion is legally permissible at this development milestone."
+          ],
+          "location": {
+            "page": null,
+            "section": "Mid-page headline, CTA button, Footer disclaimer",
+            "bbox": [
+              0.18,
+              0.61,
+              0.82,
+              0.98
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-REG-2",
+          "review_lens": "regulatory",
+          "category": "disclosure",
+          "severity": "high",
+          "confidence": 0.9,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C9"
+          ],
+          "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "observation": "The regulatory disclaimer regarding concept status and clinical restriction is positioned in minimal font size at the bottom margin.",
+          "mlr_principle": "Prominence and legibility of mandatory regulatory qualifications and disclaimers (21 CFR 202.1 / 21 CFR 801)",
+          "discussion": "Regulators evaluate promotional materials based on their 'net impression'. When the predominant visual hierarchy communicates a functional, clinically deployed device with live ECG waveforms and specific numerical vitals, a small single-line footer disclaimer disclaiming clinical use is generally insufficient to cure an overall misleading impression of commercial and clinical availability. Regulatory bodies frequently cite footnote-only disclaimers as inadequate to neutralize bold, affirmative promotional headers.",
+          "suggested_questions": [
+            "Does the current font size, contrast, and visual prominence of the concept disclaimer satisfy corporate compliance guidelines for non-commercial demonstrations?",
+            "Can the 'Not for Clinical Use' designation be elevated to the primary viewing area?",
+            "Does the footer text satisfy minimum font size recommendations (e.g., 8–10 pt print equivalent) and contrast ratios across viewing formats?"
+          ],
+          "suggested_actions": [
+            "Increase the font size and contrast of the concept disclaimer.",
+            "Position the non-clinical status in direct visual proximity to the device render (C2) or the primary headline (C3).",
+            "Standardize the disclaimer language to align with recognized regulatory wording (e.g., 'Device Concept – Not Available for Sale or Clinical Use in the United States').",
+            "Increase the type size of the footer text and provide sufficient breathing room from the bottom page boundary."
+          ],
+          "location": {
+            "page": null,
+            "section": "Footer disclaimer",
+            "bbox": [
+              0.24,
+              0.96,
+              0.76,
+              0.98
+            ],
+            "quote": "Fictional product concept • Illustrative specifications • Not for clinical use."
+          },
+          "also_raised_by": [
+            "editorial"
+          ],
+          "merged_from": [
+            {
+              "review_lens": "editorial",
+              "category": "accessibility",
+              "severity": "medium",
+              "observation": "The footer disclaimer is set in a very small font size positioned tightly against the bottom margin.",
+              "mlr_principle": "Essential qualifying disclaimers must meet minimum legible type size and contrast standards."
+            }
+          ]
+        },
+        {
+          "finding_id": "F-REG-3",
+          "review_lens": "regulatory",
+          "category": "indication_scope",
+          "severity": "high",
+          "confidence": 0.88,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C2",
+            "C4"
+          ],
+          "quoted_content": "REAL-TIME VITALS",
+          "observation": "The asset implies comprehensive physiological monitoring (ECG tracing, pulse, SpO2/blood pressure numbers) without articulating an approved or cleared Indication for Use (IFU) statement.",
+          "mlr_principle": "Adequate directions for use and defined Indications for Use statement (21 CFR 801.5 / 21 CFR 801.109)",
+          "discussion": "Promotional materials directed to healthcare professionals for diagnostic and monitoring devices must clearly state the intended patient population (e.g., adult, pediatric, neonatal), monitoring environment (e.g., hospital, transport, ambulatory, home care), and specific physiological parameters cleared for diagnostic utility. Depicting multi-parameter waveforms alongside broad claims of 'REAL-TIME VITALS' without articulating the intended use leaves the scope ambiguous and risks misbranding under Section 502(f)(1).",
+          "suggested_questions": [
+            "What specific indications for use and patient populations are specified in the cleared labeling or draft 510(k) submission?",
+            "Is the monitor intended for diagnostic-grade ECG monitoring or general telemetry trend monitoring?"
+          ],
+          "suggested_actions": [
+            "Incorporate a concise Indications for Use summary defining the validated parameters and target patient populations.",
+            "Explicitly state the intended clinical environment (e.g., acute care, step-down, ambulatory)."
+          ],
+          "location": {
+            "page": null,
+            "section": "Central image, Feature list - top left",
+            "bbox": [
+              0.14,
+              0.21,
+              0.68,
+              0.78
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-REG-4",
+          "review_lens": "regulatory",
+          "category": "important_safety_info",
+          "severity": "high",
+          "confidence": 0.92,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C4",
+            "C6",
+            "C7"
+          ],
+          "quoted_content": null,
+          "observation": "The piece lacks an Important Safety Information (ISI) section, warnings, precautions, or contraindications associated with physiological monitoring and telemetry.",
+          "mlr_principle": "Fair balance and requirement for risk disclosure in promotional materials (21 CFR 202.1 / 21 CFR 801)",
+          "discussion": "Even in abbreviated or promotional display materials, medical device communications that feature specific clinical capabilities and benefits must present balanced risk information. For patient monitors, critical safety considerations typically include limitations of wireless transmission, requirements for secondary visual/audible alarms, contraindications during MRI/defibrillation, or prerequisites for user verification. The complete absence of safety or warning information creates an impermissible imbalance between claimed capabilities and safe operational boundaries.",
+          "suggested_questions": [
+            "What boxed warnings, contraindications, or critical precautions are outlined in the device's labeling or risk management file?",
+            "What format of brief summary or risk disclosure is required for this communication vehicle?"
+          ],
+          "suggested_actions": [
+            "Add a dedicated brief safety statement or link/reference to Important Safety Information.",
+            "Specify critical precautions, such as wireless dropout dependencies or defibrillation protection status."
+          ],
+          "location": {
+            "page": null,
+            "section": "Feature list - top left, Feature list - bottom left, Feature list - bottom right",
+            "bbox": [
+              0.14,
+              0.76,
+              0.8,
+              0.83
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-MED-1",
+          "review_lens": "medical",
+          "category": "clinical_accuracy",
+          "severity": "medium",
+          "confidence": 0.95,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C2"
+          ],
+          "quoted_content": "numerical vitals (936, 99, 60, 128)",
+          "observation": "The physiological readout depicted on the device display includes a value of '936', which is non-physiological for any standard patient monitoring parameter.",
+          "mlr_principle": "Factual representation of clinical parameters and diagnostic metrics",
+          "discussion": "In patient monitoring interfaces, values displayed adjacent to heart rate, oxygen saturation, or blood pressure must reflect plausible physiological data or standard units (e.g., 93.6°F for temperature). Displaying an unlabelled integer of '936' undermines clinical credibility and could confuse clinical evaluators assessing interface legibility and parameter prioritization. Clinicians expect accurate contextual units and clinically valid ranges on any interface representation.",
+          "suggested_questions": [
+            "What clinical parameter was '936' intended to represent (e.g., temperature of 93.6°F, or an index value)?",
+            "Can standard medical units (mmHg, bpm, %, °C/°F) and appropriate decimal delimiters be added to all numerical values?",
+            "What physiological parameter does '936' represent on the screen mock-up?",
+            "Can design replace mock telemetry values with standard physiological norms (e.g., HR 72, SpO2 98, BP 120/80)?",
+            "What physiological parameter does the displayed value '936' represent?",
+            "Was this screen graphic derived from actual bench testing/software GUI or fabricated by a graphic designer?"
+          ],
+          "suggested_actions": [
+            "Correct the numerical display to reflect plausible physiological parameters with standard clinical units (e.g., Temp: 98.6°F, SpO2: 99%, PR: 60 bpm, BP: 128/80 mmHg).",
+            "Ensure standard labeling of lead configuration for the displayed ECG waveform.",
+            "Update the graphical interface mock-up to depict realistic clinical values and labeled measurement units.",
+            "Replace the screen render graphic with verified, clinically plausible physiological metrics and standard labeled parameters (e.g., HR, SpO2, BP, RR).",
+            "Ensure telemetry waveforms accurately match the associated numerical indicators."
+          ],
+          "location": {
+            "page": null,
+            "section": "Central image",
+            "bbox": [
+              0.32,
+              0.21,
+              0.68,
+              0.53
+            ],
+            "quote": null
+          },
+          "also_raised_by": [
+            "legal",
+            "regulatory"
+          ],
+          "merged_from": [
+            {
+              "review_lens": "legal",
+              "category": "clinical_accuracy",
+              "severity": "medium",
+              "observation": "The simulated monitor screen displays clinical numerical vitals including an aberrant metric '936'.",
+              "mlr_principle": "Depictions of clinical physiological values in promotional device visuals must be medically plausible and clinically accurate."
+            },
+            {
+              "review_lens": "regulatory",
+              "category": "clinical_accuracy",
+              "severity": "medium",
+              "observation": "The device render displays physiological metrics including an implausible numerical value ('936') alongside typical clinical vitals (99, 60, 128).",
+              "mlr_principle": "Accuracy and clinical validity of promotional illustrations and imagery (21 CFR 801 / FDA Promotional Guidance)"
+            }
+          ]
+        },
+        {
+          "finding_id": "F-MED-2",
+          "review_lens": "medical",
+          "category": "clinical_accuracy",
+          "severity": "medium",
+          "confidence": 0.88,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C2"
+          ],
+          "quoted_content": null,
+          "observation": "The ECG rhythm tracing lacks lead identification, gain/calibration markers, and sweep speed standard in clinical telemetry.",
+          "mlr_principle": "Scientific rigor in physiological waveform presentation",
+          "discussion": "When presenting diagnostic or monitoring waveforms to healthcare professionals, standard electrocardiographic conventions (such as lead specification, e.g., Lead II, and calibration indicators) establish whether the trace represents a diagnostic-quality rhythm or indicative telemetry. Displaying an uncalibrated waveform without lead context can mislead clinicians regarding the diagnostic capabilities of the device.",
+          "suggested_questions": [
+            "Is the PulsePro X1 intended for diagnostic ECG interpretation or basic heart rate rhythm monitoring?",
+            "Can a standard lead designation (e.g., Lead II) and scale reference be incorporated into the mock interface?"
+          ],
+          "suggested_actions": [
+            "Add standard clinical waveform labeling (e.g., Lead II, 25 mm/s, 10 mm/mV) to the visual display render.",
+            "Clarify whether the device is indicated for rhythm assessment or simple heart rate tracking."
+          ],
+          "location": {
+            "page": null,
+            "section": "Central image",
+            "bbox": [
+              0.32,
+              0.21,
+              0.68,
+              0.53
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-MED-3",
+          "review_lens": "medical",
+          "category": "efficacy_claim",
+          "severity": "medium",
+          "confidence": 0.9,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C4"
+          ],
+          "quoted_content": "REAL-TIME VITALS",
+          "observation": "The claim of 'REAL-TIME VITALS' is unqualified with respect to transmission latency, parameter refresh rates, and clinical accuracy standards.",
+          "mlr_principle": "Precision in diagnostic and telemetry efficacy performance claims",
+          "discussion": "In clinical telemetry, 'real-time' implies continuous, zero-latency or near-zero latency streaming capable of capturing emergent hemodynamic instability, such as lethal arrhythmias or sudden desaturation. Without defining latency limits, sensor sampling rates, or transmission protocols, the claim risks overpromising telemetry capability in acute care settings where delay could jeopardize patient safety.",
+          "suggested_questions": [
+            "What is the actual latency and update interval for each monitored parameter?",
+            "Has bench testing or clinical validation demonstrated continuous real-time transmission under hospital network loads?",
+            "What is the verified telemetry latency and sampling rate of the PulsePro X1?",
+            "Does the device continuously stream or intermittently poll vitals?",
+            "What latency and sampling frequency benchmarks substantiate the 'real-time' claim?",
+            "Does labeling describe latency or transmission delay under varying wireless bandwidth conditions?"
+          ],
+          "suggested_actions": [
+            "Qualify the claim to define transmission frequency (e.g., 'Continuous physiological telemetry with near real-time updates').",
+            "Provide supporting bench or clinical validation data demonstrating latency metrics.",
+            "Document the engineering bench testing and latency validation in the MLR promotional file.",
+            "Add clarifying parameters (e.g., continuous streaming telemetry) if necessary.",
+            "Ensure technical documentation supports the real-time transmission claim.",
+            "Consider qualifying the claim if data transmission is subject to periodic polling, synchronization delays, or network limitations."
+          ],
+          "location": {
+            "page": null,
+            "section": "Feature list - top left",
+            "bbox": [
+              0.14,
+              0.76,
+              0.39,
+              0.78
+            ],
+            "quote": "REAL-TIME VITALS"
+          },
+          "also_raised_by": [
+            "legal",
+            "regulatory"
+          ],
+          "merged_from": [
+            {
+              "review_lens": "legal",
+              "category": "claim_substantiation",
+              "severity": "medium",
+              "observation": "The claim 'REAL-TIME VITALS' is stated without definition, technical parameters, or latency substantiation.",
+              "mlr_principle": "Objective technical claims regarding clinical diagnostic performance require verifiable technical specifications and validation testing."
+            },
+            {
+              "review_lens": "regulatory",
+              "category": "claim_substantiation",
+              "severity": "medium",
+              "observation": "The term 'REAL-TIME' conveys instantaneous data transmission and display without specifying latency, update rates, or transmission boundaries.",
+              "mlr_principle": "Substantiation of technical specifications and performance claims in medical device advertising"
+            }
+          ]
+        },
+        {
+          "finding_id": "F-MED-4",
+          "review_lens": "medical",
+          "category": "safety_profile",
+          "severity": "medium",
+          "confidence": 0.92,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C7"
+          ],
+          "quoted_content": "ADVANCED ALERTS",
+          "observation": "The promotion of 'ADVANCED ALERTS' fails to describe alarm parameters, notification priority tiers, or mechanisms to mitigate alarm fatigue.",
+          "mlr_principle": "Clinical safety and risk disclosure in physiological alarm systems",
+          "discussion": "Alarm fatigue is a recognized Joint Commission National Patient Safety Goal and a major source of clinical risk in patient monitoring. Promoting 'advanced alerts' without qualifying whether the system uses algorithmic artifact filtering, predictive trend analysis, or standard threshold alarms leaves clinicians unable to evaluate alert specificity and clinical utility versus the risk of nuisance alarms.",
+          "suggested_questions": [
+            "What constitutes 'advanced alerts'—does this refer to arrhythmia detection algorithms, early warning scores (e.g., MEWS/NEWS), or multi-parameter thresholding?",
+            "What data exist regarding alarm sensitivity, specificity, and false alarm reduction?"
+          ],
+          "suggested_actions": [
+            "Specify the nature of the alerting capability (e.g., 'Intelligent multi-parameter threshold alerts designed to minimize false alarms').",
+            "Incorporate a brief statement acknowledging the clinician's role in verifying alarms and setting individualized patient thresholds."
+          ],
+          "location": {
+            "page": null,
+            "section": "Feature list - bottom right",
+            "bbox": [
+              0.55,
+              0.8,
+              0.8,
+              0.83
+            ],
+            "quote": "ADVANCED ALERTS"
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-MED-5",
+          "review_lens": "medical",
+          "category": "fair_balance",
+          "severity": "medium",
+          "confidence": 0.89,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C3",
+            "C4",
+            "C6",
+            "C7",
+            "C8"
+          ],
+          "quoted_content": null,
+          "observation": "The piece emphasizes advanced technological capabilities without any accompanying discussion of clinical limitations, environmental constraints, or failure modes.",
+          "mlr_principle": "Fair balance of clinical utility and operational risk",
+          "discussion": "From a clinical perspective, an honest assessment of patient monitoring technology must counterbalance monitoring benefits with operational prerequisites. For example, wireless telemetry is vulnerable to dropouts, dead zones, and motion artifact. Presenting seamless wireless connectivity and advanced alerts without acknowledging clinical oversight requirements fails to provide balanced context to the prescribing or procuring healthcare provider.",
+          "suggested_questions": [
+            "What are the device's operational limitations regarding wireless range, motion artifact rejection, and critical alert fail-safes?",
+            "Are there critical clinical environments (e.g., MRI suite, high-electrocautery surgical suites) where the device cannot be used?"
+          ],
+          "suggested_actions": [
+            "Include concise risk context or operational prerequisites (e.g., 'Requires compatible enterprise Wi-Fi infrastructure; not intended as a substitute for primary bedside monitoring in critical care').",
+            "Ensure marketing materials balance claims of wireless freedom with guidance on telemetry oversight."
+          ],
+          "location": {
+            "page": null,
+            "section": "Mid-page headline, Feature list - top left, Feature list - bottom left",
+            "bbox": [
+              0.14,
+              0.61,
+              0.87,
+              0.93
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-MED-6",
+          "review_lens": "medical",
+          "category": "patient_population",
+          "severity": "medium",
+          "confidence": 0.85,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C3",
+            "C8"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+          "observation": "The piece lacks definition of the target patient population or clinical care setting (e.g., intensive care, general medical-surgical floor, ambulatory, or home use).",
+          "mlr_principle": "Clear demarcation of intended patient population and clinical use environment",
+          "discussion": "Patient monitoring standards differ drastically between continuous ICU telemetry, med-surg step-down units, and outpatient ambulatory settings. By proclaiming the 'future of patient monitoring' without defining whether this device is intended for adult, pediatric, or neonatal patients, or for high-acuity versus low-acuity environments, clinicians cannot assess whether the technology meets appropriate clinical standards of care for their specific patient cohort.",
+          "suggested_questions": [
+            "For which patient populations (adult, pediatric, neonatal) is this device clinically validated?",
+            "In which care settings (ICU, general ward, ambulatory transport) is the device intended to function as a primary monitor?"
+          ],
+          "suggested_actions": [
+            "Clearly indicate intended patient demographics and clinical care environments in the body copy or subheadline.",
+            "Add explicit indication bounds (e.g., 'Designed for continuous vital signs surveillance in adult medical-surgical wards')."
+          ],
+          "location": {
+            "page": null,
+            "section": "Mid-page headline, CTA button",
+            "bbox": [
+              0.18,
+              0.61,
+              0.82,
+              0.72
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-MED-7",
+          "review_lens": "medical",
+          "category": "disclosure",
+          "severity": "medium",
+          "confidence": 0.94,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C9"
+          ],
+          "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "observation": "The disclaimer stating 'Not for clinical use' contradicts the HCP-targeted promotional claims and clinical setting imagery.",
+          "mlr_principle": "Consistency of promotional context and investigational/concept disclosures",
+          "discussion": "When promotional material simulates an active medical device marketed to HCPs with specific physiological claims ('Real-Time Vitals', 'Advanced Alerts'), relegating 'Not for clinical use' to an unobtrusive footer creates clinical dissonance. If this is an investigational or fictional concept, that status must be prominent enough to prevent clinical decision-makers from assuming the device is an available, cleared diagnostic tool.",
+          "suggested_questions": [
+            "Is this material intended solely for internal R&D/concept testing, or is it intended for pre-market commercial display at scientific congresses?",
+            "If intended for external audiences, what regulatory framework (e.g., investigational device display) governs the piece?"
+          ],
+          "suggested_actions": [
+            "Increase the prominence and clarity of the concept/investigational disclosure if displayed externally.",
+            "Add clear language stating: 'Investigational Device. Limited by Federal (or applicable) law to investigational use. Not available for sale or clinical use.'"
+          ],
+          "location": {
+            "page": null,
+            "section": "Footer disclaimer",
+            "bbox": [
+              0.24,
+              0.96,
+              0.76,
+              0.98
+            ],
+            "quote": "Fictional product concept • Illustrative specifications • Not for clinical use."
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-LEG-2",
+          "review_lens": "legal",
+          "category": "superlative_claim",
+          "severity": "medium",
+          "confidence": 0.88,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C3"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+          "observation": "The headline asserts category leadership and transformative future standard-of-care status without substantiation.",
+          "mlr_principle": "Superlative, category-defining claims must be substantiated or clearly qualified to avoid creating actionable false expectations under competitor challenge frameworks (Lanham Act).",
+          "discussion": "While frequently defended as mere puffery, claims stating that the 'future of [a therapeutic or diagnostic area] is here' can cross into measurable representations of superiority over existing monitors when paired with specific functional claims (real-time vitals, advanced alerts). Competitors could challenge this statement under Lanham Act § 43(a) if the device's technical specifications do not demonstrably exceed current standard-of-care telemetry systems.",
+          "suggested_questions": [
+            "What market or technical data supports the assertion that this device represents the 'future' compared to incumbent patient monitors?",
+            "Can the headline be softened or framed around the company's innovation journey?"
+          ],
+          "suggested_actions": [
+            "Review substantiation file for technical feature comparisons against leading bedside/portable monitors.",
+            "Consider qualifying the headline to emphasize design innovation rather than absolute category evolution (e.g., 'Advancing the possibilities of patient monitoring')."
+          ],
+          "location": {
+            "page": null,
+            "section": "Mid-page headline",
+            "bbox": [
+              0.18,
+              0.61,
+              0.82,
+              0.72
+            ],
+            "quote": "THE FUTURE OF PATIENT MONITORING IS HERE."
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-LEG-3",
+          "review_lens": "legal",
+          "category": "disclosure",
+          "severity": "medium",
+          "confidence": 0.88,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C1",
+            "C3",
+            "C9"
+          ],
+          "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "observation": "The asset is structured and styled as an external commercial advertisement but lacks explicit internal-use-only or confidentiality demarcations to prevent unauthorized dissemination.",
+          "mlr_principle": "Unapproved product concepts and pre-clearance development materials must maintain explicit confidentiality designations and distribution limitations to prevent inadvertent public exposure.",
+          "discussion": "The defense brief emphasizes that this collateral is an exploratory concept intended for internal alignment and value proposition staging. However, the visual layout mirrors a public commercial digital ad or journal insert without any 'Confidential - For Internal Evaluation Only' header or background watermark. If transmitted without technical and visual access restrictions, it presents a substantial risk of being construed by external observers as premature pre-market promotion.",
+          "suggested_questions": [
+            "What safeguards prevent this concept file from being circulated externally to hospital customers or sales teams?",
+            "Should a prominent watermark or header restrict the distribution to internal design and MLR review teams?"
+          ],
+          "suggested_actions": [
+            "Add a prominent header or semi-transparent background watermark reading 'INTERNAL DESIGN CONCEPT ONLY - NOT FOR EXTERNAL USE OR DISTRIBUTION'.",
+            "Document distribution restrictions clearly in the promotional routing metadata."
+          ],
+          "location": {
+            "page": null,
+            "section": "Header, Mid-page headline, Footer disclaimer",
+            "bbox": [
+              0.18,
+              0.05,
+              0.82,
+              0.98
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-REG-5",
+          "review_lens": "regulatory",
+          "category": "claim_substantiation",
+          "severity": "medium",
+          "confidence": 0.85,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C7"
+          ],
+          "quoted_content": "ADVANCED ALERTS",
+          "observation": "The claim 'ADVANCED ALERTS' asserts diagnostic or clinical alarm sophistication without clarifying whether the system provides clinical decision support (CDS) or simple threshold-based alarms.",
+          "mlr_principle": "Substantiation of clinical decision support and alarm performance claims under FDA CDS Guidance",
+          "discussion": "Under FDA guidance on Clinical Decision Support Software, software functions that provide automated alerts, predictive deterioration scoring, or algorithmic recommendations are scrutinized carefully to determine whether they qualify as regulated device software functions or non-device CDS. Claiming 'ADVANCED ALERTS' without qualifying the underlying clearance, sensitivity/specificity, or alarm latency leaves the claim unsubstantiated and open to regulatory challenge regarding whether the device performs automated clinical triage.",
+          "suggested_questions": [
+            "What specific algorithm or feature does 'ADVANCED ALERTS' describe?",
+            "Has the alert functionality been cleared as a Software as a Medical Device (SaMD) or as part of a 510(k) monitor system?",
+            "Are the alerts threshold-based, predictive, or AI/ML-driven?",
+            "What specific alerting capabilities exist beyond standard threshold limit alarms?",
+            "Are these alert functions classified as Clinical Decision Support (CDS) software under FDA digital health guidance?"
+          ],
+          "suggested_actions": [
+            "Qualify 'ADVANCED ALERTS' to define the functional capability (e.g., 'Configurable physiological threshold alerts').",
+            "Ensure substantiating technical performance data or 510(k) summary references support the terminology.",
+            "Clarify the nature of the alerts in accompanying body copy (e.g., customizable threshold telemetry notifications).",
+            "Ensure algorithmic alert claims align with regulatory classification and CDS clearance."
+          ],
+          "location": {
+            "page": null,
+            "section": "Feature list - bottom right",
+            "bbox": [
+              0.55,
+              0.8,
+              0.8,
+              0.83
+            ],
+            "quote": "ADVANCED ALERTS"
+          },
+          "also_raised_by": [
+            "legal"
+          ],
+          "merged_from": [
+            {
+              "review_lens": "legal",
+              "category": "claim_substantiation",
+              "severity": "medium",
+              "observation": "The phrase 'ADVANCED ALERTS' implies sophisticated algorithmic or predictive clinical decision support (CDS) functionality.",
+              "mlr_principle": "Statements suggesting proprietary algorithmic capability, predictive alerts, or clinical decision support must specify alert criteria and maintain documented clinical validation."
+            }
+          ]
+        },
+        {
+          "finding_id": "F-REG-6",
+          "review_lens": "regulatory",
+          "category": "superlative_claim",
+          "severity": "medium",
+          "confidence": 0.82,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C3"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+          "observation": "The headline presents an absolute forward-looking superiority claim characterizing the device as 'the future of patient monitoring'.",
+          "mlr_principle": "Truthful and non-misleading promotional claims; prohibition of unsubstantiated superlative or superiority claims",
+          "discussion": "While frequently viewed by marketing teams as generalized puffery, absolute statements regarding technological advancement ('THE FUTURE... IS HERE') in healthcare advertising are evaluated by OPDP and CDRH within the context of whether they imply clinical or technological superiority over existing cleared standards of care. Without head-to-head evidence demonstrating that PulsePro X1 establishes a new clinical standard, regulators may consider the claim misleading.",
+          "suggested_questions": [
+            "Does the company possess comparative evidence demonstrating technological or clinical superiority over existing market-standard patient monitors?",
+            "Is legal/regulatory comfortable defending this as non-actionable puffery, or should it be framed around innovation rather than categorical leadership?"
+          ],
+          "suggested_actions": [
+            "Moderate the headline to focus on the company's continuous innovation (e.g., 'Advancing the Next Generation of Patient Monitoring').",
+            "If retained as marketing concept copy, ensure clear contextualization showing it refers to design vision rather than proven clinical superiority."
+          ],
+          "location": {
+            "page": null,
+            "section": "Mid-page headline",
+            "bbox": [
+              0.18,
+              0.61,
+              0.82,
+              0.72
+            ],
+            "quote": "THE FUTURE OF PATIENT MONITORING IS HERE."
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-ED-1",
+          "review_lens": "editorial",
+          "category": "clarity",
+          "severity": "medium",
+          "confidence": 0.85,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C2"
+          ],
+          "quoted_content": null,
+          "observation": "The device render displays physiological numeric values without clearly legible measurement units or physiological context.",
+          "mlr_principle": "Clinical visuals must depict physiological parameters accurately with clear units of measure to avoid confusion.",
+          "discussion": "The screen mock-up depicts numbers such as '936', '99', '60', and '128' alongside an ECG tracing. While an HCP may infer standard vitals like heart rate or SpO2, a value like '936' is clinically nonsensical or alarming without an explicit unit (such as steps, device telemetry ID, or battery status).",
+          "suggested_questions": [
+            "What specific metric does the value '936' represent on this interface?",
+            "Are units of measure (e.g., bpm, %, mmHg) clearly visible to the user at native viewing resolution?"
+          ],
+          "suggested_actions": [
+            "Add explicit units of measurement next to each numerical read-out on the simulated display screen.",
+            "Ensure all rendered values reflect realistic, clinically plausible physiological states."
+          ],
+          "location": {
+            "page": null,
+            "section": "Central image",
+            "bbox": [
+              0.32,
+              0.21,
+              0.68,
+              0.53
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-ED-2",
+          "review_lens": "editorial",
+          "category": "visual_design",
+          "severity": "medium",
+          "confidence": 0.9,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C2",
+            "C9"
+          ],
+          "quoted_content": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+          "observation": "A highly realistic product rendering is juxtaposed with a tiny, understated footer disclaimer stating the device is fictional.",
+          "mlr_principle": "Visual realism should not contradict or overpower qualifying disclosures regarding product status.",
+          "discussion": "The central image presents a polished, production-ready hospital monitor in an authentic clinical environment, yet the qualification that this is a fictional concept appears in minimal font at the very bottom edge. This disparity can lead readers to mistakenly believe the device is an available, cleared medical device.",
+          "suggested_questions": [
+            "Should the concept status be integrated more visibly near the device name or render?"
+          ],
+          "suggested_actions": [
+            "Include a clear 'Concept Prototype' badge or subtitle near the product name on the device or header.",
+            "Increase the prominence and font size of the disclaimer relative to the hero imagery."
+          ],
+          "location": {
+            "page": null,
+            "section": "Central image, Footer disclaimer",
+            "bbox": [
+              0.24,
+              0.21,
+              0.76,
+              0.98
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-MED-8",
+          "review_lens": "medical",
+          "category": "superlative_claim",
+          "severity": "low",
+          "confidence": 0.91,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C3",
+            "C8"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE. / DISCOVER SMARTER CARE",
+          "observation": "The broad assertions of 'the future of patient monitoring' and 'smarter care' imply superior clinical outcomes without evidence of clinical benefit.",
+          "mlr_principle": "Substantiation of outcome-based clinical claims",
+          "discussion": "Phrases like 'smarter care' and 'the future of patient monitoring' imply improved diagnostic yield, reduced adverse events, or superior workflow efficiency compared to current standard monitoring solutions. While common in conceptual branding, healthcare professionals interpret these phrases as assertions of clinical superiority or enhanced patient outcomes, which must be supported by clinical utility studies.",
+          "suggested_questions": [
+            "What comparative clinical evidence supports the claim that this system delivers 'smarter care' or improved outcomes over standard-of-care telemetry?",
+            "Can the language be reframed around specific technological design features rather than outcome-laden superlatives?"
+          ],
+          "suggested_actions": [
+            "Moderate the headline to focus on technological features (e.g., 'Advancing Portable Patient Monitoring').",
+            "Retain clinical validation dossiers to support any forward-looking claims prior to formal commercial launch."
+          ],
+          "location": {
+            "page": null,
+            "section": "Mid-page headline, CTA button",
+            "bbox": [
+              0.18,
+              0.61,
+              0.82,
+              0.93
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-LEG-4",
+          "review_lens": "legal",
+          "category": "intellectual_property",
+          "severity": "low",
+          "confidence": 0.85,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C1",
+            "C2"
+          ],
+          "quoted_content": "VITALYNX Medical Technologies",
+          "observation": "Brand and product names 'VITALYNX' and 'PulsePro X1' are displayed without trademark symbols (™ or ®).",
+          "mlr_principle": "Trademarks and product trade names should be appropriately marked with ™ or ® on first prominent commercial use to preserve and protect intellectual property rights.",
+          "discussion": "Neither 'VITALYNX' nor 'PulsePro X1' bear trademark designation symbols in the headline, logo header, or device render screen. Failing to consistently mark new proprietary brand and product designations can weaken trademark distinctiveness and create enforcement vulnerabilities against third-party infringement.",
+          "suggested_questions": [
+            "Has a trademark clearance search been performed for 'PulsePro' and 'Vitalynx' in medical device classes (IC 010)?",
+            "Are trademark applications filed or registrations issued?"
+          ],
+          "suggested_actions": [
+            "Apply appropriate trademark symbols (™ or ®) on first prominent appearance in text and within device branding.",
+            "Verify status with IP counsel."
+          ],
+          "location": {
+            "page": null,
+            "section": "Header, Central image",
+            "bbox": [
+              0.32,
+              0.06,
+              0.68,
+              0.53
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-LEG-5",
+          "review_lens": "legal",
+          "category": "comparative_claim",
+          "severity": "low",
+          "confidence": 0.82,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C8"
+          ],
+          "quoted_content": "DISCOVER SMARTER CARE",
+          "observation": "The CTA slogan 'DISCOVER SMARTER CARE' sets up an implicit comparative claim against standard care technologies.",
+          "mlr_principle": "Comparative claims implying that an offering delivers 'smarter' clinical outcomes require comparative clinical evidence or risk Lanham Act challenge.",
+          "discussion": "Calling the solution 'smarter care' implies that using PulsePro X1 yields superior clinical workflow or care quality compared to alternative standard-of-care patient monitoring equipment. While often defensible as aspirational brand puffery, in medical marketing it can be scrutinized if presented alongside clinical features as an outcome-based efficacy promise.",
+          "suggested_questions": [
+            "Is 'Smarter Care' intended as an overarching corporate marketing tagline or a specific product outcome claim?"
+          ],
+          "suggested_actions": [
+            "Ensure accompanying landing pages and digital destinations linked to this CTA do not make unsubstantiated clinical comparative efficacy assertions."
+          ],
+          "location": {
+            "page": null,
+            "section": "CTA button",
+            "bbox": [
+              0.28,
+              0.87,
+              0.72,
+              0.93
+            ],
+            "quote": "DISCOVER SMARTER CARE"
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-REG-7",
+          "review_lens": "regulatory",
+          "category": "claim_substantiation",
+          "severity": "low",
+          "confidence": 0.82,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C6"
+          ],
+          "quoted_content": "WIRELESS CONNECTIVITY",
+          "observation": "The claim 'WIRELESS CONNECTIVITY' does not specify supported protocols, cybersecurity standards, or telemetry network compatibility.",
+          "mlr_principle": "Clarity of device interoperability, cybersecurity, and networking capabilities in device promotion",
+          "discussion": "Hospital procurement committees and healthcare providers require clarity regarding the wireless communication standards utilized (e.g., Wi-Fi 802.11, Bluetooth LE, proprietary RF) and cybersecurity architecture. An unqualified wireless claim can obscure whether the device connects directly to hospital Electronic Health Record (EHR) systems, central nursing stations, or proprietary gateways.",
+          "suggested_questions": [
+            "What wireless protocols are utilized by PulsePro X1?",
+            "Is integration with hospital networks and EHR systems supported and cleared?",
+            "What wireless protocols are supported (e.g., Bluetooth LE, Wi-Fi 802.11, cellular)?",
+            "Is communication encrypted to protect protected health information (PHI)?"
+          ],
+          "suggested_actions": [
+            "Clarify the nature of the wireless connectivity (e.g., 'Hospital-grade Wi-Fi & Bluetooth telemetry integration').",
+            "Ensure cybersecurity and wireless coexistence validation are documented in the design history file.",
+            "Specify connectivity standards in product documentation or footnotes (e.g., 'Secure BLE and Wi-Fi data export')."
+          ],
+          "location": {
+            "page": null,
+            "section": "Feature list - bottom left",
+            "bbox": [
+              0.14,
+              0.8,
+              0.49,
+              0.83
+            ],
+            "quote": "WIRELESS CONNECTIVITY"
+          },
+          "also_raised_by": [
+            "legal"
+          ],
+          "merged_from": [
+            {
+              "review_lens": "legal",
+              "category": "claim_substantiation",
+              "severity": "low",
+              "observation": "The piece states 'WIRELESS CONNECTIVITY' without indicating protocol, security compliance, or hospital network integration.",
+              "mlr_principle": "Medical device connectivity claims require specification of transmission standards and appropriate cybersecurity/encryption disclosures."
+            }
+          ]
+        },
+        {
+          "finding_id": "F-REG-8",
+          "review_lens": "regulatory",
+          "category": "clarity",
+          "severity": "low",
+          "confidence": 0.78,
+          "confidence_band": "medium",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C5"
+          ],
+          "quoted_content": "INTUITIVE OLED DISPLAY",
+          "observation": "The claim 'INTUITIVE OLED DISPLAY' combines an objective hardware specification (OLED display) with an unsubstantiated usability descriptor ('INTUITIVE').",
+          "mlr_principle": "Usability and human factors engineering claim substantiation (FDA Human Factors Guidance)",
+          "discussion": "Describing a medical device user interface as 'intuitive' implies that formal human factors usability testing has verified that clinical users can operate the interface safely and effectively with minimal training. If human factors validation or summative testing has not specifically demonstrated interface intuitiveness, the descriptor may be challenged as an unsubstantiated usability claim.",
+          "suggested_questions": [
+            "Has summative human factors usability testing been completed to substantiate the intuitive nature of the interface?",
+            "Is the descriptor intended as descriptive marketing copy or a verified design attribute?",
+            "Has human-factors testing or user acceptance testing been conducted evaluating interface usability?",
+            "Can 'intuitive' be replaced with descriptive hardware specifications?"
+          ],
+          "suggested_actions": [
+            "Verify that human factors study data supports user interface usability claims, or simplify the claim to 'High-Resolution OLED Display'.",
+            "Ensure the user interface claims match the cleared human factors labeling.",
+            "Maintain usability evaluation reports in the substantiation binder, or replace with objective physical descriptors (e.g., 'High-Contrast OLED Touchscreen')."
+          ],
+          "location": {
+            "page": null,
+            "section": "Feature list - top right",
+            "bbox": [
+              0.55,
+              0.76,
+              0.87,
+              0.78
+            ],
+            "quote": "INTUITIVE OLED DISPLAY"
+          },
+          "also_raised_by": [
+            "legal"
+          ],
+          "merged_from": [
+            {
+              "review_lens": "legal",
+              "category": "claim_substantiation",
+              "severity": "low",
+              "observation": "The adjective 'INTUITIVE' represents a usability claim regarding human factors and user interface design.",
+              "mlr_principle": "User-interface and human-factors claims ('intuitive', 'easy-to-use') require user testing validation to withstand substantiation challenges."
+            }
+          ]
+        },
+        {
+          "finding_id": "F-REG-9",
+          "review_lens": "regulatory",
+          "category": "regulatory_guidance",
+          "severity": "low",
+          "confidence": 0.85,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C8"
+          ],
+          "quoted_content": "DISCOVER SMARTER CARE",
+          "observation": "The call-to-action 'DISCOVER SMARTER CARE' links the monitoring hardware to overarching clinical care quality improvement without outcome evidence.",
+          "mlr_principle": "Substantiation of clinical outcome claims versus product feature promotion",
+          "discussion": "Claims that a device delivers 'smarter care' subtly cross from device operational capability into clinical outcome and standard-of-care claims. Under FDA and FTC guidance, claims implying superior clinical outcomes or care delivery must be substantiated by sound clinical evidence demonstrating improved diagnostic turnaround, reduced alarm fatigue, or enhanced patient outcomes.",
+          "suggested_questions": [
+            "Does the brand team possess clinical utility studies or health economic data showing PulsePro X1 delivers measurably improved care?",
+            "Is there an active landing page or portal linked to this CTA, and what claims are hosted on that destination?"
+          ],
+          "suggested_actions": [
+            "Review the target landing page associated with 'DISCOVER SMARTER CARE' to verify all downstream claims are appropriately substantiated and balanced.",
+            "Consider tailoring the CTA to device exploration (e.g., 'Discover PulsePro X1 Technology') rather than broad clinical care claims."
+          ],
+          "location": {
+            "page": null,
+            "section": "CTA button",
+            "bbox": [
+              0.28,
+              0.87,
+              0.72,
+              0.93
+            ],
+            "quote": "DISCOVER SMARTER CARE"
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-REG-10",
+          "review_lens": "regulatory",
+          "category": "regulatory_guidance",
+          "severity": "low",
+          "confidence": 0.9,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C1",
+            "C9"
+          ],
+          "quoted_content": null,
+          "observation": "The piece lacks a unique material identification number (job code) and a date of preparation or revision.",
+          "mlr_principle": "Standard healthcare compliance and document governance frameworks require promotional and conceptual collateral to bear unique tracking codes and dates of origination to ensure lifecycle control and auditability.",
+          "discussion": "Whether an asset is distributed externally or utilized for internal stakeholder alignment, formal MLR operations require document identifiers (e.g., job code, item code) and a creation/review date. Without these identifiers, compliance auditing, version control, and eventual retirement of outdated medical claims become difficult to monitor and enforce.",
+          "suggested_questions": [
+            "What internal job or project code is assigned to this creative asset in the electronic document management system?",
+            "Can a standard tracking code and date of preparation (e.g., 'Date of Preparation: MM/YYYY') be added to the bottom margin?"
+          ],
+          "suggested_actions": [
+            "Incorporate a compliant job code and date of preparation in the footer alongside corporate identifiers.",
+            "Ensure the asset is cataloged with an established lifecycle review expiration date."
+          ],
+          "location": {
+            "page": null,
+            "section": "Header, Footer disclaimer",
+            "bbox": [
+              0.24,
+              0.94,
+              0.76,
+              0.99
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-ED-3",
+          "review_lens": "editorial",
+          "category": "typography",
+          "severity": "low",
+          "confidence": 0.95,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C3"
+          ],
+          "quoted_content": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+          "observation": "The primary headline is set entirely in uppercase with terminal punctuation.",
+          "mlr_principle": "Sentence case enhances readability and avoids an aggressive, shouting tone in professional medical communications.",
+          "discussion": "Long lines of all-caps text reduce character shape differentiation, which slows down reading comprehension and feels overly forceful for a clinical audience. Additionally, terminal periods on isolated headline banners often create an abrupt visual stop rather than guiding the eye down the page.",
+          "suggested_questions": [
+            "Would sentence case or title case align better with a refined, professional healthcare aesthetic?"
+          ],
+          "suggested_actions": [
+            "Change the headline to sentence case or title case (e.g., 'The future of patient monitoring is here' or 'The Future of Patient Monitoring Is Here') and consider omitting the terminal period."
+          ],
+          "location": {
+            "page": null,
+            "section": "Mid-page headline",
+            "bbox": [
+              0.18,
+              0.61,
+              0.82,
+              0.72
+            ],
+            "quote": "THE FUTURE OF PATIENT MONITORING IS HERE."
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-ED-4",
+          "review_lens": "editorial",
+          "category": "typography",
+          "severity": "low",
+          "confidence": 0.9,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C4",
+            "C5",
+            "C6",
+            "C7"
+          ],
+          "quoted_content": null,
+          "observation": "All four product capability bullet points are styled in uniform uppercase sans-serif text without hierarchical secondary descriptors.",
+          "mlr_principle": "Typographic contrast between labels and descriptions improves scannability and information retention.",
+          "discussion": "Presenting feature callouts entirely in capitalized bold phrases makes them blend into visual blocks of similar visual weight. Adding sentence-case explanatory sub-lines would clarify how these capabilities operate while improving reading comfort.",
+          "suggested_questions": [
+            "Can these feature callouts include brief clarifying sub-copy to provide meaningful clinical context?"
+          ],
+          "suggested_actions": [
+            "Switch the feature labels to title or sentence case and add 1–2 lines of supporting descriptive copy underneath each item."
+          ],
+          "location": {
+            "page": null,
+            "section": "Feature list - top left, Feature list - top right, Feature list - bottom left",
+            "bbox": [
+              0.14,
+              0.76,
+              0.87,
+              0.83
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-ED-5",
+          "review_lens": "editorial",
+          "category": "clarity",
+          "severity": "low",
+          "confidence": 0.85,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C8"
+          ],
+          "quoted_content": "DISCOVER SMARTER CARE",
+          "observation": "The call-to-action button uses vague, generic language without indicating the destination or action.",
+          "mlr_principle": "Action prompts should clearly communicate what the user will receive or where the action leads.",
+          "discussion": "'Discover Smarter Care' sounds like an inspirational tagline rather than an actionable digital prompt. Healthcare professionals benefit from direct signposting—such as whether the button leads to technical specifications, a demonstration request, or a downloadable brochure.",
+          "suggested_questions": [
+            "What specific asset or page does this call to action lead to?"
+          ],
+          "suggested_actions": [
+            "Refine the button text to be more explicit (e.g., 'Explore Product Specifications', 'Request a Concept Demo', or 'Learn More at vitalynx.com')."
+          ],
+          "location": {
+            "page": null,
+            "section": "CTA button",
+            "bbox": [
+              0.28,
+              0.87,
+              0.72,
+              0.93
+            ],
+            "quote": "DISCOVER SMARTER CARE"
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-ED-6",
+          "review_lens": "editorial",
+          "category": "tone",
+          "severity": "low",
+          "confidence": 0.8,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C7"
+          ],
+          "quoted_content": "ADVANCED ALERTS",
+          "observation": "The term 'ADVANCED ALERTS' relies on broad marketing terminology without clinical grounding.",
+          "mlr_principle": "Feature claims for HCP audiences should favor clinical precision over generic buzzwords.",
+          "discussion": "To a clinician or biomedical engineer, 'advanced alerts' is ambiguous; it could mean threshold-based alarms, predictive arrhythmia detection, multi-parameter scoring, or remote notification routing. Grounding this in specific functionality builds professional credibility.",
+          "suggested_questions": [
+            "What clinical mechanism or algorithm makes the alerts 'advanced'?"
+          ],
+          "suggested_actions": [
+            "Replace or qualify 'ADVANCED ALERTS' with specific clinical functionality, such as 'Customizable Alarm Thresholds' or 'Early Warning Notifications'."
+          ],
+          "location": {
+            "page": null,
+            "section": "Feature list - bottom right",
+            "bbox": [
+              0.55,
+              0.8,
+              0.8,
+              0.83
+            ],
+            "quote": "ADVANCED ALERTS"
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-ED-7",
+          "review_lens": "editorial",
+          "category": "typography",
+          "severity": "low",
+          "confidence": 0.85,
+          "confidence_band": "high",
+          "evidence_depth": "moderate",
+          "related_item_ids": [
+            "C3",
+            "C4",
+            "C5",
+            "C6",
+            "C7",
+            "C8"
+          ],
+          "quoted_content": null,
+          "observation": "Inconsistent end-punctuation across major textual elements on the page.",
+          "mlr_principle": "Typographic styling and punctuation conventions should remain consistent across display copy.",
+          "discussion": "The main headline (C3) concludes with a period, whereas the feature claims (C4–C7) and call-to-action (C8) omit end punctuation. Display copy usually adopts a consistent standard—either headline-style open punctuation without periods, or full sentences with consistent terminal punctuation.",
+          "suggested_questions": [
+            "Does the brand style guide mandate open punctuation for display headers?"
+          ],
+          "suggested_actions": [
+            "Remove the terminal period from C3 to align with the open punctuation used throughout the rest of the display copy."
+          ],
+          "location": {
+            "page": null,
+            "section": "Mid-page headline, Feature list - top left, Feature list - top right",
+            "bbox": [
+              0.14,
+              0.61,
+              0.87,
+              0.93
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-ED-8",
+          "review_lens": "editorial",
+          "category": "visual_design",
+          "severity": "low",
+          "confidence": 0.8,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C4",
+            "C5",
+            "C6",
+            "C7"
+          ],
+          "quoted_content": null,
+          "observation": "Feature claims are arranged in a 2x2 grid without supporting icons or bullet markers, making them feel floating and disconnected.",
+          "mlr_principle": "Visual grouping and structured lists guide reader eye movement efficiently.",
+          "discussion": "The four feature callouts span across two horizontal columns under the headline without clear bounding, numbering, or iconography. This loose alignment makes it slightly ambiguous whether the content should be read horizontally row-by-row or vertically down columns.",
+          "suggested_questions": [
+            "Could micro-icons or subtle divider lines improve scan order for these four core features?"
+          ],
+          "suggested_actions": [
+            "Introduce subtle bullet indicators, icons, or a clearer column grid to define the reading path."
+          ],
+          "location": {
+            "page": null,
+            "section": "Feature list - top left, Feature list - top right, Feature list - bottom left",
+            "bbox": [
+              0.14,
+              0.76,
+              0.87,
+              0.83
+            ],
+            "quote": null
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        },
+        {
+          "finding_id": "F-ED-9",
+          "review_lens": "editorial",
+          "category": "clarity",
+          "severity": "low",
+          "confidence": 0.8,
+          "confidence_band": "high",
+          "evidence_depth": "surface",
+          "related_item_ids": [
+            "C1"
+          ],
+          "quoted_content": "VITALYNX Medical Technologies",
+          "observation": "Mixed capitalization styles are combined within the company brand name.",
+          "mlr_principle": "Brand identity styling should follow consistent typographic hierarchy.",
+          "discussion": "The header pairs an all-caps brand name ('VITALYNX') with a title-case descriptor ('Medical Technologies'). While this may reflect trademark styling, verifying that the weight and tracking are calibrated prevents visual clunkiness at the top of the layout.",
+          "suggested_questions": [
+            "Is 'VITALYNX' strictly styled in full capitals in the brand identity guidelines, or is small-caps intended?"
+          ],
+          "suggested_actions": [
+            "Verify font tracking and styling against the corporate identity guide to ensure the lockup feels intentional and cohesive."
+          ],
+          "location": {
+            "page": null,
+            "section": "Header",
+            "bbox": [
+              0.33,
+              0.06,
+              0.67,
+              0.15
+            ],
+            "quote": "VITALYNX Medical Technologies"
+          },
+          "also_raised_by": [],
+          "merged_from": []
+        }
+      ],
+      "open_questions_for_reviewers": [
+        "What is the intended distribution and usage channel for this creative asset (e.g., purely internal R&D alignment, executive concept showcase, or early market-research testing)?",
+        "If intended solely for internal or non-promotional evaluation, would the brand team support applying a semi-transparent 'Concept Prototype Only' background watermark to eliminate external compliance risk?",
+        "What target clinical indications for use (IFU), intended patient population, and care settings (e.g., ICU, med-surg, ambulatory) are anticipated when formal 510(k) or regulatory clearance is initiated?",
+        "What specific internal job code and lifecycle review timeframe should be assigned to this asset within the document management system?"
+      ],
+      "recommended_discussion_topics": [
+        "Governance framework for early pipeline and industrial design concepts: establishing standardized routing criteria, disclaimers, and watermarking rules for pre-clearance medical device collateral.",
+        "Best practices for navigating the boundary between permissible pipeline technology showcases and prohibited pre-approval commercialization under 21 CFR 801/812.",
+        "Guidelines for illustrative user-interface renders: ensuring placeholder UI graphics and simulated diagnostic traces consistently reflect clinical plausibility even in early-stage conceptual drafts.",
+        "Alignment on qualifying language and substantiation requirements for hardware specifications versus clinical decision support (CDS) claims during product incubation."
+      ],
+      "counts_by_lens": {
+        "medical": 8,
+        "legal": 5,
+        "regulatory": 10,
+        "editorial": 9,
+        "custom": 0
+      },
+      "counts_by_severity": {
+        "critical": 0,
+        "high": 5,
+        "medium": 13,
+        "low": 14,
+        "informational": 0
+      },
+      "counts_raised_by_lens": {
+        "medical": 8,
+        "legal": 10,
+        "regulatory": 12,
+        "editorial": 10,
+        "custom": 0
+      }
+    }
+  }
+}
