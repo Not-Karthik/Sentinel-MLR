@@ -579,6 +579,25 @@ class CriticAssessment(BaseModel):
     )
 
 
+class ReportNarrative(BaseModel):
+    """The prose parts of the final report, written by the narrative agent."""
+
+    executive_summary: str = Field(
+        ...,
+        description=(
+            "Narrative orientation for the brand-team submitter. Not a verdict."
+        ),
+    )
+    open_questions_for_reviewers: list[str] = Field(
+        default_factory=list,
+        description="Questions worth raising with the submitter.",
+    )
+    recommended_discussion_topics: list[str] = Field(
+        default_factory=list,
+        description="Procedural or framing topics for the MLR meeting itself.",
+    )
+
+
 class FinalReport(BaseModel):
     """End-user-facing report produced by the synthesizer."""
 

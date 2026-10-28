@@ -79,7 +79,9 @@ def test_workflow_graph_structure() -> None:
         "join_critics",
         "merge_critics",
         "decide_review_loop",
-        "synthesizer",
+        "assemble_report",
+        "narrative_synthesizer",
+        "compose_report",
     }
     assert expected_nodes.issubset(node_names)
     assert isinstance(join_reviewers, JoinNode)
@@ -109,7 +111,7 @@ def test_agent_model_configuration() -> None:
     """Verify that agents use Gemini models with automatic retry options configured."""
     from google.adk.models.google_llm import Gemini
 
-    from app.agent import _MODEL, intake_agent, synthesizer_agent
+    from app.agent import _MODEL, intake_agent, narrative_synthesizer
 
     assert isinstance(_MODEL, Gemini)
     assert _MODEL.model == "gemini-3.8-flash"
@@ -122,7 +124,7 @@ def test_agent_model_configuration() -> None:
     assert 500 in status_codes
     assert 503 in status_codes
     assert intake_agent.model == _MODEL
-    assert synthesizer_agent.model == _MODEL
+    assert narrative_synthesizer.model == _MODEL
 
 
 class MockContext:

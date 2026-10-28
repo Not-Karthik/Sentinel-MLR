@@ -25,7 +25,7 @@ from google.adk.models.llm_response import LlmResponse
 from google.genai import types
 from pydantic import BaseModel, ValidationError
 
-from app.schemas import CriticAssessment, ReviewerOutput
+from app.schemas import CriticAssessment, FinalReport, ReviewerOutput
 
 logger = logging.getLogger(__name__)
 
@@ -482,3 +482,188 @@ def merge_critic_outputs(state: Any) -> dict[str, Any]:
     except ValidationError:
         logger.exception("Merged critic assessment failed schema validation")
         return merged
+
+
+SEVERITIES = ("critical", "high", "medium", "low", "informational")
+SEVERITY_RANK = {name: rank for rank, name in enumerate(SEVERITIES)}
+LENS_ORDER = tuple(LENS_PREFIX)
+
+
+def _theme_text(theme: dict[str, Any]) -> str:
+    label = _text(theme.get("theme"))
+    discussion = _text(theme.get("discussion"))
+    return f"{label}: {discussion}" if label and discussion else label or discussion
+
+
+def assemble_findings(state: Any) -> dict[str, Any]:
+    critic = as_dict(state.get("critic_review"))
+    gap_findings = [
+        f for f in critic.get("additional_findings") or [] if isinstance(f, dict)
+    ]
+    ordered = [*all_reviewer_findings(state), *gap_findings]
+    by_id: dict[str, dict[str, Any]] = {}
+    order: list[str] = []
+    for finding in ordered:
+        key = normalize_finding_id(finding.get("finding_id"))
+        if key and key not in by_id:
+            by_id[key] = copy.deepcopy(finding)
+            order.append(key)
+
+    replaced_by: dict[str, str] = {}
+
+    def find(key: str) -> str:
+        seen = {key}
+        while key in replaced_by and replaced_by[key] not in seen:
+            key = replaced_by[key]
+            seen.add(key)
+        return key
+
+    groups = [as_dict(g) for g in critic.get("duplicate_groups") or []]
+    explicit_keeps = {
+        keep
+        for keep in (normalize_finding_id(g.get("keep")) for g in groups)
+        if keep in by_id
+    }
+    unresolved: list[str] = []
+    for group in groups:
+        raw_ids = group.get("finding_ids") or []
+        members = [normalize_finding_id(i) for i in raw_ids]
+        unresolved.extend(
+            str(raw)
+            for raw, key in zip(raw_ids, members, strict=True)
+            if key not in by_id
+        )
+        members = [m for m in members if m in by_id]
+        keep = normalize_finding_id(group.get("keep"))
+        if keep not in by_id:
+            keep = members[0] if members else None
+        if keep is None:
+            continue
+        for member in members:
+            if (
+                member != keep
+                and member not in explicit_keeps
+                and member not in replaced_by
+                and find(keep) != member
+            ):
+                replaced_by[member] = keep
+
+    for adjustment in critic.get("severity_adjustments") or []:
+        adjustment = as_dict(adjustment)
+        key = normalize_finding_id(adjustment.get("finding_id"))
+        recommended = adjustment.get("recommended_severity")
+        if key not in by_id:
+            unresolved.append(str(adjustment.get("finding_id")))
+        elif find(key) == key and recommended in SEVERITY_RANK:
+            by_id[key]["severity"] = recommended
+
+    kept = [key for key in order if find(key) == key]
+    position = {key: index for index, key in enumerate(order)}
+
+    def sort_key(key: str) -> tuple[int, int, int]:
+        finding = by_id[key]
+        lens = finding.get("review_lens")
+        lens_rank = LENS_ORDER.index(lens) if lens in LENS_ORDER else len(LENS_ORDER)
+        severity_rank = SEVERITY_RANK.get(finding.get("severity"), len(SEVERITIES))
+        return (severity_rank, lens_rank, position[key])
+
+    kept.sort(key=sort_key)
+    counters: dict[str, int] = {}
+    new_ids: dict[str, str] = {}
+    findings = []
+    for key in kept:
+        finding = by_id[key]
+        lens = finding.get("review_lens")
+        counters[lens] = counters.get(lens, 0) + 1
+        new_id = f"F-{LENS_PREFIX.get(lens, 'GAP')}-{counters[lens]}"
+        new_ids[key] = new_id
+        finding["finding_id"] = new_id
+        findings.append(finding)
+    themes = [
+        text
+        for text in (
+            _theme_text(as_dict(t)) for t in critic.get("cross_lens_themes") or []
+        )
+        if text
+    ]
+    return {
+        "findings": findings,
+        "themes": themes,
+        "counts_by_lens": {
+            lens: sum(1 for f in findings if f.get("review_lens") == lens)
+            for lens in LENS_ORDER
+        },
+        "counts_by_severity": {
+            severity: sum(1 for f in findings if f.get("severity") == severity)
+            for severity in SEVERITIES
+        },
+        "id_map": {key: new_ids[find(key)] for key in order},
+        "dropped": sorted(key for key in order if find(key) != key),
+        "unresolved_ids": sorted(set(unresolved)),
+    }
+
+
+def narrative_inputs_state(state: Any, assembled: dict[str, Any]) -> dict[str, str]:
+    inventory = as_dict(state.get("intake_findings"))
+    findings = assembled["findings"]
+    summary_keys = (
+        "content_summary",
+        "promotional_intent",
+        "intended_audience",
+        "audience_rationale",
+        "product_or_topic",
+        "open_observations",
+    )
+    return {
+        "intake_summary": compact_json({k: inventory.get(k) for k in summary_keys}),
+        "final_findings_digest": compact_json([finding_digest(f) for f in findings]),
+        "report_themes": compact_json(assembled["themes"]),
+        "final_counts": compact_json(
+            {
+                "by_lens": assembled["counts_by_lens"],
+                "by_severity": assembled["counts_by_severity"],
+            }
+        ),
+        "final_defense_by_item": compact_json(
+            defense_by_item(as_dict(state.get("submitter_defense")), findings)
+        ),
+    }
+
+
+def _fallback_summary(inventory: dict[str, Any], assembled: dict[str, Any]) -> str:
+    counts = assembled["counts_by_severity"]
+    breakdown = ", ".join(f"{counts[s]} {s}" for s in SEVERITIES if counts[s])
+    subject = _text(inventory.get("content_summary")) or "The submission."
+    detail = f" ({breakdown})" if breakdown else ""
+    return (
+        f"{subject} The review produced {len(assembled['findings'])} findings{detail}. "
+        "The narrative summary could not be generated for this run; see the "
+        "findings and themes."
+    )
+
+
+def compose_final_report(state: Any, assembled: dict[str, Any]) -> dict[str, Any]:
+    inventory = as_dict(state.get("intake_findings"))
+    narrative = as_dict(state.get("report_narrative"))
+    report = {
+        "content_summary": _text(inventory.get("content_summary")),
+        "intended_audience": inventory.get("intended_audience") or "mixed_or_unclear",
+        "promotional_intent": _text(inventory.get("promotional_intent")),
+        "executive_summary": _text(narrative.get("executive_summary"))
+        or _fallback_summary(inventory, assembled),
+        "themes": assembled["themes"],
+        "findings": assembled["findings"],
+        "open_questions_for_reviewers": _string_list(
+            narrative.get("open_questions_for_reviewers")
+        ),
+        "recommended_discussion_topics": _string_list(
+            narrative.get("recommended_discussion_topics")
+        ),
+        "counts_by_lens": assembled["counts_by_lens"],
+        "counts_by_severity": assembled["counts_by_severity"],
+    }
+    try:
+        return FinalReport.model_validate(report).model_dump(mode="json")
+    except ValidationError:
+        logger.exception("Final report failed schema validation")
+        return report

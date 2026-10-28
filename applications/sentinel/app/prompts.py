@@ -51,4 +51,4 @@ GAP_CRITIC = load("gap_critic")
 # Direct responder (non-promotional short circuit)
 DIRECT_RESPONDER = load("direct_responder")
 
-SYNTHESIZER = load("synthesizer")
+NARRATIVE_SYNTHESIZER = load("narrative_synthesizer")

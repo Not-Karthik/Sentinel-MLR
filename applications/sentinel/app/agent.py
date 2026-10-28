@@ -22,6 +22,8 @@ Pipeline shape (ADK v2 Workflow DAG)::
         ↓
     intake (LlmAgent: ContentInventory)
         ↓
+    normalize_intake (FunctionNode: validates bboxes, unique item ids)
+        ↓
     decide_intake_route (FunctionNode: routes "review" vs "direct_response")
         ├── route="direct_response" ──► direct_responder (LlmAgent: direct answer/greeting)
         └── route="review" ──► reviewer_panel (Parallel: 6 reviewers)
@@ -30,9 +32,13 @@ Pipeline shape (ADK v2 Workflow DAG)::
                                     ├── regulatory_reviewer
                                     ├── editorial_reviewer
                                     ├── submitter_advocate     # argues for the submission
-                                    └── rules_reviewer         # custom rules reviewer
+                                    └── rules_reviewer         # skipped in code without a rules file
                                     ↓
                                 join_reviewers (JoinNode barrier)
+                                    ↓
+                                normalize_findings (FunctionNode: ids, lens, band, location)
+                                    ↓
+                                prepare_critic_inputs (FunctionNode: digest, duplicate pairs, hints)
                                     ↓
                                 critic_panel (Parallel: 3 critics)
                                     ├── dedupe_critic
@@ -41,18 +47,23 @@ Pipeline shape (ADK v2 Workflow DAG)::
                                     ↓
                                 join_critics (JoinNode barrier)
                                     ↓
-                                critic_merger (LlmAgent: CriticAssessment)
+                                merge_critics (FunctionNode: CriticAssessment, no LLM)
                                     ↓
                                 decide_review_loop (FunctionNode: routes "iterate" vs "synthesize")
                                     ├── route="iterate" ──► reviewer_panel (up to _MAX_REVIEW_ITERATIONS)
-                                    └── route="synthesize" ──► synthesizer (LlmAgent: FinalReport)
+                                    └── route="synthesize" ──► assemble_report
+                                                                  (FunctionNode: dedupe, severities, ids, counts)
+                                                                  ↓
+                                                              narrative_synthesizer (LlmAgent: ReportNarrative)
+                                                                  ↓
+                                                              compose_report (FunctionNode: FinalReport)
 
-Each stage uses ``gemini-3.8-flash`` with structured
-``output_schema`` and writes to session state via ``output_key``. The
-workflow iterates the reviewer panel + critic panel + merger up
-to twice; the loop router directs execution based on the merger's
-iteration recommendation and iteration budget. Non-promotional queries
-short-circuit at intake to direct_responder.
+LLM stages use ``gemini-3.8-flash`` with structured ``output_schema`` and
+write to session state via ``output_key``. Mechanical work (ids, locations,
+duplicate removal, severity adjustment, counts, merging the critics) is done
+in code in ``app/processing.py``. The loop router directs execution based on
+the critic assessment's iteration recommendation and the iteration budget.
+Non-promotional queries short-circuit at intake to direct_responder.
 
 Run from the parent directory with::
 
@@ -61,6 +72,7 @@ Run from the parent directory with::
 
 from __future__ import annotations
 
+import json
 import os
 from typing import Any
 
@@ -76,8 +88,8 @@ from app import processing, prompts
 from app.schemas import (
     ContentInventory,
     DedupeCriticOutput,
-    FinalReport,
     GapCriticOutputLLM,
+    ReportNarrative,
     ReviewerOutputLLM,
     SeverityCriticOutput,
     SubmitterDefenseBrief,
@@ -197,6 +209,30 @@ def merge_critics(ctx: Context, node_input: Any) -> Any:
     """Consolidate the three critic outputs into the CriticAssessment in code."""
     ctx.state["critic_review"] = processing.merge_critic_outputs(ctx.state)
     return node_input
+
+
+def assemble_report(ctx: Context, node_input: Any) -> Any:
+    """Apply the critic assessment to the findings in code and prepare the narrative inputs."""
+    assembled = processing.assemble_findings(ctx.state)
+    ctx.state["assembled_report"] = assembled
+    for key, value in processing.narrative_inputs_state(ctx.state, assembled).items():
+        ctx.state[key] = value
+    return node_input
+
+
+def compose_report(ctx: Context, node_input: Any) -> Event:
+    """Combine the assembled findings with the narrative into the final report."""
+    report = processing.compose_final_report(
+        ctx.state, processing.as_dict(ctx.state.get("assembled_report"))
+    )
+    ctx.state["final_report"] = report
+    return Event(
+        content=types.Content(
+            role="model",
+            parts=[types.Part(text=json.dumps(report, ensure_ascii=False))],
+        ),
+        output=report,
+    )
 
 
 def decide_intake_route(ctx: Context, node_input: Any) -> Event:
@@ -477,19 +513,19 @@ def decide_review_loop(ctx: Context, node_input: Any) -> Event:
 # Synthesizer
 # ---------------------------------------------------------------------------
 
-synthesizer_agent = LlmAgent(
-    name="synthesizer",
+narrative_synthesizer = LlmAgent(
+    name="narrative_synthesizer",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
     before_model_callback=_BEFORE_MODEL,
     after_model_callback=_AFTER_MODEL,
     description=(
-        "Produces the final consolidated MLR-style report from intake, "
-        "reviewers, advocate, and critic outputs."
+        "Writes the executive summary, open questions and discussion topics "
+        "for the final report. The findings are assembled in code."
     ),
-    instruction=prompts.SYNTHESIZER,
-    output_schema=FinalReport,
-    output_key="final_report",
+    instruction=prompts.NARRATIVE_SYNTHESIZER,
+    output_schema=ReportNarrative,
+    output_key="report_narrative",
 )
 
 
@@ -524,8 +560,10 @@ root_agent = Workflow(
         (merge_critics, decide_review_loop),
         (
             decide_review_loop,
-            {"iterate": reviewer_panel, "synthesize": synthesizer_agent},
+            {"iterate": reviewer_panel, "synthesize": assemble_report},
         ),
+        (assemble_report, narrative_synthesizer),
+        (narrative_synthesizer, compose_report),
     ],
 )
 
