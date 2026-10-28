@@ -96,6 +96,7 @@ def test_digest_is_compact_and_keeps_the_fields_critics_need() -> None:
         "region",
         "bbox",
         "quote",
+        "also_raised_by",
     }
     assert "discussion" not in entry
     assert len({d["id"] for d in digest}) == 40
