@@ -93,6 +93,45 @@ On a 4096x4096, 10 MB test image running locally (single runs, so indicative onl
 
 The original workflow with default model thinking took about 15 minutes and produced 40 reviewer findings. At `medium` the stages take roughly: intake 25 s, reviewers 30 s, critics 30 s, narrative 11 s.
 
+### Reliability, tuning and extension
+
+**What is code and what is model.** The models make every judgement (what the content says, what is wrong, which findings are duplicates, how severe, what is missing, the summary). Code only does mechanical work on their structured output: validating boxes, assigning ids, copying a finding's location from its intake item, applying the dedupe groups and severity changes the critics returned, renumbering, counting and merging. Code never rewrites or drops a finding on its own judgement. A finding is removed only when a critic duplicate group names a different finding to keep, and a finding that any group names as `keep` is never removed.
+
+**If the models return something unexpected.**
+- Ids a critic returns that match no finding are ignored (and listed in `unresolved_ids`); the findings are kept. In every recorded run the critics referenced finding ids by the digest ids correctly (0 unresolved out of 91 references).
+- Every field the code reads from model output is type-checked: lists, ids, locations, enum values. A corrupted severity becomes `medium`, a corrupted category `other`. 212 randomised corruption tests (`tests/unit/test_robustness.py`) require no crash and a schema-valid report.
+- Each code node fails soft. If it hits an unexpected error it logs it and the run still ends with a report (the unmerged findings, or a minimal report) instead of discarding a finished review.
+- Critic hints are bounded: duplicate candidates are one group per identical item set plus at most 200 box-overlap pairs, and at most 60 uncovered items are listed. A synthetic submission with 1,500 findings and 400 items stays within these limits.
+
+**Stalled model calls.** Individual model calls were seen stalling for 285 to 645 seconds with no error, which holds the whole review because each stage waits for its slowest call. Every call now has a request timeout (low 120 s, medium 150 s, high 300 s; set `SENTINEL_MODEL_TIMEOUT_SECONDS` to change it, for example for very large documents). When it expires the service returns 504, which the retry options already retry.
+
+**Tunables.** These values were chosen on one test image, so they can be overridden and should be re-checked on new content:
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `SENTINEL_THINKING_LEVEL` | `medium` | Default thinking level (`low`, `medium`, `high`) |
+| `SENTINEL_MODEL_TIMEOUT_SECONDS` | by level | Per-call timeout |
+| `SENTINEL_CONFIDENCE_HIGH` / `SENTINEL_CONFIDENCE_MEDIUM` | `0.8` / `0.5` | Confidence bands |
+| `SENTINEL_DUP_IOU` | `0.7` | Box overlap that makes two findings duplicate candidates |
+| `SENTINEL_ITERATION_GAPS` / `SENTINEL_ITERATION_ADJUSTMENTS` | `2` / `3` | When the critics recommend another pass (only used if `_MAX_REVIEW_ITERATIONS` is raised) |
+| `MODEL_RETRY_ATTEMPTS` / `MODEL_RETRY_MAX_DELAY` | `10` / `120` | Retries for transient model errors |
+| `SENTINEL_TIMING_LOG` | off | Log every model call |
+
+**Adding a review lens.** The lens tables are in one place: add the lens to `ReviewLens` in `app/schemas.py`, add its id prefix and state key to `LENS_PREFIX` and `REVIEWER_STATE_KEYS` in `app/processing.py`, define the reviewer agent (slim `ReviewerOutputLLM` schema) in `app/agent.py` and add it to `reviewer_panel`, and add its prompt. The digest, duplicate hints, merge, assembly and counts pick it up from those tables. The critic prompts do not name individual lenses.
+
+**Measuring quality.** `tests/eval/compare_runs.py` checks a run against a saved baseline (high-severity coverage, boxes, narrative, counts). `tests/eval/judge_runs.py` compares two reports by meaning with a model judge: for every finding in the reference it finds the finding in the candidate that raises the same issue. On the 10 MB test image, against the first run of the original pipeline (reference of 34 findings):
+
+| Candidate | Reference findings covered | Fully the same issue | High-severity issues covered |
+|---|---|---|---|
+| Original pipeline, second run (control) | 91% | 82% | 4 of 4 |
+| New pipeline, `medium` (two runs) | 91% and 79% | 85% and 79% | 4 of 4 in both |
+| New pipeline, `high` | 94% | 91% | 4 of 4 |
+| New pipeline, `low` | 74% | 71% | 4 of 4 |
+
+The original pipeline agrees with itself by about 91%, so differences of that size are run-to-run variation. Across all of these comparisons the baseline findings that a candidate missed were never high or critical (13 medium, 8 low and 3 informational misses in total, mostly editorial accessibility and medical clinical-accuracy findings), and the original pipeline's own second run missed some of the same ones. These are single runs on one image judged by a model, so treat them as indicative, not as a guarantee.
+
+**Known limits.** Sessions and A2A tasks are in memory on a single Cloud Run instance, so a restart loses them and the service does not scale out. Only the intake agent receives the image; the reviewers and critics work from the intake inventory. The dedupe critic's `keep` choice decides which lens a merged finding is attributed to, so a lens can end up with few or no findings in the final report even though its reviewer raised them.
+
 ---
 
 ## Prerequisites
