@@ -83,6 +83,8 @@ from app.schemas import (
     SeverityCriticOutput,
     SubmitterDefenseBrief,
 )
+from app.thinking import thinking_before_model
+from app.timing import timing_after_model, timing_before_model
 
 # Pin the model endpoint region before any ADK / genai client is constructed.
 # _MODEL defaults to a global-endpoint model, so without this the agent 404s on
@@ -111,6 +113,9 @@ _MODEL = Gemini(
 # truncated mid-finding on dense submissions. 65535 is the upper bound the
 # Gemini API accepts; the model will return whatever it actually produces.
 _GENERATE_CONFIG = types.GenerateContentConfig(max_output_tokens=65535)
+
+_BEFORE_MODEL = [thinking_before_model, timing_before_model]
+_AFTER_MODEL = [timing_after_model]
 
 # Hard cap on review iterations. Each iteration runs the full reviewer
 # panel + critic panel + merger, so the cost budget per cap
@@ -153,6 +158,8 @@ intake_agent = LlmAgent(
     name="intake",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Catalogues every reviewable element in the submitted content "
         "into a structured inventory."
@@ -221,6 +228,8 @@ direct_responder = LlmAgent(
     name="direct_responder",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Provides a direct, helpful response to non-promotional inquiries, "
         "general questions, or greetings without running the full MLR review pipeline."
@@ -237,6 +246,8 @@ medical_reviewer = LlmAgent(
     name="medical_reviewer",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Reviews the submission through a clinical lens: accuracy, dosing, "
         "mechanism, efficacy, safety, fair balance."
@@ -251,6 +262,8 @@ legal_reviewer = LlmAgent(
     name="legal_reviewer",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Reviews the submission through a legal lens: claim substantiation, "
         "comparative claims, citations, disclosures, IP."
@@ -265,6 +278,8 @@ regulatory_reviewer = LlmAgent(
     name="regulatory_reviewer",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Reviews the submission through a regulatory lens: indication scope, "
         "off-label, ISI, PI consistency, fair balance."
@@ -279,6 +294,8 @@ editorial_reviewer = LlmAgent(
     name="editorial_reviewer",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Reviews the submission through an editorial lens: clarity, "
         "accessibility, tone, visual design, typography."
@@ -293,6 +310,8 @@ submitter_advocate = LlmAgent(
     name="submitter_advocate",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Argues for the submission. Produces a defense brief the critic "
         "panel weighs when calibrating severity."
@@ -307,6 +326,8 @@ rules_reviewer = LlmAgent(
     name="rules_reviewer",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Reviews the submission against a user-supplied rules file (brand "
         "voice, internal SOPs, market-specific restrictions, etc.). Emits "
@@ -345,6 +366,8 @@ dedupe_critic = LlmAgent(
     name="dedupe_critic",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Identifies duplicate findings across lenses and surfaces cross-lens themes."
     ),
@@ -358,6 +381,8 @@ severity_critic = LlmAgent(
     name="severity_critic",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Calibrates severity and confidence on reviewer findings, weighing "
         "the submitter's defense brief."
@@ -372,6 +397,8 @@ gap_critic = LlmAgent(
     name="gap_critic",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Surfaces issues the reviewer panel missed and proposes net-new "
         "findings to fill the gaps."
@@ -394,6 +421,8 @@ critic_merger = LlmAgent(
     name="critic_merger",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Consolidates the three specialist critic outputs into a single "
         "CriticAssessment for the synthesizer, and recommends whether the "
@@ -440,6 +469,8 @@ synthesizer_agent = LlmAgent(
     name="synthesizer",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
+    before_model_callback=_BEFORE_MODEL,
+    after_model_callback=_AFTER_MODEL,
     description=(
         "Produces the final consolidated MLR-style report from intake, "
         "reviewers, advocate, and critic outputs."
