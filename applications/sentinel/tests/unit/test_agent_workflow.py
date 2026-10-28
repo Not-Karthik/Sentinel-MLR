@@ -61,6 +61,7 @@ def test_workflow_graph_structure() -> None:
         "__START__",
         "_load_custom_rules",
         "intake",
+        "normalize_intake",
         "decide_intake_route",
         "direct_responder",
         "medical_reviewer",

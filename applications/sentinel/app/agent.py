@@ -72,7 +72,7 @@ from google.adk.models.google_llm import Gemini
 from google.adk.workflow import START, JoinNode, Workflow
 from google.genai import types
 
-from app import prompts
+from app import processing, prompts
 from app.schemas import (
     ContentInventory,
     CriticAssessment,
@@ -168,6 +168,16 @@ intake_agent = LlmAgent(
     output_schema=ContentInventory,
     output_key="intake_findings",
 )
+
+
+def normalize_intake(ctx: Context, node_input: Any) -> Any:
+    """Validate intake bboxes and item ids in state before anything reads them."""
+    intake = ctx.state.get("intake_findings")
+    if intake is not None:
+        ctx.state["intake_findings"] = processing.normalize_inventory(
+            processing.as_dict(intake)
+        )
+    return node_input
 
 
 def decide_intake_route(ctx: Context, node_input: Any) -> Event:
@@ -497,7 +507,8 @@ root_agent = Workflow(
     edges=[
         (START, _load_custom_rules),
         (_load_custom_rules, intake_agent),
-        (intake_agent, decide_intake_route),
+        (intake_agent, normalize_intake),
+        (normalize_intake, decide_intake_route),
         (
             decide_intake_route,
             {"review": reviewer_panel, "direct_response": direct_responder},
