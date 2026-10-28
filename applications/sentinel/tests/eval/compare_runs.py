@@ -197,12 +197,14 @@ def compare(
     covered = match_findings(top, new_findings)
     recall = len(covered) / len(top) if top else 1.0
     missing = [f.get("finding_id") for f in top if f not in covered]
+    lenient = sum(1 for f in top if finding_covered(f, new_findings))
     checks.append(
         _check(
             "high_critical_recall",
             recall >= min_recall,
-            f"{len(covered)}/{len(top)} baseline high or critical findings covered"
-            + (f"; missing {missing}" if missing else ""),
+            f"{len(covered)}/{len(top)} baseline high or critical findings covered "
+            f"one-to-one ({lenient}/{len(top)} if one finding may cover several)"
+            + (f"; unmatched {missing}" if missing else ""),
         )
     )
 

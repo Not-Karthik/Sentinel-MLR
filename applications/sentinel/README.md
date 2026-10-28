@@ -10,60 +10,88 @@ Sentinel offers two complementary modalities:
 
 ## Agent Architecture (`app/`)
 
-The Sentinel agent in `app/` is structured as an **ADK v2 Workflow DAG** orchestrating specialized LLM agents across parallel panels and an iterative critique loop:
+The Sentinel agent in `app/` is an **ADK v2 Workflow DAG**. LLM agents do the judgement work (reading the content, reviewing it, critiquing the review, writing the summary). Mechanical work (validating boxes, assigning ids, copying locations, removing duplicates, applying severity changes, counting, merging the critic outputs) is done in plain code in `app/processing.py`, so the models spend their time and tokens only where judgement is needed.
 
 ```
 root_agent "sentinel" (ADK v2 Workflow DAG)
 │
-├── START ──► _load_custom_rules (FunctionNode)
-│               Loads user-uploaded brand/SOP rules artifact into session state
+├── START ──► _load_custom_rules (code)
+│               Loads a user-uploaded brand/SOP rules artifact into session state
 │
-├── _load_custom_rules ──► intake (LlmAgent: ContentInventory)
-│                            Catalogues every reviewable element into a structured inventory
+├── _load_custom_rules ──► intake (LLM: ContentInventory)
+│                            Catalogues every reviewable element, with a bbox for images
 │
-├── intake ──► decide_intake_route (FunctionNode router)
-│                ├── route="direct_response" ──► direct_responder
-│                │                                 Directly responds to non-promotional questions, greetings, or inquiries
-│                └── route="review"          ──► reviewer_panel (Parallel: 6 reviewers run concurrently)
-│                                                  ├── medical_reviewer      (Clinical lens: accuracy, dosing, efficacy, safety, fair balance)
-│                                                  ├── legal_reviewer        (Legal lens: claim substantiation, comparative claims, citations)
-│                                                  ├── regulatory_reviewer   (Regulatory lens: indication scope, off-label, ISI, PI consistency)
-│                                                  ├── editorial_reviewer    (Editorial lens: clarity, tone, accessibility, typography)
-│                                                  ├── submitter_advocate    (Argues for the submission, produces a defense brief)
-│                                                  └── rules_reviewer        (Custom rules lens: evaluates against uploaded brand SOPs)
+├── intake ──► normalize_intake (code)
+│                Clamps and orders bboxes, guarantees unique item ids
 │
-├── reviewer_panel ──► join_reviewers (JoinNode barrier)
-│                        Synchronizes and merges findings across all 6 reviewer lenses
+├── normalize_intake ──► decide_intake_route (code router)
+│                ├── route="direct_response" ──► direct_responder (LLM)
+│                │                                 Answers non-promotional questions and greetings
+│                └── route="review"          ──► reviewer_panel (Parallel)
+│                                                  ├── medical_reviewer      (clinical lens)
+│                                                  ├── legal_reviewer        (claims, substantiation, citations)
+│                                                  ├── regulatory_reviewer   (indication, ISI, PI consistency)
+│                                                  ├── editorial_reviewer    (clarity, accessibility, typography)
+│                                                  ├── submitter_advocate    (argues for the submission)
+│                                                  └── rules_reviewer        (uploaded rules; the model call is
+│                                                                             skipped when no rules file exists)
 │
-├── join_reviewers ──► critic_panel (Parallel: 3 critics run concurrently)
-│                        ├── dedupe_critic     (Identifies duplicate findings across lenses and cross-lens themes)
-│                        ├── severity_critic   (Calibrates severity & confidence, weighing submitter defense brief)
-│                        └── gap_critic        (Surfaces missed compliance risks and proposes net-new findings)
+├── reviewer_panel ──► join_reviewers ──► normalize_findings (code)
+│                        Adds ids F-<LENS>-<n>, lens, confidence band and each finding's location
+│                        (copied from its related intake item) to the slim reviewer output
 │
-├── critic_panel ──► join_critics (JoinNode barrier)
-│                      Synchronizes completion of all 3 critic agents
+├── normalize_findings ──► prepare_critic_inputs (code)
+│                        Builds a compact findings digest, candidate duplicate pairs, coverage hints
+│                        and the defenses mapped to items and findings
 │
-├── join_critics ──► critic_merger (LlmAgent: CriticAssessment)
-│                      Consolidates critic outputs and recommends whether another review pass is needed
+├── prepare_critic_inputs ──► critic_panel (Parallel: 3 LLM critics)
+│                        ├── dedupe_critic     (confirms real duplicates, cross-lens themes)
+│                        ├── severity_critic   (calibrates severity, weighs the submitter's defense)
+│                        └── gap_critic        (surfaces what the reviewers missed)
 │
-├── critic_merger ──► decide_review_loop (FunctionNode router)
-│                       ├── route="iterate"    ──► loops back to reviewer_panel (disabled: _MAX_REVIEW_ITERATIONS = 1, a single review pass)
-│                       └── route="synthesize" ──► synthesizer
+├── critic_panel ──► join_critics ──► merge_critics (code)
+│                        Consolidates the three critic outputs into a CriticAssessment
 │
-└── decide_review_loop ──► synthesizer (LlmAgent: FinalReport)
-                             Produces the final consolidated MLR report with categorized findings and action items
+├── merge_critics ──► decide_review_loop (code router)
+│                       ├── route="iterate"    ──► back to reviewer_panel (disabled: one review pass)
+│                       └── route="synthesize" ──► assemble_report
+│
+├── assemble_report (code)
+│       Drops duplicates, applies severity adjustments, adds gap findings, renumbers ids,
+│       sorts by severity then lens, fills counts_by_lens and counts_by_severity
+│
+├── assemble_report ──► narrative_synthesizer (LLM: ReportNarrative)
+│                        Writes only the executive summary, open questions and discussion topics
+│
+└── narrative_synthesizer ──► compose_report (code)
+                         Builds the FinalReport and emits it as the final event
 ```
 
 ### Architectural Highlights
 
-- **Intake Short-Circuit Gate:** Non-promotional utterances (such as general questions, greetings, or conversational queries) are detected by `intake` and routed via `decide_intake_route` directly to `direct_responder`, avoiding unnecessary 13-node MLR pipeline execution.
-
-- **Parallel Reviewer Fan-Out:** The intake inventory is analyzed concurrently by 6 specialized reviewers. In addition to standard Medical, Legal, Regulatory, and Editorial reviewers, the **Submitter Advocate** argues in favor of the submission, ensuring balanced criticism and preventing excessive false positives.
-- **Custom Rules Injection:** If a user uploads custom brand rules or SOPs (as a `.txt` or `.md` artifact), `_load_custom_rules` automatically injects them into session state for the `rules_reviewer` to check market-specific restrictions, tone guidelines, or corporate policies.
-- **Three-Way Critic Panel & Calibration:** Rather than accepting raw reviewer comments, a parallel critic panel (`dedupe_critic`, `severity_critic`, `gap_critic`) deduplicates overlapping findings across lenses, cross-examines reviewer severity ratings against the submitter's defense, and identifies blind spots.
-- **Iterative Review Loop:** The `critic_merger` evaluates overall findings and issues an iteration recommendation. `decide_review_loop` can send the reviewer and critic panels around again, up to `_MAX_REVIEW_ITERATIONS` passes in total, before passing execution to the synthesizer. The cap is currently `1`, so the workflow runs a single review pass to keep latency and model quota use down; raise it in `app/agent.py` to re-enable the loop.
+- **Intake Short-Circuit Gate:** Non-promotional utterances (general questions, greetings) are detected by `intake` and routed by `decide_intake_route` straight to `direct_responder`, skipping the review pipeline.
+- **Parallel Reviewer Fan-Out:** The intake inventory is analysed concurrently by the lens reviewers. The **Submitter Advocate** argues in favour of the submission so the critics can weigh both sides and avoid false positives.
+- **Slim model output, full findings in code:** Reviewers and the gap critic return only what needs judgement (category, severity, confidence, observation, principle, discussion, suggestions, related item ids, and a bbox for multi-item findings). Code adds the finding id, lens, confidence band (`low` below 0.5, `medium` below 0.8, `high` from 0.8) and the location, so downstream stages and the final report keep the full `Finding` shape.
+- **Custom Rules Injection:** If a user uploads custom brand rules or SOPs (a `.txt` or `.md` artifact whose name contains "rules"), `_load_custom_rules` injects them into session state for the `rules_reviewer`. Without a rules file the reviewer's model call is skipped and its fixed empty result is used.
+- **Three-Way Critic Panel on a digest:** The critics read a compact digest of the findings (observation and principle, not the long discussion) plus code-computed hints (duplicate candidates from shared items or overlapping boxes, intake items no finding refers to, absent kinds of content), then deduplicate, calibrate severity and look for gaps.
+- **Deterministic report assembly:** The critic outputs are applied in code, so findings are never rewritten or dropped by a model. A finding that any duplicate group names as `keep` is never removed, and ids are gap-free per lens.
+- **Single review pass:** `_MAX_REVIEW_ITERATIONS = 1` in `app/agent.py` runs one reviewer and critic pass. Raise it to let `decide_review_loop` iterate again when the critics recommend it.
+- **Thinking level:** Every model call uses a thinking level that defaults to `medium`. Choose `low` (fastest), `medium` or `high` (deepest) per request with A2A `params.metadata`, for example `{"thinking": "high"}`, or set the default with the environment variable `SENTINEL_THINKING_LEVEL`. (Other values are ignored, and `minimal` is not used because the model rejects it.)
 - **Model Retries:** Every agent retries transient model errors (429, 5xx) with exponential backoff. Defaults are `MODEL_RETRY_ATTEMPTS=10` and `MODEL_RETRY_MAX_DELAY=120` seconds, overridable through environment variables (`MODEL_RETRY_INITIAL_DELAY`, `MODEL_RETRY_EXP_BASE` and `MODEL_RETRY_JITTER` as well). Persistent 429 `RESOURCE_EXHAUSTED` errors mean the project's Gemini quota is too low, and retries only delay the failure.
-- **A2A Interoperability:** Implements the Agent-to-Agent protocol (`/a2a/app`) and JSON-RPC 2.0 streaming, making Sentinel callable by other orchestrators or multi-agent pipelines as a modular compliance checker.
+- **Timing log:** Set `SENTINEL_TIMING_LOG=1` to log every model call (agent, seconds, request size, prompt, output and thought tokens).
+- **A2A Interoperability:** Implements the Agent-to-Agent protocol (`/a2a/app`) and JSON-RPC 2.0 streaming, making Sentinel callable by other orchestrators or multi-agent pipelines as a modular compliance checker. The final report is emitted as the last streamed artifact (authored `sentinel`).
+
+### Typical timing
+
+On a 4096x4096, 10 MB test image running locally (single runs, so indicative only):
+
+| Thinking level | Total time | Reviewer findings |
+|---|---|---|
+| `low` | about 70 s | 30 |
+| `medium` (default) | about 100 to 120 s | 36 to 42 |
+| `high` | about 7.5 minutes | 55 |
+
+The original workflow with default model thinking took about 15 minutes and produced 40 reviewer findings. At `medium` the stages take roughly: intake 25 s, reviewers 30 s, critics 30 s, narrative 11 s.
 
 ---
 
@@ -676,9 +704,12 @@ sentinel/
 │
 ├── app/                       # ADK v2 Multi-Agent Workflow & A2A Server
 │   ├── __init__.py
-│   ├── agent.py               # Root Workflow DAG, parallel reviewer/critic panels, loop routing
+│   ├── agent.py               # Root Workflow DAG: LLM agents plus the code nodes between them
+│   ├── processing.py          # Pure functions: bbox checks, finding expansion, critic inputs/merge, report assembly
+│   ├── thinking.py            # Per-request thinking level (low, medium, high)
+│   ├── timing.py              # Opt-in per-model-call timing log
 │   ├── fast_api_app.py        # FastAPI server with A2A protocol, Reasoning Engine adapter, and API routes
-│   ├── prompts.py             # Reviewer, critic, and synthesizer prompt templates
+│   ├── prompts.py             # Loads the prompt templates
 │   ├── prompts/               # Markdown prompt definitions for each agent role
 │   │   ├── intake.md
 │   │   ├── medical_reviewer.md
@@ -690,10 +721,9 @@ sentinel/
 │   │   ├── dedupe_critic.md
 │   │   ├── severity_critic.md
 │   │   ├── gap_critic.md
-│   │   ├── critic_merger.md
-│   │   ├── loop_decider.md
-│   │   └── synthesizer.md
-│   ├── schemas.py             # Pydantic schemas (ContentInventory, ReviewerOutput, FinalReport)
+│   │   ├── direct_responder.md
+│   │   └── narrative_synthesizer.md
+│   ├── schemas.py             # Pydantic schemas (ContentInventory, Finding, slim reviewer/gap output, FinalReport)
 │   ├── routes/                # FastAPI routers mounted by fast_api_app.py
 │   │   ├── media.py           # POST /api/v1/media image/PDF upload to GCS
 │   │   └── dummy.py           # Placeholder feedback, review and save APIs (in memory)
@@ -751,7 +781,11 @@ sentinel/
     ├── __init__.py
     ├── unit/                  # Unit tests (Workflow graph structure, loop router, panels, API routes)
     │   ├── test_agent_workflow.py
-    │   └── test_routes.py
+    │   ├── test_routes.py
+    │   ├── test_processing.py, test_reviewer_expansion.py, test_critic_inputs.py
+    │   ├── test_merge_critics.py, test_assembly.py, test_rules_gate.py
+    │   ├── test_thinking.py, test_timing.py, test_compare_runs.py
+    │   └── fixtures/vitalynx/     # Baseline agent outputs used for parity tests
     ├── integration/           # Integration & E2E tests (A2A server, SSE stream, agent runner)
     │   ├── test_agent.py
     │   └── test_server_e2e.py
@@ -759,6 +793,7 @@ sentinel/
     └── eval/                  # ADK agent evaluation framework
         ├── eval_config.yaml   # Metric configuration (custom_response_quality, agent_turn_count)
         ├── response_quality.py # LLM-as-judge evaluation functions
+        ├── compare_runs.py    # Compares a full run with the saved baseline (coverage, bboxes, counts)
         └── datasets/          # Evaluation datasets and guidelines
             └── README.md
 ```
@@ -771,7 +806,7 @@ sentinel/
 - `GET /health` — Health check endpoint.
 - `GET /docs`, `GET /openapi.json` — Swagger UI and OpenAPI schema (disable with `ENABLE_API_DOCS=false`).
 - `GET /a2a/app/.well-known/agent-card.json` — Returns A2A Agent Card with capabilities and skills metadata.
-- `POST /a2a/app` — A2A JSON-RPC 2.0 endpoint (`message/send`, `message/stream`, `tasks/get`, `tasks/resubscribe`; protocol 1.0 names with the `A2A-Version: 1.0` header).
+- `POST /a2a/app` — A2A JSON-RPC 2.0 endpoint (`message/send`, `message/stream`, `tasks/get`, `tasks/resubscribe`; protocol 1.0 names with the `A2A-Version: 1.0` header). Put `{"thinking": "low|medium|high"}` in `params.metadata` to choose the thinking level (default `medium`).
 - `POST /api/v1/media` — Upload an image or PDF to the media bucket; returns a `gs://` URI to use in an A2A `file` part.
 - `POST` and `GET /api/v1/feedback`, `/api/v1/review`, `/api/v1/save` — Placeholder APIs that keep records in memory (response header `X-Storage: ephemeral`).
 - `POST /run_sse` and the other ADK routes under `/apps/...` — ADK's native session and run API.

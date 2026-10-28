@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "Sentinel backend",
-    "description": "A2A multi-agent endpoint and FastAPI routes. Select the Sentinel environment and set base_url. Set Postman Settings > Request timeout to 0 because agent runs take minutes.",
+    "description": "A2A multi-agent endpoint and FastAPI routes. Select the Sentinel environment and set base_url. Set Postman Settings > Request timeout to 0 because agent runs take minutes. The thinking environment variable (low, medium or high) is sent as params.metadata.thinking on every message request; medium is the default.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "event": [
@@ -214,7 +214,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/send\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review this promotional claim for MLR compliance: 'OncoBoost delivers unmatched 95% survival with zero serious adverse events.' Provide a full risk breakdown.\"\n        }\n      ]\n    }\n  }\n}",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/send\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review this promotional claim for MLR compliance: 'OncoBoost delivers unmatched 95% survival with zero serious adverse events.' Provide a full risk breakdown.\"\n        }\n      ]\n    },\n    \"metadata\": {\n      \"thinking\": \"{{thinking}}\"\n    }\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -265,7 +265,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/send\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"kind\": \"file\",\n          \"file\": {\n            \"uri\": \"{{media_uri}}\",\n            \"mimeType\": \"{{media_mime}}\"\n          }\n        }\n      ]\n    }\n  }\n}",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/send\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"kind\": \"file\",\n          \"file\": {\n            \"uri\": \"{{media_uri}}\",\n            \"mimeType\": \"{{media_mime}}\"\n          }\n        }\n      ]\n    },\n    \"metadata\": {\n      \"thinking\": \"{{thinking}}\"\n    }\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -320,7 +320,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review this promotional claim for MLR compliance: 'OncoBoost delivers unmatched 95% survival with zero serious adverse events.' Provide a full risk breakdown.\"\n        }\n      ]\n    }\n  }\n}",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review this promotional claim for MLR compliance: 'OncoBoost delivers unmatched 95% survival with zero serious adverse events.' Provide a full risk breakdown.\"\n        }\n      ]\n    },\n    \"metadata\": {\n      \"thinking\": \"{{thinking}}\"\n    }\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -384,7 +384,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"kind\": \"file\",\n          \"file\": {\n            \"uri\": \"{{media_uri}}\",\n            \"mimeType\": \"{{media_mime}}\"\n          }\n        }\n      ]\n    }\n  }\n}",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"kind\": \"file\",\n          \"file\": {\n            \"uri\": \"{{media_uri}}\",\n            \"mimeType\": \"{{media_mime}}\"\n          }\n        }\n      ]\n    },\n    \"metadata\": {\n      \"thinking\": \"{{thinking}}\"\n    }\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -448,7 +448,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"kind\": \"file\",\n          \"file\": {\n            \"bytes\": \"{{image_base64}}\",\n            \"mimeType\": \"image/png\"\n          }\n        }\n      ]\n    }\n  }\n}",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"kind\": \"file\",\n          \"file\": {\n            \"bytes\": \"{{image_base64}}\",\n            \"mimeType\": \"image/png\"\n          }\n        }\n      ]\n    },\n    \"metadata\": {\n      \"thinking\": \"{{thinking}}\"\n    }\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -512,7 +512,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Summarise the three most severe findings.\"\n        }\n      ],\n      \"contextId\": \"{{context_id}}\"\n    }\n  }\n}",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"message/stream\",\n  \"params\": {\n    \"message\": {\n      \"kind\": \"message\",\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"user\",\n      \"parts\": [\n        {\n          \"kind\": \"text\",\n          \"text\": \"Summarise the three most severe findings.\"\n        }\n      ],\n      \"contextId\": \"{{context_id}}\"\n    },\n    \"metadata\": {\n      \"thinking\": \"{{thinking}}\"\n    }\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -625,7 +625,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"SendMessage\",\n  \"params\": {\n    \"message\": {\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"ROLE_USER\",\n      \"parts\": [\n        {\n          \"text\": \"Review this promotional claim for MLR compliance: 'OncoBoost delivers unmatched 95% survival with zero serious adverse events.' Provide a full risk breakdown.\"\n        }\n      ]\n    }\n  }\n}",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"SendMessage\",\n  \"params\": {\n    \"message\": {\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"ROLE_USER\",\n      \"parts\": [\n        {\n          \"text\": \"Review this promotional claim for MLR compliance: 'OncoBoost delivers unmatched 95% survival with zero serious adverse events.' Provide a full risk breakdown.\"\n        }\n      ]\n    },\n    \"metadata\": {\n      \"thinking\": \"{{thinking}}\"\n    }\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -679,7 +679,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"SendMessage\",\n  \"params\": {\n    \"message\": {\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"ROLE_USER\",\n      \"parts\": [\n        {\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"url\": \"{{media_uri}}\",\n          \"mediaType\": \"{{media_mime}}\"\n        }\n      ]\n    }\n  }\n}",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"SendMessage\",\n  \"params\": {\n    \"message\": {\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"ROLE_USER\",\n      \"parts\": [\n        {\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"url\": \"{{media_uri}}\",\n          \"mediaType\": \"{{media_mime}}\"\n        }\n      ]\n    },\n    \"metadata\": {\n      \"thinking\": \"{{thinking}}\"\n    }\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -737,7 +737,7 @@
             },
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"SendStreamingMessage\",\n  \"params\": {\n    \"message\": {\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"ROLE_USER\",\n      \"parts\": [\n        {\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"url\": \"{{media_uri}}\",\n          \"mediaType\": \"{{media_mime}}\"\n        }\n      ]\n    }\n  }\n}",
+              "raw": "{\n  \"jsonrpc\": \"2.0\",\n  \"id\": \"{{$guid}}\",\n  \"method\": \"SendStreamingMessage\",\n  \"params\": {\n    \"message\": {\n      \"messageId\": \"{{$guid}}\",\n      \"role\": \"ROLE_USER\",\n      \"parts\": [\n        {\n          \"text\": \"Review the attached promotional image for MLR compliance and return findings with bounding boxes.\"\n        },\n        {\n          \"url\": \"{{media_uri}}\",\n          \"mediaType\": \"{{media_mime}}\"\n        }\n      ]\n    },\n    \"metadata\": {\n      \"thinking\": \"{{thinking}}\"\n    }\n  }\n}",
               "options": {
                 "raw": {
                   "language": "json"

@@ -118,6 +118,36 @@ For the inline base64 request, paste the base64 text of a PNG (without a `data:`
 
 curl equivalents are in the main README under "A2A (Agent-to-Agent) Integration".
 
+## Speed and depth: the thinking level
+
+Every request can choose how hard the model thinks, which is the main trade-off between speed and depth of review:
+
+| `thinking` | Measured on the 10 MB, 4096x4096 test image (local run) |
+|---|---|
+| `low` | About 70 seconds. Fastest and shallowest: 30 reviewer findings, 1 high-severity finding. Use it for quick checks. |
+| `medium` (default) | About 100 to 120 seconds. 36 to 42 reviewer findings, and all four of the baseline's high-severity issues were present in both runs (in one run two near-identical findings were merged into one). |
+| `high` | About 7.5 minutes (one reviewer call alone took almost 5). Deepest: 55 reviewer findings, 47 after consolidation. Use it when exhaustiveness matters more than turnaround. |
+
+For comparison, the original workflow (default model thinking) took about 15 minutes and produced 40 reviewer findings. These are single runs, and model output varies from run to run (the number of findings after consolidation ranged from 28 to 37 across medium runs), so treat the figures as indicative.
+
+Send it in the A2A request as `params.metadata`:
+
+```json
+{
+  "jsonrpc": "2.0",
+  "id": "1",
+  "method": "message/stream",
+  "params": {
+    "message": { "...": "..." },
+    "metadata": { "thinking": "high" }
+  }
+}
+```
+
+The same field works for protocol 1.0 requests (`SendMessage`, `SendStreamingMessage`). Metadata placed inside the message object is ignored. The Postman collection sends the `thinking` environment variable (default `medium`) on every message request. To change the server default, set `SENTINEL_THINKING_LEVEL` through `extra_env` in `terraform-cloudrun`. Unknown values fall back to the default.
+
+To see where time goes, set `SENTINEL_TIMING_LOG=1` (also through `extra_env`): every model call is then logged with its agent, duration, request size and token counts, including thinking tokens.
+
 ## How images and documents reach the agent
 
 The A2A server has no upload endpoint of its own. The agent reads whatever `file` parts arrive in the A2A message, and they are handed to Gemini as images or documents. Use one of:
@@ -130,7 +160,9 @@ The runtime service account reads the `gs://` object, so no extra sharing is nee
 
 ## What comes back and what happens next
 
-The stream (or the blocking response) ends with the `final_report` artifact: a summary, themes, and `findings`, each with severity, recommendations and, for images, `location.bbox` as `[x_min, y_min, x_max, y_max]` normalised between 0 and 1 (top-left origin). A client multiplies these by the image width and height to draw the boxes.
+The stream (or the blocking response) ends with the final report: the last artifact, whose text is the `FinalReport` JSON (the artifact is authored `sentinel`; the agents' own intermediate outputs arrive earlier as artifacts authored by each agent). It contains the content summary, audience, promotional intent, `executive_summary`, `themes`, `open_questions_for_reviewers`, `recommended_discussion_topics`, `counts_by_lens`, `counts_by_severity` and `findings`. Each finding has an id `F-<LENS>-<n>` (`MED`, `LEG`, `REG`, `ED`, `CUSTOM`, gap-free per lens), severity, confidence, discussion, suggested questions and actions and, for images, `location.bbox` as `[x_min, y_min, x_max, y_max]` normalised between 0 and 1 (top-left origin). A client multiplies these by the image width and height to draw the boxes.
+
+Only the intake agent receives the image itself. The reviewers and critics work from the intake inventory (item text, kind and box), so the intake step is what ties every finding to a place on the image.
 
 After that the client decides what to do with the report. This deployment offers placeholder APIs for the next steps:
 
