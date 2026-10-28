@@ -103,7 +103,7 @@ The original workflow with default model thinking took 776 and 893 s in two runs
 - Each code node fails soft. If it hits an unexpected error it logs it and the run still ends with a report (the unmerged findings, or a minimal report) instead of discarding a finished review.
 - Critic hints are bounded: duplicate candidates are one group per identical item set plus at most 200 box-overlap pairs, and at most 60 uncovered items are listed. A synthetic submission with 1,500 findings and 400 items stays within these limits.
 
-**Stalled model calls.** Individual model calls were seen stalling for 285 to 645 seconds with no error, which holds the whole review because each stage waits for its slowest call. Every call now has a request timeout (low 120 s, medium 150 s, high 300 s; set `SENTINEL_MODEL_TIMEOUT_SECONDS` to change it, for example for very large documents). When it expires the service returns 504, which the retry options already retry. This bounds a stall to roughly the timeout plus one normal call (a 226 s and a 190 s reviewer call were cut and retried this way), but it does not remove it: in the later `medium` runs about one call per run still stalled.
+**Stalled model calls.** Individual model calls were seen stalling for 285 to 645 seconds with no error, which holds the whole review because each stage waits for its slowest call. Every call now has a request timeout (low 120 s, medium 150 s, high 300 s; set `SENTINEL_MODEL_TIMEOUT_SECONDS` to change it, for example for very large documents). When it expires the service returns 504, which the retry options already retry. Stalls are common: 14 of 123 logged calls (11%) took more than 2.5 times their agent's median and more than 60 seconds, roughly one per review. This bounds a stall to roughly the timeout plus one normal call (a 226 s and a 190 s reviewer call were cut and retried this way), but it does not remove it: in the later `medium` runs about one call per run still stalled.
 
 **Tunables.** These values were chosen on one test image, so they can be overridden and should be re-checked on new content:
 
@@ -111,8 +111,8 @@ The original workflow with default model thinking took 776 and 893 s in two runs
 |---|---|---|
 | `SENTINEL_THINKING_LEVEL` | `medium` | Default thinking level (`low`, `medium`, `high`) |
 | `SENTINEL_MODEL_TIMEOUT_SECONDS` | by level | Per-call timeout |
-| `SENTINEL_CONFIDENCE_HIGH` / `SENTINEL_CONFIDENCE_MEDIUM` | `0.8` / `0.5` | Confidence bands |
-| `SENTINEL_DUP_IOU` | `0.7` | Box overlap that makes two findings duplicate candidates |
+| `SENTINEL_CONFIDENCE_HIGH` / `SENTINEL_CONFIDENCE_MEDIUM` | `0.8` / `0.5` | Confidence bands. On both test images the model's confidence was always between 0.78 and 0.99, so nearly every finding is `high`; raise both (for example `0.9` / `0.8`) if you want the band to separate findings |
+| `SENTINEL_DUP_IOU` | `0.7` | Box overlap that makes two findings duplicate candidates. Insensitive in practice: any value from 0.5 to 0.9 recovered the same critic duplicate links on the second test image, because shared intake items do most of the work |
 | `SENTINEL_ITERATION_GAPS` / `SENTINEL_ITERATION_ADJUSTMENTS` | `2` / `3` | When the critics recommend another pass (only used if `_MAX_REVIEW_ITERATIONS` is raised) |
 | `MODEL_RETRY_ATTEMPTS` / `MODEL_RETRY_MAX_DELAY` | `10` / `120` | Retries for transient model errors |
 | `SENTINEL_TIMING_LOG` | off | Log every model call |
@@ -130,7 +130,7 @@ The original workflow with default model thinking took 776 and 893 s in two runs
 
 The original pipeline agreed with itself by 91% in its one comparison, and the new `medium` runs average about four points below that, so most of the difference is run-to-run variation. The new runs also produce about 12% fewer findings after consolidation (28 to 36 against 34 and 35). Across all of these comparisons the baseline findings that a candidate missed were never high or critical (13 medium, 8 low and 3 informational misses in total, mostly editorial accessibility and medical clinical-accuracy findings), and the original pipeline's own second run missed some of the same ones. These are single runs on one image judged by a model, so treat them as indicative, not as a guarantee.
 
-**Known limits.** Sessions and A2A tasks are in memory on a single Cloud Run instance, so a restart loses them and the service does not scale out. Only the intake agent receives the image; the reviewers and critics work from the intake inventory. The dedupe critic's `keep` choice decides which lens a merged finding is attributed to, so a lens can end up with few or no findings in the final report even though its reviewer raised them.
+**Known limits.** Sessions and A2A tasks are in memory on a single Cloud Run instance, so a restart loses them and the service does not scale out. Only the intake agent receives the image; the reviewers and critics work from the intake inventory. The dedupe critic's `keep` choice decides which lens a merged finding is attributed to, and it favours regulatory findings (in the PDF test run the medical lens raised 10 findings and kept 0). Merged findings therefore carry `also_raised_by` (the other lenses that raised the same issue) and the report carries `counts_raised_by_lens` (what each lens raised before merging) next to `counts_by_lens` (what remains). Which finding is kept is unchanged.
 
 ---
 
