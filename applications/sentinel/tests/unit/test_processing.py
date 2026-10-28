@@ -138,22 +138,39 @@ def test_normalize_intake_node_rewrites_state() -> None:
     assert "intake_findings" not in empty.state
 
 
-def test_tunables_have_documented_defaults_and_bad_env_values_are_ignored(
-    monkeypatch,
-) -> None:
-    import importlib
+def test_env_number_parses_valid_values_and_ignores_bad_ones(monkeypatch) -> None:
+    monkeypatch.setenv("SENTINEL_TEST_FLOAT", "0.9")
+    monkeypatch.setenv("SENTINEL_TEST_INT", "4")
+    monkeypatch.setenv("SENTINEL_TEST_BAD", "not-a-number")
+    assert processing._env_number("SENTINEL_TEST_FLOAT", 0.1) == 0.9
+    assert processing._env_number("SENTINEL_TEST_INT", 1, int) == 4
+    assert processing._env_number("SENTINEL_TEST_BAD", 0.7) == 0.7
+    assert processing._env_number("SENTINEL_TEST_MISSING", 0.7) == 0.7
 
-    monkeypatch.setenv("SENTINEL_CONFIDENCE_HIGH", "0.9")
-    monkeypatch.setenv("SENTINEL_DUP_IOU", "not-a-number")
-    monkeypatch.setenv("SENTINEL_ITERATION_GAPS", "4")
-    reloaded = importlib.reload(processing)
-    try:
-        assert reloaded.CONFIDENCE_HIGH == 0.9
-        assert reloaded.confidence_band(0.85) == "medium"
-        assert reloaded.DUP_IOU_THRESHOLD == 0.7
-        assert reloaded.ITERATION_GAPS == 4
-    finally:
-        monkeypatch.undo()
-        importlib.reload(processing)
+
+def test_tunable_defaults_and_their_effect(monkeypatch) -> None:
     assert processing.CONFIDENCE_HIGH == 0.8
+    assert processing.CONFIDENCE_MEDIUM == 0.5
+    assert processing.DUP_IOU_THRESHOLD == 0.7
+    assert processing.ITERATION_GAPS == 2
+    assert processing.ITERATION_ADJUSTMENTS == 3
     assert processing.confidence_band(0.85) == "high"
+    monkeypatch.setattr(processing, "CONFIDENCE_HIGH", 0.9)
+    assert processing.confidence_band(0.85) == "medium"
+    boxed = [
+        {
+            "finding_id": "A",
+            "related_item_ids": ["C1"],
+            "location": {"bbox": [0, 0, 1, 1]},
+        },
+        {
+            "finding_id": "B",
+            "related_item_ids": ["C2"],
+            "location": {"bbox": [0, 0, 1, 0.8]},
+        },
+    ]
+    assert processing.candidate_duplicates(boxed)["overlapping_box_pairs"] == [
+        ["A", "B"]
+    ]
+    monkeypatch.setattr(processing, "DUP_IOU_THRESHOLD", 0.95)
+    assert processing.candidate_duplicates(boxed)["overlapping_box_pairs"] == []
