@@ -23,7 +23,7 @@ You do not need Docker or Terraform. The script downloads a pinned Terraform (1.
    | `ALLOW_UNAUTHENTICATED_INVOKE` | `true` | `true` lets anyone call the service. `false` requires a Google identity token. |
    | `INVOKER_MEMBERS` | empty | Comma separated IAM members allowed to call the service when it is not public, for example `user:me@example.com`. |
    | `ENABLE_API_DOCS` | `true` | Serve Swagger UI at `/docs`. |
-| `MEDIA_MAX_MB` | `32` | Largest upload accepted by `POST /api/v1/media`, 1 to 32. Cloud Run rejects requests over 32 MiB, so a file close to 32 MB can still fail because of the multipart overhead. |
+   | `MEDIA_MAX_MB` | `32` | Largest upload accepted by `POST /api/v1/media`, 1 to 32. Cloud Run rejects requests over 32 MiB, so a file close to 32 MB can still fail because of the multipart overhead. |
    | `ALLOW_ORIGINS` | empty | Comma separated browser origins for CORS, for example the Amplify URL. |
    | `DELETION_PROTECTION` | `true` | Blocks `terraform destroy` of the Cloud Run service. |
 
@@ -95,6 +95,38 @@ gcloud run services proxy sentinel --project YOUR_PROJECT --region us-central1 -
 ```
 
 and use `http://localhost:8080` as the base URL. You can also add teammates through `INVOKER_MEMBERS`.
+
+## Invoking the API in order
+
+`BASE_URL` is the service URL printed by the deploy script (`http://localhost:8000` for a local run, `http://localhost:8080` through the proxy). The Postman folders 1 to 5 follow the same order.
+
+1. **Check the service is up.** `curl "$BASE_URL/health"`. Expect a 200 response.
+2. **Read the API documentation (optional).** Open `$BASE_URL/docs` in a browser.
+3. **Check the A2A agent card.** `curl "$BASE_URL/a2a/app/.well-known/agent-card.json"`. Its `url` must be `$BASE_URL/a2a/app`.
+4. **Upload the image or PDF.** `curl -F "file=@ad.png" "$BASE_URL/api/v1/media"`. Keep the returned `uri` (`gs://...`).
+5. **Send the review request.** `POST $BASE_URL/a2a/app` with a `message/stream` (events as agents finish) or `message/send` (one response when the run ends). Include a text part, the file part with the `uri` from step 4, and `params.metadata.thinking` (`low`, `medium` or `high`). A run takes about 2 to 5 minutes at `medium`, so use `curl -N` or a Postman request timeout of `0`.
+   ```bash
+   curl -N -X POST "$BASE_URL/a2a/app" \
+     -H "Content-Type: application/json" -H "Accept: text/event-stream" \
+     -d '{
+       "jsonrpc": "2.0", "id": "1", "method": "message/stream",
+       "params": {
+         "message": {
+           "kind": "message", "messageId": "msg-1", "role": "user",
+           "parts": [
+             {"kind": "text", "text": "Review the attached image for MLR compliance."},
+             {"kind": "file", "file": {"uri": "gs://PROJECT-sentinel-media/uploads/ID.png", "mimeType": "image/png"}}
+           ]
+         },
+         "metadata": {"thinking": "medium"}
+       }
+     }'
+   ```
+   Keep the `contextId` and `taskId` from the response. Send a later message with the same `contextId` to continue the session, or call `tasks/get` with the `taskId` to fetch the result again.
+6. **Read the final report.** It is the last artifact of the task (see "What comes back" below): findings with severity and `location.bbox` (normalised 0 to 1, top-left origin), counts and the narrative fields.
+7. **Record what the reviewer does next (placeholders).** `POST /api/v1/review` (decision per finding), `POST /api/v1/save` (the report) and `POST /api/v1/feedback` (rating and comment). Each has a `GET` that lists what was stored.
+
+Calling a service that is not public: add `-H "Authorization: Bearer $(gcloud auth print-identity-token)"` to every request, or use the proxy.
 
 ## Swagger documentation
 

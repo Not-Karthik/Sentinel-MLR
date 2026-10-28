@@ -290,7 +290,7 @@ Current state of this test deployment:
 - **State is in memory.** Sessions and A2A tasks are lost on restart, so the service is pinned to a single instance.
 - `/api/v1/feedback`, `/api/v1/review` and `/api/v1/save` are placeholders that store data in memory.
 
-Feeding images to the agent, testing from Postman, the Terraform layout and troubleshooting are covered in [deploy/README.md](deploy/README.md). A ready-to-import Postman collection is in `deploy/postman/`.
+The step-by-step order of API calls (health, agent card, upload, A2A review with the thinking level, final report, review/save/feedback), Postman usage, the Terraform layout and troubleshooting are in [deploy/README.md](deploy/README.md#invoking-the-api-in-order). A ready-to-import Postman collection is in `deploy/postman/`.
 
 ---
 
