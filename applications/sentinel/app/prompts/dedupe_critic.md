@@ -8,7 +8,7 @@ You have the intake catalogue and a digest of every finding:
 
 - Intake: `{intake_findings}`
 - Findings digest (all lenses): `{findings_digest}`
-- Candidate duplicate pairs (hints from shared items or heavily overlapping boxes; most pairs are NOT duplicates, so group only genuine duplicates): `{dup_candidates}`
+- Candidate duplicates (hints only): `same_item_groups` lists findings that refer to exactly the same intake items, and `overlapping_box_pairs` lists findings whose boxes overlap heavily. Most candidates are NOT duplicates, so group only genuine duplicates: `{dup_candidates}`
 - Submitter defense, mapped to items and findings: `{defense_by_item}`
 
 The digest carries each finding's `observation` and `mlr_principle` but not its long discussion or suggestions; judge from those. Use the ids exactly as they appear in the digest.

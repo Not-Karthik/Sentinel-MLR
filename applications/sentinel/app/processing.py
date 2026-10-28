@@ -25,7 +25,14 @@ from google.adk.models.llm_response import LlmResponse
 from google.genai import types
 from pydantic import BaseModel, ValidationError
 
-from app.schemas import CriticAssessment, FinalReport, ReviewerOutput
+from app.schemas import (
+    CriticAssessment,
+    EvidenceDepth,
+    FinalReport,
+    IssueCategory,
+    ReviewerOutput,
+    Severity,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -50,6 +57,10 @@ EMPTY_RULES_OUTPUT: dict[str, Any] = {
     "reviewer_summary": "No custom rules file was supplied for this review pass.",
     "findings": [],
 }
+
+
+def as_list(value: Any) -> list[Any]:
+    return value if isinstance(value, list) else []
 
 
 def as_dict(value: Any) -> dict[str, Any]:
@@ -117,9 +128,11 @@ def normalize_inventory(inventory: dict[str, Any]) -> dict[str, Any]:
         result["items"] = []
         return result
     used = {
-        item.get("item_id")
+        item["item_id"]
         for item in items
-        if isinstance(item, dict) and item.get("item_id")
+        if isinstance(item, dict)
+        and isinstance(item.get("item_id"), str)
+        and item["item_id"]
     }
     seen: set[str] = set()
     next_number = 1
@@ -127,7 +140,7 @@ def normalize_inventory(inventory: dict[str, Any]) -> dict[str, Any]:
         if not isinstance(item, dict):
             continue
         item_id = item.get("item_id")
-        if not item_id or item_id in seen:
+        if not isinstance(item_id, str) or not item_id or item_id in seen:
             while f"C{next_number}" in used or f"C{next_number}" in seen:
                 next_number += 1
             item_id = f"C{next_number}"
@@ -180,8 +193,19 @@ def _string_list(value: Any) -> list[str]:
 def items_by_id(inventory: dict[str, Any]) -> dict[str, dict[str, Any]]:
     return {
         item["item_id"]: item
-        for item in inventory.get("items") or []
-        if isinstance(item, dict) and item.get("item_id")
+        for item in as_list(inventory.get("items"))
+        if isinstance(item, dict) and isinstance(item.get("item_id"), str)
+    }
+
+
+def _clean_location(raw: Any) -> dict[str, Any]:
+    data = as_dict(raw)
+    page, section, quote = data.get("page"), data.get("section"), data.get("quote")
+    return {
+        "page": page if isinstance(page, int) and not isinstance(page, bool) else None,
+        "section": section if isinstance(section, str) and section.strip() else None,
+        "bbox": normalize_bbox(data.get("bbox")),
+        "quote": quote if isinstance(quote, str) and quote else None,
     }
 
 
@@ -193,36 +217,46 @@ def derive_location(
         for item_id in _string_list(finding.get("related_item_ids"))
         if item_id in items
     ]
+    cleaned = [_clean_location(item.get("location")) for item in related]
     locations = [
-        item["location"] for item in related if isinstance(item.get("location"), dict)
+        entry for entry in cleaned if any(v is not None for v in entry.values())
     ]
     location: dict[str, Any] = dict.fromkeys(LOCATION_FIELDS)
     if len(locations) == 1:
-        for field in LOCATION_FIELDS:
-            location[field] = locations[0].get(field)
+        location.update(locations[0])
     elif locations:
         sections: list[str] = []
         for entry in locations:
-            section = entry.get("section")
-            if section and section not in sections:
-                sections.append(section)
+            if entry["section"] and entry["section"] not in sections:
+                sections.append(entry["section"])
         location["page"] = next(
-            (e.get("page") for e in locations if e.get("page") is not None), None
+            (e["page"] for e in locations if e["page"] is not None), None
         )
         location["section"] = ", ".join(sections[:3]) or None
-        location["bbox"] = bbox_union([e["bbox"] for e in locations if e.get("bbox")])
-    legacy = finding.get("location")
-    if isinstance(legacy, dict):
-        for field in LOCATION_FIELDS:
-            if legacy.get(field) is not None:
-                location[field] = legacy[field]
+        location["bbox"] = bbox_union([e["bbox"] for e in locations if e["bbox"]])
+    legacy = _clean_location(finding.get("location"))
+    for field in LOCATION_FIELDS:
+        if legacy[field] is not None:
+            location[field] = legacy[field]
     explicit = normalize_bbox(finding.get("bbox"))
     if explicit:
         location["bbox"] = explicit
-    location["bbox"] = normalize_bbox(location.get("bbox"))
     if all(location.get(field) is None for field in LOCATION_FIELDS):
         return None
     return location
+
+
+def _optional_text(value: Any) -> str | None:
+    return value if isinstance(value, str) and value else None
+
+
+def _enum_value(raw: Any, enum_class: Any, default: str) -> str:
+    if isinstance(raw, str):
+        try:
+            return enum_class(raw.strip().lower()).value
+        except ValueError:
+            return default
+    return default
 
 
 def expand_finding(
@@ -235,13 +269,15 @@ def expand_finding(
     return {
         "finding_id": finding_id,
         "review_lens": lens,
-        "category": raw.get("category") or "other",
-        "severity": raw.get("severity") or "informational",
+        "category": _enum_value(raw.get("category"), IssueCategory, "other"),
+        "severity": _enum_value(raw.get("severity"), Severity, "medium"),
         "confidence": confidence,
         "confidence_band": confidence_band(confidence),
-        "evidence_depth": raw.get("evidence_depth") or "surface",
+        "evidence_depth": _enum_value(
+            raw.get("evidence_depth"), EvidenceDepth, "surface"
+        ),
         "related_item_ids": _string_list(raw.get("related_item_ids")),
-        "quoted_content": raw.get("quoted_content"),
+        "quoted_content": _optional_text(raw.get("quoted_content")),
         "observation": str(raw.get("observation") or ""),
         "mlr_principle": str(raw.get("mlr_principle") or ""),
         "discussion": str(raw.get("discussion") or ""),
@@ -256,7 +292,7 @@ def expand_reviewer_output(
 ) -> dict[str, Any]:
     data = as_dict(output)
     prefix = LENS_PREFIX[lens]
-    raw_findings = [f for f in data.get("findings") or [] if isinstance(f, dict)]
+    raw_findings = [f for f in as_list(data.get("findings")) if isinstance(f, dict)]
     expanded = {
         "lens": lens,
         "reviewer_summary": str(data.get("reviewer_summary") or ""),
@@ -301,12 +337,14 @@ def all_reviewer_findings(state: Any) -> list[dict[str, Any]]:
     findings: list[dict[str, Any]] = []
     for key in REVIEWER_STATE_KEYS.values():
         output = as_dict(state.get(key))
-        findings.extend(f for f in output.get("findings") or [] if isinstance(f, dict))
+        findings.extend(
+            f for f in as_list(output.get("findings")) if isinstance(f, dict)
+        )
     return findings
 
 
 def finding_digest(finding: dict[str, Any]) -> dict[str, Any]:
-    location = finding.get("location") or {}
+    location = as_dict(finding.get("location"))
     return {
         "id": finding.get("finding_id"),
         "lens": finding.get("review_lens"),
@@ -315,58 +353,92 @@ def finding_digest(finding: dict[str, Any]) -> dict[str, Any]:
         "category": finding.get("category"),
         "observation": finding.get("observation"),
         "principle": finding.get("mlr_principle"),
-        "items": finding.get("related_item_ids") or [],
+        "items": _string_list(finding.get("related_item_ids")),
         "region": location.get("section"),
         "bbox": location.get("bbox"),
         "quote": finding.get("quoted_content"),
     }
 
 
-def candidate_duplicate_pairs(
+MAX_BOX_PAIRS = 200
+MAX_UNCOVERED_ITEMS = 60
+
+
+def candidate_duplicates(
     findings: list[dict[str, Any]], iou_threshold: float = 0.7
-) -> list[list[str]]:
-    pairs: list[list[str]] = []
-    for index, first in enumerate(findings):
-        first_items = set(first.get("related_item_ids") or [])
-        first_box = (first.get("location") or {}).get("bbox")
-        for second in findings[index + 1 :]:
-            second_items = set(second.get("related_item_ids") or [])
-            second_box = (second.get("location") or {}).get("bbox")
-            same_items = bool(first_items) and first_items == second_items
-            if same_items or bbox_iou(first_box, second_box) >= iou_threshold:
-                pairs.append([first.get("finding_id"), second.get("finding_id")])
-    return pairs
+) -> dict[str, Any]:
+    """Hints for the dedupe critic whose size stays linear in the number of findings.
+
+    Findings with exactly the same related items are listed as one group each.
+    Other pairs are listed only when their boxes overlap strongly, strongest
+    first, and capped at MAX_BOX_PAIRS.
+    """
+    groups: dict[frozenset[str], list[Any]] = {}
+    item_sets: list[frozenset[str]] = []
+    for finding in findings:
+        items = frozenset(_string_list(finding.get("related_item_ids")))
+        item_sets.append(items)
+        if items:
+            groups.setdefault(items, []).append(finding.get("finding_id"))
+    boxes = [as_dict(f.get("location")).get("bbox") for f in findings]
+    scored: list[tuple[float, int, int]] = []
+    for i in range(len(findings)):
+        if not boxes[i]:
+            continue
+        for j in range(i + 1, len(findings)):
+            if item_sets[i] and item_sets[i] == item_sets[j]:
+                continue
+            overlap = bbox_iou(boxes[i], boxes[j])
+            if overlap >= iou_threshold:
+                scored.append((overlap, i, j))
+    scored.sort(key=lambda entry: -entry[0])
+    return {
+        "same_item_groups": [
+            {"items": sorted(items), "finding_ids": ids}
+            for items, ids in groups.items()
+            if len(ids) > 1
+        ],
+        "overlapping_box_pairs": [
+            [findings[i].get("finding_id"), findings[j].get("finding_id")]
+            for _, i, j in scored[:MAX_BOX_PAIRS]
+        ],
+        "box_pairs_truncated": len(scored) > MAX_BOX_PAIRS,
+    }
 
 
 def coverage_hints(
     inventory: dict[str, Any], findings: list[dict[str, Any]]
 ) -> dict[str, Any]:
-    items = [i for i in inventory.get("items") or [] if isinstance(i, dict)]
+    items = [i for i in as_list(inventory.get("items")) if isinstance(i, dict)]
     referenced = {
-        item_id for f in findings for item_id in (f.get("related_item_ids") or [])
+        item_id
+        for f in findings
+        for item_id in (_string_list(f.get("related_item_ids")))
     }
+    uncovered = [
+        {
+            "item_id": i.get("item_id"),
+            "kind": i.get("kind"),
+            "text": str(i.get("text") or "")[:80],
+        }
+        for i in items
+        if i.get("item_id") not in referenced
+    ]
     present_kinds = {str(i.get("kind")) for i in items}
     per_lens = dict.fromkeys(LENS_PREFIX, 0)
     for finding in findings:
         lens = finding.get("review_lens")
-        if lens in per_lens:
+        if isinstance(lens, str) and lens in per_lens:
             per_lens[lens] += 1
     return {
-        "items_without_findings": [
-            {
-                "item_id": i.get("item_id"),
-                "kind": i.get("kind"),
-                "text": str(i.get("text") or "")[:80],
-            }
-            for i in items
-            if i.get("item_id") not in referenced
-        ],
+        "items_without_findings": uncovered[:MAX_UNCOVERED_ITEMS],
+        "items_without_findings_total": len(uncovered),
         "findings_per_lens": per_lens,
         "categories_present": sorted(
             {str(f.get("category")) for f in findings if f.get("category")}
         ),
         "absent_item_kinds": [k for k in EXPECTED_ITEM_KINDS if k not in present_kinds],
-        "image_submission": any((i.get("location") or {}).get("bbox") for i in items),
+        "image_submission": any(as_dict(i.get("location")).get("bbox") for i in items),
     }
 
 
@@ -374,21 +446,21 @@ def defense_by_item(
     brief: dict[str, Any], findings: list[dict[str, Any]]
 ) -> dict[str, Any]:
     result = []
-    for defense in brief.get("defenses") or []:
+    for defense in as_list(brief.get("defenses")):
         if not isinstance(defense, dict):
             continue
-        items = set(defense.get("related_item_ids") or [])
+        items = set(_string_list(defense.get("related_item_ids")))
         result.append(
             {
                 "topic": defense.get("addresses_topic"),
                 "items": sorted(items),
                 "argument": str(defense.get("argument") or "")[:DEFENSE_ARGUMENT_LIMIT],
                 "compromise": defense.get("proposed_compromise"),
-                "likely_to_dispute": defense.get("likely_to_dispute") or [],
+                "likely_to_dispute": as_list(defense.get("likely_to_dispute")),
                 "related_findings": [
                     f.get("finding_id")
                     for f in findings
-                    if items & set(f.get("related_item_ids") or [])
+                    if items & set(_string_list(f.get("related_item_ids")))
                 ],
             }
         )
@@ -400,7 +472,7 @@ def prepare_critic_inputs_state(state: Any) -> dict[str, str]:
     inventory = as_dict(state.get("intake_findings"))
     return {
         "findings_digest": compact_json([finding_digest(f) for f in findings]),
-        "dup_candidates": compact_json(candidate_duplicate_pairs(findings)),
+        "dup_candidates": compact_json(candidate_duplicates(findings)),
         "coverage_hints": compact_json(coverage_hints(inventory, findings)),
         "defense_by_item": compact_json(
             defense_by_item(as_dict(state.get("submitter_defense")), findings)
@@ -427,13 +499,20 @@ def expand_gap_findings(
 ) -> list[dict[str, Any]]:
     expanded = []
     for number, raw in enumerate(
-        [f for f in raw_findings or [] if isinstance(f, dict)], start=1
+        [f for f in as_list(raw_findings) if isinstance(f, dict)], start=1
     ):
         lens = raw.get("review_lens")
-        if lens not in LENS_PREFIX:
+        if not isinstance(lens, str) or lens not in LENS_PREFIX:
             lens = "regulatory"
         expanded.append(expand_finding(raw, lens, f"F-GAP-{number}", items))
     return expanded
+
+
+def _safe_int(value: Any) -> int:
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return 0
 
 
 def _text(value: Any) -> str:
@@ -445,11 +524,11 @@ def merge_critic_outputs(state: Any) -> dict[str, Any]:
     dedupe = as_dict(state.get("dedupe_critic_output"))
     severity = as_dict(state.get("severity_critic_output"))
     gap = as_dict(state.get("gap_critic_output"))
-    duplicate_groups = [g for g in dedupe.get("duplicate_groups") or [] if g]
-    themes = [t for t in dedupe.get("cross_lens_themes") or [] if t]
-    adjustments = [a for a in severity.get("severity_adjustments") or [] if a]
-    gaps = [str(g) for g in gap.get("gaps_identified") or []]
-    iterations_done = int(state.get("review_iteration_count") or 0)
+    duplicate_groups = [g for g in as_list(dedupe.get("duplicate_groups")) if g]
+    themes = [t for t in as_list(dedupe.get("cross_lens_themes")) if t]
+    adjustments = [a for a in as_list(severity.get("severity_adjustments")) if a]
+    gaps = [str(g) for g in as_list(gap.get("gaps_identified"))]
+    iterations_done = _safe_int(state.get("review_iteration_count"))
     wants_another_pass = iterations_done == 0 and (
         len(gaps) >= 2 or len(adjustments) >= 3
     )
@@ -498,7 +577,7 @@ def _theme_text(theme: dict[str, Any]) -> str:
 def assemble_findings(state: Any) -> dict[str, Any]:
     critic = as_dict(state.get("critic_review"))
     gap_findings = [
-        f for f in critic.get("additional_findings") or [] if isinstance(f, dict)
+        f for f in as_list(critic.get("additional_findings")) if isinstance(f, dict)
     ]
     ordered = [*all_reviewer_findings(state), *gap_findings]
     by_id: dict[str, dict[str, Any]] = {}
@@ -518,7 +597,7 @@ def assemble_findings(state: Any) -> dict[str, Any]:
             seen.add(key)
         return key
 
-    groups = [as_dict(g) for g in critic.get("duplicate_groups") or []]
+    groups = [as_dict(g) for g in as_list(critic.get("duplicate_groups"))]
     explicit_keeps = {
         keep
         for keep in (normalize_finding_id(g.get("keep")) for g in groups)
@@ -526,7 +605,7 @@ def assemble_findings(state: Any) -> dict[str, Any]:
     }
     unresolved: list[str] = []
     for group in groups:
-        raw_ids = group.get("finding_ids") or []
+        raw_ids = as_list(group.get("finding_ids"))
         members = [normalize_finding_id(i) for i in raw_ids]
         unresolved.extend(
             str(raw)
@@ -548,13 +627,17 @@ def assemble_findings(state: Any) -> dict[str, Any]:
             ):
                 replaced_by[member] = keep
 
-    for adjustment in critic.get("severity_adjustments") or []:
+    for adjustment in as_list(critic.get("severity_adjustments")):
         adjustment = as_dict(adjustment)
         key = normalize_finding_id(adjustment.get("finding_id"))
         recommended = adjustment.get("recommended_severity")
         if key not in by_id:
             unresolved.append(str(adjustment.get("finding_id")))
-        elif find(key) == key and recommended in SEVERITY_RANK:
+        elif (
+            find(key) == key
+            and isinstance(recommended, str)
+            and recommended in SEVERITY_RANK
+        ):
             by_id[key]["severity"] = recommended
 
     kept = [key for key in order if find(key) == key]
@@ -563,8 +646,17 @@ def assemble_findings(state: Any) -> dict[str, Any]:
     def sort_key(key: str) -> tuple[int, int, int]:
         finding = by_id[key]
         lens = finding.get("review_lens")
-        lens_rank = LENS_ORDER.index(lens) if lens in LENS_ORDER else len(LENS_ORDER)
-        severity_rank = SEVERITY_RANK.get(finding.get("severity"), len(SEVERITIES))
+        lens_rank = (
+            LENS_ORDER.index(lens)
+            if isinstance(lens, str) and lens in LENS_ORDER
+            else len(LENS_ORDER)
+        )
+        severity = finding.get("severity")
+        severity_rank = (
+            SEVERITY_RANK[severity]
+            if isinstance(severity, str) and severity in SEVERITY_RANK
+            else len(SEVERITIES)
+        )
         return (severity_rank, lens_rank, position[key])
 
     kept.sort(key=sort_key)
@@ -574,6 +666,7 @@ def assemble_findings(state: Any) -> dict[str, Any]:
     for key in kept:
         finding = by_id[key]
         lens = finding.get("review_lens")
+        lens = lens if isinstance(lens, str) else ""
         counters[lens] = counters.get(lens, 0) + 1
         new_id = f"F-{LENS_PREFIX.get(lens, 'GAP')}-{counters[lens]}"
         new_ids[key] = new_id
@@ -582,7 +675,7 @@ def assemble_findings(state: Any) -> dict[str, Any]:
     themes = [
         text
         for text in (
-            _theme_text(as_dict(t)) for t in critic.get("cross_lens_themes") or []
+            _theme_text(as_dict(t)) for t in as_list(critic.get("cross_lens_themes"))
         )
         if text
     ]
@@ -667,3 +760,80 @@ def compose_final_report(state: Any, assembled: dict[str, Any]) -> dict[str, Any
     except ValidationError:
         logger.exception("Final report failed schema validation")
         return report
+
+
+CRITIC_INPUT_DEFAULTS = {
+    "findings_digest": "[]",
+    "dup_candidates": "{}",
+    "coverage_hints": "{}",
+    "defense_by_item": "{}",
+}
+NARRATIVE_INPUT_DEFAULTS = {
+    "intake_summary": "{}",
+    "final_findings_digest": "[]",
+    "report_themes": "[]",
+    "final_counts": "{}",
+    "final_defense_by_item": "{}",
+}
+
+
+def empty_critic_assessment() -> dict[str, Any]:
+    return {
+        "overall_assessment": "No critic commentary was produced.",
+        "duplicate_groups": [],
+        "cross_lens_themes": [],
+        "severity_adjustments": [],
+        "gaps_identified": [],
+        "additional_findings": [],
+        "iteration_recommendation": "reviewers_have_converged",
+    }
+
+
+def _empty_counts() -> tuple[dict[str, int], dict[str, int]]:
+    return dict.fromkeys(LENS_ORDER, 0), dict.fromkeys(SEVERITIES, 0)
+
+
+def fallback_assembly(state: Any) -> dict[str, Any]:
+    """Every reviewer and gap finding, unmerged, if the normal assembly fails."""
+    findings: list[dict[str, Any]] = []
+    try:
+        gap = as_list(as_dict(state.get("critic_review")).get("additional_findings"))
+        for finding in [*all_reviewer_findings(state), *gap]:
+            if isinstance(finding, dict):
+                findings.append(finding)
+    except Exception:
+        logger.exception("fallback assembly could not read the findings")
+    by_lens, by_severity = _empty_counts()
+    for finding in findings:
+        if finding.get("review_lens") in by_lens:
+            by_lens[finding["review_lens"]] += 1
+        if finding.get("severity") in by_severity:
+            by_severity[finding["severity"]] += 1
+    return {
+        "findings": findings,
+        "themes": [],
+        "counts_by_lens": by_lens,
+        "counts_by_severity": by_severity,
+        "id_map": {},
+        "dropped": [],
+        "unresolved_ids": [],
+    }
+
+
+def minimal_report(assembled: dict[str, Any]) -> dict[str, Any]:
+    by_lens, by_severity = _empty_counts()
+    return {
+        "content_summary": "",
+        "intended_audience": "mixed_or_unclear",
+        "promotional_intent": "",
+        "executive_summary": (
+            "The report could not be fully composed for this run; the findings "
+            "below are the unprocessed review output."
+        ),
+        "themes": [],
+        "findings": as_list(assembled.get("findings")),
+        "open_questions_for_reviewers": [],
+        "recommended_discussion_topics": [],
+        "counts_by_lens": assembled.get("counts_by_lens") or by_lens,
+        "counts_by_severity": assembled.get("counts_by_severity") or by_severity,
+    }

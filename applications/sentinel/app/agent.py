@@ -73,6 +73,7 @@ Run from the parent directory with::
 from __future__ import annotations
 
 import json
+import logging
 import os
 from typing import Any
 
@@ -96,6 +97,8 @@ from app.schemas import (
 )
 from app.thinking import thinking_before_model
 from app.timing import timing_after_model, timing_before_model
+
+logger = logging.getLogger(__name__)
 
 # Pin the model endpoint region before any ADK / genai client is constructed.
 # _MODEL defaults to a global-endpoint model, so without this the agent 404s on
@@ -183,48 +186,79 @@ intake_agent = LlmAgent(
 
 def normalize_intake(ctx: Context, node_input: Any) -> Any:
     """Validate intake bboxes and item ids in state before anything reads them."""
-    intake = ctx.state.get("intake_findings")
-    if intake is not None:
-        ctx.state["intake_findings"] = processing.normalize_inventory(
-            processing.as_dict(intake)
-        )
+    try:
+        intake = ctx.state.get("intake_findings")
+        if intake is not None:
+            ctx.state["intake_findings"] = processing.normalize_inventory(
+                processing.as_dict(intake)
+            )
+    except Exception:
+        logger.exception("normalize_intake failed; continuing with the raw intake")
     return node_input
 
 
 def normalize_findings(ctx: Context, node_input: Any) -> Any:
     """Expand the slim reviewer outputs into full findings before the critics read them."""
-    for key, expanded in processing.normalize_reviewer_state(ctx.state).items():
-        ctx.state[key] = expanded
+    try:
+        for key, expanded in processing.normalize_reviewer_state(ctx.state).items():
+            ctx.state[key] = expanded
+    except Exception:
+        logger.exception("normalize_findings failed; reviewer outputs left unexpanded")
     return node_input
 
 
 def prepare_critic_inputs(ctx: Context, node_input: Any) -> Any:
     """Build the compact digest and hints the critics read instead of full findings."""
-    for key, value in processing.prepare_critic_inputs_state(ctx.state).items():
+    try:
+        values = processing.prepare_critic_inputs_state(ctx.state)
+    except Exception:
+        logger.exception("prepare_critic_inputs failed; the critics get empty hints")
+        values = dict(processing.CRITIC_INPUT_DEFAULTS)
+    for key, value in values.items():
         ctx.state[key] = value
     return node_input
 
 
 def merge_critics(ctx: Context, node_input: Any) -> Any:
     """Consolidate the three critic outputs into the CriticAssessment in code."""
-    ctx.state["critic_review"] = processing.merge_critic_outputs(ctx.state)
+    try:
+        ctx.state["critic_review"] = processing.merge_critic_outputs(ctx.state)
+    except Exception:
+        logger.exception("merge_critics failed; continuing without critic changes")
+        ctx.state["critic_review"] = processing.empty_critic_assessment()
     return node_input
 
 
 def assemble_report(ctx: Context, node_input: Any) -> Any:
     """Apply the critic assessment to the findings in code and prepare the narrative inputs."""
-    assembled = processing.assemble_findings(ctx.state)
+    try:
+        assembled = processing.assemble_findings(ctx.state)
+    except Exception:
+        logger.exception(
+            "assemble_report failed; falling back to the unmerged findings"
+        )
+        assembled = processing.fallback_assembly(ctx.state)
     ctx.state["assembled_report"] = assembled
-    for key, value in processing.narrative_inputs_state(ctx.state, assembled).items():
+    try:
+        narrative_inputs = processing.narrative_inputs_state(ctx.state, assembled)
+    except Exception:
+        logger.exception(
+            "narrative inputs failed; the narrative agent gets empty inputs"
+        )
+        narrative_inputs = dict(processing.NARRATIVE_INPUT_DEFAULTS)
+    for key, value in narrative_inputs.items():
         ctx.state[key] = value
     return node_input
 
 
 def compose_report(ctx: Context, node_input: Any) -> Event:
     """Combine the assembled findings with the narrative into the final report."""
-    report = processing.compose_final_report(
-        ctx.state, processing.as_dict(ctx.state.get("assembled_report"))
-    )
+    assembled = processing.as_dict(ctx.state.get("assembled_report"))
+    try:
+        report = processing.compose_final_report(ctx.state, assembled)
+    except Exception:
+        logger.exception("compose_report failed; emitting a minimal report")
+        report = processing.minimal_report(assembled)
     ctx.state["final_report"] = report
     return Event(
         content=types.Content(

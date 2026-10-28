@@ -101,10 +101,16 @@ def test_digest_is_compact_and_keeps_the_fields_critics_need() -> None:
     assert len({d["id"] for d in digest}) == 40
 
 
-def test_duplicate_pairs_recover_the_baseline_critic_groups() -> None:
+def test_duplicate_candidates_recover_the_baseline_critic_groups() -> None:
     state = _baseline_state()
     findings = processing.all_reviewer_findings(state)
-    pairs = {frozenset(p) for p in processing.candidate_duplicate_pairs(findings)}
+    candidates = processing.candidate_duplicates(findings)
+    linked_pairs = {frozenset(p) for p in candidates["overlapping_box_pairs"]}
+    for group in candidates["same_item_groups"]:
+        ids = group["finding_ids"]
+        linked_pairs.update(
+            frozenset((a, b)) for i, a in enumerate(ids) for b in ids[i + 1 :]
+        )
     linked = total = 0
     for group in _fixture("dedupe_critic")["duplicate_groups"]:
         keep = processing.normalize_finding_id(group["keep"])
@@ -113,13 +119,13 @@ def test_duplicate_pairs_recover_the_baseline_critic_groups() -> None:
             if member == keep:
                 continue
             total += 1
-            linked += frozenset((keep, member)) in pairs
+            linked += frozenset((keep, member)) in linked_pairs
     assert total == 9
     assert linked == total
-    assert len(pairs) < 120
+    assert candidates["box_pairs_truncated"] is False
 
 
-def test_duplicate_pairs_need_shared_items_or_overlapping_boxes() -> None:
+def test_duplicate_candidates_need_shared_items_or_overlapping_boxes() -> None:
     def make(finding_id, items, bbox):
         return {
             "finding_id": finding_id,
@@ -135,8 +141,88 @@ def test_duplicate_pairs_need_shared_items_or_overlapping_boxes() -> None:
         make("E", [], [0.7, 0.1, 0.9, 0.2]),
         make("F", [], [0.0, 0.9, 0.1, 1.0]),
     ]
-    pairs = processing.candidate_duplicate_pairs(findings)
-    assert pairs == [["A", "B"], ["A", "C"], ["D", "E"]]
+    candidates = processing.candidate_duplicates(findings)
+    assert candidates["same_item_groups"] == [
+        {"items": ["C1"], "finding_ids": ["A", "B"]}
+    ]
+    assert sorted(map(sorted, candidates["overlapping_box_pairs"])) == [
+        ["A", "C"],
+        ["D", "E"],
+    ]
+
+
+def test_duplicate_candidates_stay_small_when_hundreds_of_findings_share_an_item() -> (
+    None
+):
+    findings = [
+        {
+            "finding_id": f"F-MED-{n}",
+            "related_item_ids": ["C1"],
+            "location": {"bbox": [0.1, 0.1, 0.5, 0.5]},
+        }
+        for n in range(600)
+    ]
+    text = processing.compact_json(processing.candidate_duplicates(findings))
+    assert len(text) < 20_000
+    assert processing.candidate_duplicates(findings)["overlapping_box_pairs"] == []
+
+
+def test_overlapping_box_pairs_are_capped_and_flagged() -> None:
+    findings = [
+        {
+            "finding_id": f"F-REG-{n}",
+            "related_item_ids": [f"C{n}"],
+            "location": {"bbox": [0.1, 0.1, 0.5, 0.5]},
+        }
+        for n in range(80)
+    ]
+    candidates = processing.candidate_duplicates(findings)
+    assert len(candidates["overlapping_box_pairs"]) == processing.MAX_BOX_PAIRS
+    assert candidates["box_pairs_truncated"] is True
+
+
+def test_coverage_hints_cap_the_uncovered_item_list() -> None:
+    inventory = {
+        "items": [
+            {"item_id": f"C{n}", "kind": "headline", "text": "t"} for n in range(500)
+        ]
+    }
+    hints = processing.coverage_hints(inventory, [])
+    assert len(hints["items_without_findings"]) == processing.MAX_UNCOVERED_ITEMS
+    assert hints["items_without_findings_total"] == 500
+
+
+def test_critic_inputs_stay_bounded_for_a_very_large_submission() -> None:
+    items = [
+        {"item_id": f"C{n}", "kind": "headline", "text": "x" * 200, "location": None}
+        for n in range(400)
+    ]
+    findings = [
+        {
+            "finding_id": f"F-MED-{n}",
+            "review_lens": "medical",
+            "category": "clarity",
+            "severity": "low",
+            "confidence": 0.7,
+            "related_item_ids": [f"C{n % 400}"],
+            "observation": "o" * 200,
+            "mlr_principle": "p" * 50,
+            "location": None,
+        }
+        for n in range(1500)
+    ]
+    state = {
+        "intake_findings": {"items": items},
+        "medical_findings": {
+            "lens": "medical",
+            "reviewer_summary": "",
+            "findings": findings,
+        },
+    }
+    prepared = processing.prepare_critic_inputs_state(state)
+    assert len(prepared["dup_candidates"]) < 200_000
+    assert len(prepared["coverage_hints"]) < 20_000
+    assert len(json.loads(prepared["findings_digest"])) == 1500
 
 
 def test_normalize_finding_id_handles_zero_padding_and_aliases() -> None:
