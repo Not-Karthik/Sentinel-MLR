@@ -374,6 +374,7 @@ def finding_digest(finding: dict[str, Any]) -> dict[str, Any]:
         "region": location.get("section"),
         "bbox": location.get("bbox"),
         "quote": finding.get("quoted_content"),
+        "also_raised_by": _string_list(finding.get("also_raised_by")),
     }
 
 
@@ -659,6 +660,17 @@ def assemble_findings(state: Any) -> dict[str, Any]:
             by_id[key]["severity"] = recommended
 
     kept = [key for key in order if find(key) == key]
+    merged_lenses: dict[str, set[str]] = {}
+    for key in order:
+        root = find(key)
+        lens = by_id[key].get("review_lens")
+        if root != key and isinstance(lens, str):
+            merged_lenses.setdefault(root, set()).add(lens)
+    raised_by_lens = dict.fromkeys(LENS_ORDER, 0)
+    for key in order:
+        lens = by_id[key].get("review_lens")
+        if isinstance(lens, str) and lens in raised_by_lens:
+            raised_by_lens[lens] += 1
     position = {key: index for index, key in enumerate(order)}
 
     def sort_key(key: str) -> tuple[int, int, int]:
@@ -689,6 +701,11 @@ def assemble_findings(state: Any) -> dict[str, Any]:
         new_id = f"F-{LENS_PREFIX.get(lens, 'GAP')}-{counters[lens]}"
         new_ids[key] = new_id
         finding["finding_id"] = new_id
+        finding["also_raised_by"] = [
+            other
+            for other in LENS_ORDER
+            if other in merged_lenses.get(key, set()) and other != lens
+        ]
         findings.append(finding)
     themes = [
         text
@@ -708,6 +725,7 @@ def assemble_findings(state: Any) -> dict[str, Any]:
             severity: sum(1 for f in findings if f.get("severity") == severity)
             for severity in SEVERITIES
         },
+        "counts_raised_by_lens": raised_by_lens,
         "id_map": {key: new_ids[find(key)] for key in order},
         "dropped": sorted(key for key in order if find(key) != key),
         "unresolved_ids": sorted(set(unresolved)),
@@ -772,6 +790,8 @@ def compose_final_report(state: Any, assembled: dict[str, Any]) -> dict[str, Any
         ),
         "counts_by_lens": assembled["counts_by_lens"],
         "counts_by_severity": assembled["counts_by_severity"],
+        "counts_raised_by_lens": assembled.get("counts_raised_by_lens")
+        or assembled["counts_by_lens"],
     }
     try:
         return FinalReport.model_validate(report).model_dump(mode="json")

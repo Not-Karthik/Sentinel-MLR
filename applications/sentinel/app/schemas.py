@@ -294,6 +294,13 @@ class Finding(BaseModel):
         description="Possible remediation paths, presented as options not mandates.",
     )
     location: ContentLocation | None = None
+    also_raised_by: list[ReviewLens] = Field(
+        default_factory=list,
+        description=(
+            "Other lenses whose reviewers raised the same issue and whose "
+            "findings were merged into this one as duplicates."
+        ),
+    )
 
 
 class ReviewerOutput(BaseModel):
@@ -624,3 +631,11 @@ class FinalReport(BaseModel):
     recommended_discussion_topics: list[str] = Field(default_factory=list)
     counts_by_lens: dict[str, int] = Field(default_factory=dict)
     counts_by_severity: dict[str, int] = Field(default_factory=dict)
+    counts_raised_by_lens: dict[str, int] = Field(
+        default_factory=dict,
+        description=(
+            "Findings each lens raised before duplicates were merged. "
+            "counts_by_lens counts the findings that remain, attributed to "
+            "the lens whose finding was kept."
+        ),
+    )

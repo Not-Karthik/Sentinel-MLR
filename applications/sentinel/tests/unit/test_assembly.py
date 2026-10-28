@@ -460,3 +460,73 @@ async def test_final_nodes_emit_the_report_as_content_and_state() -> None:
     assert (
         stored.state["final_report"]["executive_summary"] == "From the narrative agent."
     )
+
+
+def test_merged_duplicates_record_which_other_lenses_raised_the_issue() -> None:
+    critic = {
+        "duplicate_groups": [
+            {
+                "finding_ids": ["F-MED-1", "F-LEG-1", "F-REG-1"],
+                "rationale": "r",
+                "keep": "F-LEG-1",
+            }
+        ]
+    }
+    state = _state(
+        {
+            "medical": [_finding("F-MED-1")],
+            "legal": [_finding("F-LEG-1", lens="legal")],
+            "regulatory": [_finding("F-REG-1", lens="regulatory")],
+        },
+        critic,
+    )
+    assembled = processing.assemble_findings(state)
+    assert [f["review_lens"] for f in assembled["findings"]] == ["legal"]
+    assert assembled["findings"][0]["also_raised_by"] == ["medical", "regulatory"]
+    assert assembled["counts_by_lens"]["legal"] == 1
+    assert assembled["counts_by_lens"]["medical"] == 0
+    assert assembled["counts_raised_by_lens"]["medical"] == 1
+    assert assembled["counts_raised_by_lens"]["regulatory"] == 1
+
+
+def test_findings_without_duplicates_or_with_same_lens_duplicates_have_no_attribution() -> (
+    None
+):
+    critic = {
+        "duplicate_groups": [
+            {"finding_ids": ["F-MED-1", "F-MED-2"], "rationale": "r", "keep": "F-MED-1"}
+        ]
+    }
+    state = _state(
+        {"medical": [_finding("F-MED-1"), _finding("F-MED-2"), _finding("F-MED-3")]},
+        critic,
+    )
+    findings = processing.assemble_findings(state)["findings"]
+    assert len(findings) == 2
+    assert all(f["also_raised_by"] == [] for f in findings)
+
+
+def test_raised_counts_cover_every_finding_before_merging() -> None:
+    assembled = processing.assemble_findings(_baseline_state())
+    raised = assembled["counts_raised_by_lens"]
+    assert sum(raised.values()) == 43
+    assert sum(raised.values()) - sum(assembled["counts_by_lens"].values()) == len(
+        assembled["dropped"]
+    )
+    for lens in processing.LENS_ORDER:
+        assert raised[lens] >= assembled["counts_by_lens"][lens]
+    attributed = [f for f in assembled["findings"] if f["also_raised_by"]]
+    assert attributed
+    for finding in attributed:
+        assert finding["review_lens"] not in finding["also_raised_by"]
+
+
+def test_final_report_and_digest_carry_the_attribution() -> None:
+    state = _baseline_state()
+    assembled = processing.assemble_findings(state)
+    report = processing.compose_final_report(state, assembled)
+    FinalReport.model_validate(report)
+    assert report["counts_raised_by_lens"] == assembled["counts_raised_by_lens"]
+    assert any(f["also_raised_by"] for f in report["findings"])
+    digest = processing.finding_digest(assembled["findings"][0])
+    assert "also_raised_by" in digest
