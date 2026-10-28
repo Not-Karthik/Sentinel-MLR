@@ -133,3 +133,38 @@ def test_every_llm_agent_has_thinking_and_timing_callbacks() -> None:
         assert timing_after_model in llm_agent.canonical_after_model_callbacks, (
             llm_agent.name
         )
+
+
+@pytest.mark.parametrize(
+    ("level", "seconds"), [("low", 120), ("medium", 150), ("high", 300)]
+)
+def test_callback_sets_a_request_timeout_scaled_to_the_level(
+    level, seconds, monkeypatch
+) -> None:
+    monkeypatch.delenv("SENTINEL_MODEL_TIMEOUT_SECONDS", raising=False)
+    context = SimpleNamespace(agent_name="intake", run_config=_run_config(level))
+    request = LlmRequest(config=types.GenerateContentConfig())
+    thinking_before_model(context, request)
+    assert request.config.http_options.timeout == seconds * 1000
+
+
+def test_timeout_is_overridable_and_bad_values_are_ignored(monkeypatch) -> None:
+    from app.thinking import request_timeout_seconds
+
+    monkeypatch.setenv("SENTINEL_MODEL_TIMEOUT_SECONDS", "500")
+    assert request_timeout_seconds("low") == 500
+    for bad in ("zero", "0", "-5", ""):
+        monkeypatch.setenv("SENTINEL_MODEL_TIMEOUT_SECONDS", bad)
+        assert request_timeout_seconds("medium") == 150
+
+
+def test_timeout_keeps_existing_http_options() -> None:
+    context = SimpleNamespace(agent_name="intake", run_config=_run_config())
+    request = LlmRequest(
+        config=types.GenerateContentConfig(
+            http_options=types.HttpOptions(headers={"x-test": "1"})
+        )
+    )
+    thinking_before_model(context, request)
+    assert request.config.http_options.headers == {"x-test": "1"}
+    assert request.config.http_options.timeout == 150_000

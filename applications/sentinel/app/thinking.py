@@ -29,6 +29,12 @@ ALLOWED_LEVELS = ("low", "medium", "high")
 A2A_METADATA_KEY = "a2a_metadata"
 METADATA_FIELD = "thinking"
 
+TIMEOUT_ENV = "SENTINEL_MODEL_TIMEOUT_SECONDS"
+# Per-call limit before a stalled model request is cut off and retried. Normal
+# calls finish well inside these limits; stalls of several minutes were seen
+# with no error. Raise it through the environment for very large documents.
+TIMEOUT_SECONDS = {"low": 120.0, "medium": 150.0, "high": 300.0}
+
 
 def normalize_level(value: Any) -> str | None:
     if not isinstance(value, str):
@@ -48,6 +54,14 @@ def resolve_thinking_level(run_config: Any) -> str:
     return normalize_level(os.getenv(THINKING_ENV)) or DEFAULT_LEVEL
 
 
+def request_timeout_seconds(level: str) -> float:
+    try:
+        override = float(os.environ[TIMEOUT_ENV])
+    except (KeyError, ValueError):
+        return TIMEOUT_SECONDS[level]
+    return override if override > 0 else TIMEOUT_SECONDS[level]
+
+
 def thinking_before_model(
     callback_context: CallbackContext, llm_request: LlmRequest
 ) -> LlmResponse | None:
@@ -57,5 +71,8 @@ def thinking_before_model(
     llm_request.config.thinking_config = types.ThinkingConfig(
         thinking_level=types.ThinkingLevel[level.upper()]
     )
+    if llm_request.config.http_options is None:
+        llm_request.config.http_options = types.HttpOptions()
+    llm_request.config.http_options.timeout = int(request_timeout_seconds(level) * 1000)
     logger.debug("agent=%s thinking_level=%s", callback_context.agent_name, level)
     return None
