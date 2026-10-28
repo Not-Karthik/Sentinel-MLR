@@ -336,7 +336,7 @@ rules_reviewer = LlmAgent(
     name="rules_reviewer",
     model=_MODEL,
     generate_content_config=_GENERATE_CONFIG,
-    before_model_callback=_BEFORE_MODEL,
+    before_model_callback=[processing.rules_reviewer_gate, *_BEFORE_MODEL],
     after_model_callback=_AFTER_MODEL,
     description=(
         "Reviews the submission against a user-supplied rules file (brand "

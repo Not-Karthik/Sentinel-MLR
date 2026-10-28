@@ -17,7 +17,17 @@ import json
 import math
 from typing import Any
 
+from google.adk.agents.callback_context import CallbackContext
+from google.adk.models.llm_request import LlmRequest
+from google.adk.models.llm_response import LlmResponse
+from google.genai import types
 from pydantic import BaseModel
+
+EMPTY_RULES_OUTPUT: dict[str, Any] = {
+    "lens": "custom",
+    "reviewer_summary": "No custom rules file was supplied for this review pass.",
+    "findings": [],
+}
 
 
 def as_dict(value: Any) -> dict[str, Any]:
@@ -106,3 +116,16 @@ def normalize_inventory(inventory: dict[str, Any]) -> dict[str, Any]:
         if isinstance(location, dict) and "bbox" in location:
             location["bbox"] = normalize_bbox(location.get("bbox"))
     return result
+
+
+def rules_reviewer_gate(
+    callback_context: CallbackContext, llm_request: LlmRequest
+) -> LlmResponse | None:
+    if callback_context.state.get("custom_rules"):
+        return None
+    return LlmResponse(
+        content=types.Content(
+            role="model",
+            parts=[types.Part(text=json.dumps(EMPTY_RULES_OUTPUT))],
+        )
+    )
