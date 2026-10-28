@@ -2,6 +2,32 @@
 
 For architecture review. "Today" means branch `backend-only-deployment`, checked against the source. Sections 7 and 9 are plans; nothing in them is built. Entra ID versus Cognito is not decided.
 
+## Contents
+
+- [1. The two flows (read this first)](#1-the-two-flows-read-this-first)
+- [2. Flow 2 in detail: one review through `app/`](#2-flow-2-in-detail-one-review-through-app)
+- [3. The workflow](#3-the-workflow)
+- [4. What each API in `app/` is for](#4-what-each-api-in-app-is-for)
+- [5. Where state lives](#5-where-state-lives)
+- [6. Authentication today](#6-authentication-today)
+- [7. Authentication, authorization and isolation (Entra ID or Cognito, not decided)](#7-authentication-authorization-and-isolation-entra-id-or-cognito-not-decided)
+  - [Sign-in and tokens (same for both IdPs)](#sign-in-and-tokens-same-for-both-idps)
+  - [Verify the token in Sentinel (new `app/auth/`)](#verify-the-token-in-sentinel-new-appauth)
+  - [Groups and roles: no users added in Google Cloud](#groups-and-roles-no-users-added-in-google-cloud)
+  - [Lock down the routes](#lock-down-the-routes)
+  - [Sign-in page on Amplify](#sign-in-page-on-amplify)
+  - [Pass the user into the workflow](#pass-the-user-into-the-workflow)
+  - [Authorization and isolation](#authorization-and-isolation)
+  - [Agent-to-agent](#agent-to-agent)
+  - [Deployment and other controls](#deployment-and-other-controls)
+  - [Alternative considered: IAP with Workforce Identity Federation](#alternative-considered-iap-with-workforce-identity-federation)
+  - [Verification](#verification)
+  - [Order of work and rollback](#order-of-work-and-rollback)
+- [8. Gaps](#8-gaps)
+- [9. Memory and persistence plan](#9-memory-and-persistence-plan)
+- [10. Next steps and open decisions](#10-next-steps-and-open-decisions)
+- [Sources](#sources)
+
 ## 1. The two flows (read this first)
 
 The codebase has two separate backends. They share no code: `api/` never imports `app/` or ADK and never calls the ADK agents. Each has its own LLM calls and its own prompts. Where a document and the code disagree, the code is the reference.
@@ -39,7 +65,7 @@ flowchart LR
 | Media input | Upload through `/api/v1/storage/upload` (GCS `dev/` folder), then `/api/v1/analyze` with the `gs://` URI or a YouTube URL; or `/api/v1/analyze/upload` with a file. Gemini fetches the media itself | Upload through `/api/v1/media`, then send the `gs://` URI as an A2A file part. `/api/v1/media` is a later test-only addition; the original code has no upload route |
 | Output | Flat `issues[]` (timestamps, severity, category, description, point `x`,`y`) plus a summary; the UI draws numbered point markers | `FinalReport`: findings with `location.bbox`, severity, confidence, discussion, suggested actions, counts |
 | Deployed by this branch | No (README steps only, no Terraform) | Yes (`terraform-cloudrun/`, `deploy/deploy.ps1`) |
-| Authentication | None | None |
+| Authentication | None in the code. The deployment is behind Google IAP with per-user grants (section 6) | None in the code |
 
 **Flow 1 in short:** the user picks a file in the cloud-storage picker (or pastes a YouTube URL). The frontend calls `POST /api/v1/analyze` with the `gs://` or YouTube URL, a speed setting and optional custom rules. The API checks the URI and sends one Gemini request with the media and a prompt, asking for JSON in the `AnalysisResponseSchema` shape. The reply is parsed into the flat issue list, and the UI shows the list and point markers (for video, clicking an issue seeks to its timestamp). The model is chosen from settings (`GEMINI_MODEL_FAST` or `GEMINI_MODEL_POWERFUL`, both `gemini-3.8-flash` by default), through Vertex AI or an API key.
 
@@ -122,8 +148,9 @@ flowchart TD
 
 Notes:
 - This is the workflow on this branch: 12 LLM agents and about 9 code steps. The original on `main` had 13 LLM agents, because the critic merger and the synthesizer were also LLM agents; they are now code and a short narrative writer. Code, not an LLM, does the mechanical work (merge, severity, ids, counts). No step gives a pass or fail verdict.
-- Only `intake` receives the image (measured request sizes). The reviewer prompts say "you have the original submission attached", which is not true.
-- Every LLM call gets the chosen thinking level and a per-call timeout (120, 150, 300 s) with up to 10 retries. Code steps fall back to safe defaults on error; LLM steps do not.
+- Only `intake` receives the image. Checked by running the real workflow with a stub model: the intake request carried the image (about 300 KB for a 300 KB test image) and every other request was 3 to 7 KB with no image. The reviewer prompts say "you have the original submission attached", which is not true.
+- The critics receive each reviewer's full output (including the long `discussion`) as their user message, in addition to the compact digest in their instruction (same stub-model check). So the digest does not reduce what the critics receive.
+- Every LLM call gets the chosen thinking level and a per-call timeout (120, 150, 300 s) with up to 10 retries. Six code steps (normalize intake, normalize findings, critic inputs, merge critics, assemble, compose) fall back to safe defaults on error; the rules loader ignores errors, the two routers have no fallback, and LLM steps have none.
 - The review loop (`iterate`) is dead code: the cap is 1.
 
 ## 4. What each API in `app/` is for
@@ -133,13 +160,13 @@ Notes:
 | `POST /api/v1/media` | Upload image or PDF, returns `gs://` URI | client before the A2A call | Added for testing |
 | `POST`, `GET /api/v1/feedback`, `/review`, `/save` | Placeholders for rating, per-finding decision, saving the report (in memory) | frontend | Added placeholders |
 | `GET /a2a/app/.well-known/agent-card.json` | Agent card: skills, URL, protocol versions | A2A clients | a2a-sdk |
-| `POST /a2a/app` | Main entry (JSON-RPC): send, stream, get task, list tasks, cancel, resubscribe. v0.3 by default, v1.0 with header `A2A-Version: 1.0`. Push-notification and extended-card methods exist but do nothing | A2A clients | a2a-sdk |
+| `POST /a2a/app` | Main entry (JSON-RPC): send, stream, get task, list tasks, cancel, resubscribe. v0.3 by default, v1.0 with header `A2A-Version: 1.0`. Push-notification and extended-card methods exist but return a "not supported" error | A2A clients | a2a-sdk |
 | `POST /api/reasoning_engine`, `/api/stream_reasoning_engine` | Adapter for the Vertex AI Console playground: session and memory calls, streaming queries | Vertex Console | Original (Sentinel code) |
 | `POST /run`, `/run_sse`, `WS /run_live` | ADK native run of the workflow | ADK tools | ADK |
 | `/apps/{app}/users/{user}/sessions...` | ADK session create, get, list, update state, delete | ADK tools | ADK |
 | `/apps/{app}/users/{user}/sessions/{id}/artifacts...` | ADK artifact save, list, load, versions, delete | ADK tools | ADK |
 | `PATCH /apps/{app}/users/{user}/memory` | Add a session to the memory service | ADK tools | ADK |
-| `GET /health`, `/version`, `/list-apps`, `/apps/{app}/app-info`, `POST /agent-identity/finalize` | Liveness (static `ok`), versions, list agents, agent info, OAuth consent helper | probes, ADK | ADK |
+| `GET /health`, `/version`, `/list-apps`, `/apps/{app}/app-info`, `POST /agent-identity/finalize` | Liveness (static `ok`), versions, list agents (returns `["api","app"]`), agent info (returns 400 for this app), OAuth consent helper | probes, ADK | ADK |
 | `/docs`, `/redoc`, `/openapi.json` | Swagger; turned off with `ENABLE_API_DOCS=false` | developers | FastAPI |
 
 The ADK native routes, the Console adapter and the A2A task routes are the ones to lock down first, because they take a caller-supplied `user_id`, `state_delta` or task id.
@@ -154,11 +181,13 @@ The ADK native routes, the Console adapter and the A2A task routes are the ones 
 | Placeholder review, save, feedback | in memory, capped at 1000 | lost on restart |
 | Long-term memory | none | not used by the agents |
 
-The service is pinned to one instance because of this. Follow-up messages with the same `contextId` reuse the session state, which nothing clears.
+The service is pinned to one instance because of this. Follow-up messages with the same `contextId` reuse the session state, and nothing in the code clears it.
 
 ## 6. Authentication today
 
-None in the code. The only control is the Cloud Run invoker setting: public by default (`ALLOW_UNAUTHENTICATED_INVOKE=true`), or Google IAM tokens. The service's own Google credentials (`sentinel-runtime`) are server-to-Google only (Vertex AI, GCS) and do not identify callers. No IAP or Identity Platform is configured in `terraform-cloudrun/`. The user id inside ADK is `A2A_USER_<contextId>`, where the client chooses the `contextId`, so knowing it gives access to that session. Agents do not call each other over A2A: they are steps in one in-process workflow, and A2A is only how outside callers reach it.
+**Deployment state of Flow 1 (`api/` with the bundled frontend, `Dockerfile.webapp`; from the deployed project, not from the code). This applies only to Flow 1, not to `app/`.** `gcloud beta iap web get-iam-policy --resource-type=cloud-run --service=sentinel --region=us-central1` returns one binding: `roles/iap.httpsResourceAccessor` granted to many individual user accounts (Gmail). So the deployed web app is gated by per-user grants in Google Cloud, added by hand. That is a perimeter only: the app code does not read the IAP identity, and every allowed user shares one storage folder. The Cloud Run invoker policy (`gcloud run services get-iam-policy sentinel --region us-central1`) has a single binding, `roles/run.invoker` for the IAP service agent, and no `allUsers`, so the service is not open to the public and requests have to come through IAP. The README on `main` describes this setup, but nothing in the repo automates it. It does not meet the goal in section 7 of adding users only in Entra or Cognito.
+
+**Flow 2 (`app/`)**: no authentication in the code, and nothing in `terraform-cloudrun/` adds any. The only control is the Cloud Run invoker setting: public by default (`ALLOW_UNAUTHENTICATED_INVOKE=true`), or Google IAM tokens. The service's own Google credentials (`sentinel-runtime`) are server-to-Google only (Vertex AI, GCS) and do not identify callers. No IAP or Identity Platform is configured in `terraform-cloudrun/`. The user id inside ADK is `A2A_USER_<contextId>`, where the client chooses the `contextId`, so knowing it gives access to that session. Agents do not call each other over A2A: they are steps in one in-process workflow, and A2A is only how outside callers reach it.
 
 ## 7. Authentication, authorization and isolation (Entra ID or Cognito, not decided)
 
@@ -284,18 +313,19 @@ Google IAP can accept Entra users through Workforce Identity Federation and gran
 | 3 | All unauthenticated callers share one task owner, so any caller can list or fetch every task | a2a-sdk in-memory store | P0 |
 | 4 | `gs://` and URL file parts are not validated; the agent can be pointed at any bucket object or web URL | ADK part converter | P0 |
 | 5 | No untrusted-content framing in prompts; document text reaches every agent; `custom_rules` unbounded | `app/prompts/*.md` | P0 |
-| 6 | Uploads never deleted, no CMEK; model location defaults to `global` (overrides Terraform) while the bucket is `us-central1` | `main.tf`, `app/agent.py:107` | P1 |
+| 6 | Uploads never deleted, no CMEK; the Vertex location is `global` (set by `MODEL_LOCATION` in code and also in Terraform) while the bucket is in `us-central1` | `main.tf`, `app/agent.py:107` | P1 |
 | 7 | Sessions and tasks in memory, one instance, lost on deploy; tasks never evicted | `fast_api_app.py:61`, `services.py` | P1 |
-| 8 | No overall deadline (a call can retry for about 56 min at `high`), no shared rate limit, 20 concurrent runs mean about 120 parallel model calls; about 11% of calls stall | `agent.py`, `thinking.py` | P1 |
+| 8 | No overall deadline (a call can retry for about 56 min at `high`), no shared rate limit, 20 concurrent runs mean about 100 to 120 parallel model calls; about 11% of calls stall | `agent.py`, `thinking.py` | P1 |
 | 9 | LLM steps are not fail-soft: one failed reviewer fails the run (parallel behaviour not verified) | `agent.py` | P1 |
 | 10 | Reviewer prompts claim an attached image they do not receive; intake prompt has no rule for `is_promotional`; routing uses substring matching | `medical_reviewer.md:6`, `agent.py:272` | P1 |
-| 11 | Dead review loop and unused fields (`confidence_concerns`, `advocate_weighed`, `id_map`) | `agent.py:538`, `schemas.py` | P2 |
+| 11 | Dead review loop and unused fields (`confidence_concerns`, `advocate_weighed`, `id_map`) | `agent.py:524-543`, `schemas.py` | P2 |
 | 12 | `/health` is static, no liveness probe, 10 s shutdown grace; cancel and client disconnect may not stop model spend (not verified) | ADK, `main.tf` | P1 |
 | 13 | No metrics, traces, alerts or audit log; runtime account lacks trace and metric roles | `main.tf` | P1 |
 | 14 | Container runs as root with dev dependencies and an unpinned base image; no scan or tests in the build; `run_outputs/` is uploaded with the source | `Dockerfile`, `cloudbuild.yaml`, `.gcloudignore` | P1 |
 | 15 | Tests do not cover an image or a full review over A2A (the only A2A e2e test sends "Hi!"); 436 unit tests cover the code steps | `tests/integration/test_server_e2e.py` | P1 |
 | 16 | `GET /api/v1/save`, `/review`, `/feedback` return everyone's data; `/list-apps` also lists `api` | `app/routes/dummy.py` | P1 |
-| 17 | Docs drift: retry count in the deploy README, video support claim, stale `agents-cli-manifest.yaml` | READMEs | P2 |
+| 17 | Docs drift: the deploy README says the script retries once after 45 s but it retries 4 times at 60 s; `agents-cli-manifest.yaml` still names the Agent Runtime target | `deploy/README.md:55`, `deploy/deploy.ps1`, `agents-cli-manifest.yaml:19` | P2 |
+| 18 | The critics receive each reviewer's full output as their user message on top of the digest, so the digest saves nothing and the critics see the long `discussion` text | `app/agent.py` graph (verified by a stub-model run) | P1 |
 
 ## 9. Memory and persistence plan
 
@@ -313,7 +343,7 @@ Order of work is in section 7 (verifier, route lock, user into ADK, roles and up
 
 Open decisions: Entra ID or Cognito (and, if Cognito, native users or federated from Entra); one tenant or many; Postgres (Cloud SQL) or Vertex sessions for persistence; whether any long-term memory is wanted.
 
-Not yet verified at runtime: what happens when one parallel reviewer fails, whether cancel stops the running workflow, whether the shutdown signal reaches uvicorn through `uv run`, whether critics receive the full reviewer output as their user message, and the two-user isolation test in section 7.
+Not yet verified at runtime: what happens when one parallel reviewer fails, whether cancel stops the running workflow, whether the shutdown signal reaches uvicorn through `uv run`, and the two-user isolation test in section 7. Checked by running the code: the route list (including `/api/v1/*`), the stub-model run of the full workflow (which agents run, which receive the image, what the critics receive, the final report keys), the A2A error responses, the 403 for browser requests from another origin, and the unauthenticated `ListTasks` call.
 
 ## Sources
 
