@@ -108,3 +108,21 @@ def test_partial_responses_and_unknown_calls_are_ignored(
     timing.timing_after_model(context, LlmResponse(partial=True))
     assert timing.records == []
     assert (context.invocation_id, context.agent_name) in timing._starts
+
+
+def test_enabling_the_timing_log_also_surfaces_sdk_retry_messages(monkeypatch) -> None:
+    import logging
+
+    sdk_logger = logging.getLogger("google_genai")
+    previous = (sdk_logger.level, list(sdk_logger.handlers), sdk_logger.propagate)
+    monkeypatch.setenv("SENTINEL_TIMING_LOG", "1")
+    monkeypatch.setattr(timing, "_handler_ready", False)
+    try:
+        timing.timing_before_model(_context(), _request())
+        assert sdk_logger.level == logging.INFO
+        assert sdk_logger.handlers
+        assert sdk_logger.propagate is False
+    finally:
+        sdk_logger.setLevel(previous[0])
+        sdk_logger.handlers[:] = previous[1]
+        sdk_logger.propagate = previous[2]

@@ -24,6 +24,7 @@ from google.adk.models.llm_response import LlmResponse
 logger = logging.getLogger("sentinel.timing")
 
 _ENV_FLAG = "SENTINEL_TIMING_LOG"
+_SDK_RETRY_LOGGER = "google_genai"
 _MAX_RECORDS = 500
 
 _starts: dict[tuple[str, str], tuple[float, int]] = {}
@@ -39,12 +40,13 @@ def _ensure_handler() -> None:
     global _handler_ready
     if _handler_ready:
         return
-    logger.setLevel(logging.INFO)
-    if not logger.handlers:
-        handler = logging.StreamHandler()
-        handler.setFormatter(logging.Formatter("%(message)s"))
-        logger.addHandler(handler)
-    logger.propagate = False
+    for target in (logger, logging.getLogger(_SDK_RETRY_LOGGER)):
+        target.setLevel(logging.INFO)
+        if not target.handlers:
+            handler = logging.StreamHandler()
+            handler.setFormatter(logging.Formatter("%(name)s %(message)s"))
+            target.addHandler(handler)
+        target.propagate = False
     _handler_ready = True
 
 
