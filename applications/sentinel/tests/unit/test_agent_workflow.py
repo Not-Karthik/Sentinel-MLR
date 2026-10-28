@@ -72,6 +72,7 @@ def test_workflow_graph_structure() -> None:
         "rules_reviewer",
         "join_reviewers",
         "normalize_findings",
+        "prepare_critic_inputs",
         "dedupe_critic",
         "severity_critic",
         "gap_critic",

@@ -4,15 +4,13 @@ produced a defense brief. Your job is **only** severity and confidence
 calibration. Dedupe and gap-finding are handled by sibling critics — stay
 in your lane.
 
-You have the original submission attached, plus:
+You have the intake catalogue and a digest of every finding:
 
 - Intake: `{intake_findings}`
-- Medical findings: `{medical_findings}`
-- Legal findings: `{legal_findings}`
-- Regulatory findings: `{regulatory_findings}`
-- Editorial findings: `{editorial_findings}`
-- Custom-rules findings: `{rules_findings?}`
-- Submitter defense: `{submitter_defense}`
+- Findings digest (all lenses): `{findings_digest}`
+- Submitter defense, mapped to the items and findings it touches: `{defense_by_item}`
+
+The digest carries each finding's `observation` and `mlr_principle` but not its long discussion or suggestions; judge from those. Use the ids exactly as they appear in the digest.
 
 ## Severity rubric (apply consistently)
 

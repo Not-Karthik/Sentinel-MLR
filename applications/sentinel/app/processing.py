@@ -16,6 +16,7 @@ import copy
 import json
 import logging
 import math
+import re
 from typing import Any
 
 from google.adk.agents.callback_context import CallbackContext
@@ -271,3 +272,144 @@ def normalize_reviewer_state(state: Any) -> dict[str, dict[str, Any]]:
         if state.get(key) is not None:
             expanded[key] = expand_reviewer_output(lens, state.get(key), items)
     return expanded
+
+
+EXPECTED_ITEM_KINDS = (
+    "important_safety_info",
+    "safety_statement",
+    "citation",
+    "footnote",
+    "disclaimer",
+    "call_to_action",
+    "indication_statement",
+)
+DEFENSE_ARGUMENT_LIMIT = 320
+
+
+def compact_json(value: Any) -> str:
+    return json.dumps(value, ensure_ascii=False, separators=(",", ":"))
+
+
+def all_reviewer_findings(state: Any) -> list[dict[str, Any]]:
+    findings: list[dict[str, Any]] = []
+    for key in REVIEWER_STATE_KEYS.values():
+        output = as_dict(state.get(key))
+        findings.extend(f for f in output.get("findings") or [] if isinstance(f, dict))
+    return findings
+
+
+def finding_digest(finding: dict[str, Any]) -> dict[str, Any]:
+    location = finding.get("location") or {}
+    return {
+        "id": finding.get("finding_id"),
+        "lens": finding.get("review_lens"),
+        "severity": finding.get("severity"),
+        "confidence": finding.get("confidence"),
+        "category": finding.get("category"),
+        "observation": finding.get("observation"),
+        "principle": finding.get("mlr_principle"),
+        "items": finding.get("related_item_ids") or [],
+        "region": location.get("section"),
+        "bbox": location.get("bbox"),
+        "quote": finding.get("quoted_content"),
+    }
+
+
+def candidate_duplicate_pairs(
+    findings: list[dict[str, Any]], iou_threshold: float = 0.7
+) -> list[list[str]]:
+    pairs: list[list[str]] = []
+    for index, first in enumerate(findings):
+        first_items = set(first.get("related_item_ids") or [])
+        first_box = (first.get("location") or {}).get("bbox")
+        for second in findings[index + 1 :]:
+            second_items = set(second.get("related_item_ids") or [])
+            second_box = (second.get("location") or {}).get("bbox")
+            same_items = bool(first_items) and first_items == second_items
+            if same_items or bbox_iou(first_box, second_box) >= iou_threshold:
+                pairs.append([first.get("finding_id"), second.get("finding_id")])
+    return pairs
+
+
+def coverage_hints(
+    inventory: dict[str, Any], findings: list[dict[str, Any]]
+) -> dict[str, Any]:
+    items = [i for i in inventory.get("items") or [] if isinstance(i, dict)]
+    referenced = {
+        item_id for f in findings for item_id in (f.get("related_item_ids") or [])
+    }
+    present_kinds = {str(i.get("kind")) for i in items}
+    per_lens = dict.fromkeys(LENS_PREFIX, 0)
+    for finding in findings:
+        lens = finding.get("review_lens")
+        if lens in per_lens:
+            per_lens[lens] += 1
+    return {
+        "items_without_findings": [
+            {
+                "item_id": i.get("item_id"),
+                "kind": i.get("kind"),
+                "text": str(i.get("text") or "")[:80],
+            }
+            for i in items
+            if i.get("item_id") not in referenced
+        ],
+        "findings_per_lens": per_lens,
+        "categories_present": sorted(
+            {str(f.get("category")) for f in findings if f.get("category")}
+        ),
+        "absent_item_kinds": [k for k in EXPECTED_ITEM_KINDS if k not in present_kinds],
+        "image_submission": any((i.get("location") or {}).get("bbox") for i in items),
+    }
+
+
+def defense_by_item(
+    brief: dict[str, Any], findings: list[dict[str, Any]]
+) -> dict[str, Any]:
+    result = []
+    for defense in brief.get("defenses") or []:
+        if not isinstance(defense, dict):
+            continue
+        items = set(defense.get("related_item_ids") or [])
+        result.append(
+            {
+                "topic": defense.get("addresses_topic"),
+                "items": sorted(items),
+                "argument": str(defense.get("argument") or "")[:DEFENSE_ARGUMENT_LIMIT],
+                "compromise": defense.get("proposed_compromise"),
+                "likely_to_dispute": defense.get("likely_to_dispute") or [],
+                "related_findings": [
+                    f.get("finding_id")
+                    for f in findings
+                    if items & set(f.get("related_item_ids") or [])
+                ],
+            }
+        )
+    return {"overall_framing": brief.get("overall_framing"), "defenses": result}
+
+
+def prepare_critic_inputs_state(state: Any) -> dict[str, str]:
+    findings = all_reviewer_findings(state)
+    inventory = as_dict(state.get("intake_findings"))
+    return {
+        "findings_digest": compact_json([finding_digest(f) for f in findings]),
+        "dup_candidates": compact_json(candidate_duplicate_pairs(findings)),
+        "coverage_hints": compact_json(coverage_hints(inventory, findings)),
+        "defense_by_item": compact_json(
+            defense_by_item(as_dict(state.get("submitter_defense")), findings)
+        ),
+    }
+
+
+_ID_LENS_ALIASES = {"EDT": "ED", "EDIT": "ED", "CRIT": "GAP"}
+
+
+def normalize_finding_id(raw: Any) -> str | None:
+    if not isinstance(raw, str):
+        return None
+    match = re.match(r"^\s*F-([A-Za-z]+)-0*(\d+)\s*$", raw, re.IGNORECASE)
+    if not match:
+        return None
+    token = match.group(1).upper()
+    token = _ID_LENS_ALIASES.get(token, token)
+    return f"F-{token}-{int(match.group(2))}"

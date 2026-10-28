@@ -187,6 +187,13 @@ def normalize_findings(ctx: Context, node_input: Any) -> Any:
     return node_input
 
 
+def prepare_critic_inputs(ctx: Context, node_input: Any) -> Any:
+    """Build the compact digest and hints the critics read instead of full findings."""
+    for key, value in processing.prepare_critic_inputs_state(ctx.state).items():
+        ctx.state[key] = value
+    return node_input
+
+
 def decide_intake_route(ctx: Context, node_input: Any) -> Event:
     """Decides whether to route to the full reviewer panel or short-circuit to direct_responder.
 
@@ -522,7 +529,8 @@ root_agent = Workflow(
         ),
         (reviewer_panel, join_reviewers),
         (join_reviewers, normalize_findings),
-        (normalize_findings, critic_panel),
+        (normalize_findings, prepare_critic_inputs),
+        (prepare_critic_inputs, critic_panel),
         (critic_panel, join_critics),
         (join_critics, critic_merger),
         (critic_merger, decide_review_loop),
