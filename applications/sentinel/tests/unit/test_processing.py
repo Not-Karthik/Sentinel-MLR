@@ -136,3 +136,24 @@ def test_normalize_intake_node_rewrites_state() -> None:
     empty = Ctx({})
     assert normalize_intake(empty, "x") == "x"
     assert "intake_findings" not in empty.state
+
+
+def test_tunables_have_documented_defaults_and_bad_env_values_are_ignored(
+    monkeypatch,
+) -> None:
+    import importlib
+
+    monkeypatch.setenv("SENTINEL_CONFIDENCE_HIGH", "0.9")
+    monkeypatch.setenv("SENTINEL_DUP_IOU", "not-a-number")
+    monkeypatch.setenv("SENTINEL_ITERATION_GAPS", "4")
+    reloaded = importlib.reload(processing)
+    try:
+        assert reloaded.CONFIDENCE_HIGH == 0.9
+        assert reloaded.confidence_band(0.85) == "medium"
+        assert reloaded.DUP_IOU_THRESHOLD == 0.7
+        assert reloaded.ITERATION_GAPS == 4
+    finally:
+        monkeypatch.undo()
+        importlib.reload(processing)
+    assert processing.CONFIDENCE_HIGH == 0.8
+    assert processing.confidence_band(0.85) == "high"

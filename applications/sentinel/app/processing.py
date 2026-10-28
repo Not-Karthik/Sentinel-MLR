@@ -16,6 +16,7 @@ import copy
 import json
 import logging
 import math
+import os
 import re
 from typing import Any
 
@@ -50,6 +51,22 @@ REVIEWER_STATE_KEYS = {
     "editorial": "editorial_findings",
     "custom": "rules_findings",
 }
+
+
+def _env_number(name: str, default: float, cast: Any = float) -> Any:
+    try:
+        return cast(os.environ[name])
+    except (KeyError, ValueError):
+        return default
+
+
+# Tunables. The defaults were chosen on a single test image, so they are
+# overridable through the environment and should be re-checked on new content.
+CONFIDENCE_HIGH = _env_number("SENTINEL_CONFIDENCE_HIGH", 0.8)
+CONFIDENCE_MEDIUM = _env_number("SENTINEL_CONFIDENCE_MEDIUM", 0.5)
+DUP_IOU_THRESHOLD = _env_number("SENTINEL_DUP_IOU", 0.7)
+ITERATION_GAPS = _env_number("SENTINEL_ITERATION_GAPS", 2, int)
+ITERATION_ADJUSTMENTS = _env_number("SENTINEL_ITERATION_ADJUSTMENTS", 3, int)
 LOCATION_FIELDS = ("page", "section", "bbox", "quote")
 
 EMPTY_RULES_OUTPUT: dict[str, Any] = {
@@ -167,9 +184,9 @@ def rules_reviewer_gate(
 
 
 def confidence_band(confidence: float) -> str:
-    if confidence >= 0.8:
+    if confidence >= CONFIDENCE_HIGH:
         return "high"
-    if confidence >= 0.5:
+    if confidence >= CONFIDENCE_MEDIUM:
         return "medium"
     return "low"
 
@@ -365,7 +382,7 @@ MAX_UNCOVERED_ITEMS = 60
 
 
 def candidate_duplicates(
-    findings: list[dict[str, Any]], iou_threshold: float = 0.7
+    findings: list[dict[str, Any]], iou_threshold: float | None = None
 ) -> dict[str, Any]:
     """Hints for the dedupe critic whose size stays linear in the number of findings.
 
@@ -373,6 +390,7 @@ def candidate_duplicates(
     Other pairs are listed only when their boxes overlap strongly, strongest
     first, and capped at MAX_BOX_PAIRS.
     """
+    threshold = DUP_IOU_THRESHOLD if iou_threshold is None else iou_threshold
     groups: dict[frozenset[str], list[Any]] = {}
     item_sets: list[frozenset[str]] = []
     for finding in findings:
@@ -389,7 +407,7 @@ def candidate_duplicates(
             if item_sets[i] and item_sets[i] == item_sets[j]:
                 continue
             overlap = bbox_iou(boxes[i], boxes[j])
-            if overlap >= iou_threshold:
+            if overlap >= threshold:
                 scored.append((overlap, i, j))
     scored.sort(key=lambda entry: -entry[0])
     return {
@@ -530,7 +548,7 @@ def merge_critic_outputs(state: Any) -> dict[str, Any]:
     gaps = [str(g) for g in as_list(gap.get("gaps_identified"))]
     iterations_done = _safe_int(state.get("review_iteration_count"))
     wants_another_pass = iterations_done == 0 and (
-        len(gaps) >= 2 or len(adjustments) >= 3
+        len(gaps) >= ITERATION_GAPS or len(adjustments) >= ITERATION_ADJUSTMENTS
     )
     assessment = " ".join(
         part
