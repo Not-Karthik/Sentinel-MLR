@@ -310,6 +310,68 @@ class ReviewerOutput(BaseModel):
     findings: list[Finding]
 
 
+class ReviewerFindingLLM(BaseModel):
+    """Finding as written by a reviewer agent.
+
+    Identifiers, the lens, the confidence band and the location are added in
+    code (see app/processing.py), so the model does not spend tokens on them.
+    """
+
+    category: IssueCategory
+    severity: Severity
+    confidence: float = Field(
+        ...,
+        ge=0.0,
+        le=1.0,
+        description="Numeric confidence in the observation (not the severity).",
+    )
+    evidence_depth: EvidenceDepth
+    related_item_ids: list[str] = Field(
+        default_factory=list,
+        description=(
+            "ContentInventory item_ids this finding relates to. Always list "
+            "them: the location of the related items is attached automatically."
+        ),
+    )
+    quoted_content: str | None = Field(
+        None,
+        description="Short verbatim excerpt the finding hinges on, if applicable.",
+    )
+    observation: str = Field(
+        ...,
+        description="Plain-language statement of what was noticed.",
+    )
+    mlr_principle: str = Field(
+        ...,
+        description="The underlying MLR principle, framework or industry norm.",
+    )
+    discussion: str = Field(
+        ...,
+        description="Educational explanation, framed as 'worth a closer look'.",
+    )
+    suggested_questions: list[str] = Field(default_factory=list)
+    suggested_actions: list[str] = Field(default_factory=list)
+    bbox: list[float] | None = Field(
+        None,
+        description=(
+            "Normalized [x_min, y_min, x_max, y_max] in 0..1 coordinates. Omit "
+            "for a finding tied to exactly one related item (its box is "
+            "attached automatically). Set it for findings tied to several "
+            "items or to an image region no item covers."
+        ),
+    )
+
+
+class ReviewerOutputLLM(BaseModel):
+    """Output schema used by every reviewer sub-agent."""
+
+    reviewer_summary: str = Field(
+        ...,
+        description="1-3 sentence summary of what the reviewer focused on.",
+    )
+    findings: list[ReviewerFindingLLM]
+
+
 class SeverityAdjustment(BaseModel):
     """Critic recommendation to revise a finding's severity."""
 

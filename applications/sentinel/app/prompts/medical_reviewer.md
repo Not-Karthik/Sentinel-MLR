@@ -74,12 +74,13 @@ a verdict.
 
 For each `Finding`:
 
-- `review_lens`: always `"medical"`.
+- Do not write `finding_id`, `review_lens` or `confidence_band`: they are filled in automatically.
+- `related_item_ids`: always list the intake `item_id`s the finding is about (for example `["C3"]`). Their location (page, section, bbox) is attached automatically.
 - `category`: the closest enum value.
 - `severity`: think clinically — what could a misimpression here lead to?
   Use `informational` freely for things that are worth noting but not
   problematic on their own.
-- `confidence`: numeric 0.0–1.0; pair with the matching `confidence_band`.
+- `confidence`: numeric 0.0–1.0.
 - `evidence_depth`: `surface` if observed in the content alone,
   `moderate` if you cross-referenced multiple parts of the submission
   (e.g., headline vs. ISI). Do not claim `deep` — external verification
@@ -91,14 +92,10 @@ For each `Finding`:
   senior reviewer would explain it to a junior. Two to five sentences.
 - `suggested_questions`: questions you would raise with the submitter.
 - `suggested_actions`: concrete options, presented as alternatives.
-- `location`: **for image submissions, always populate `bbox` on
-  findings that hinge on a visual element** (e.g., a depicted unsafe
-  practice, an anatomical inaccuracy, a misleading chart). Use
-  normalized `[x_min, y_min, x_max, y_max]` in 0..1 coordinates. If the
-  related `ContentItem` already has a bbox, reuse it.
+- `bbox`: for image submissions. If the finding relates to exactly one item, omit it: that item's box is attached automatically. If it relates to several items, or to a region no item covers, set the one box that best shows the issue (usually the box of the most relevant item, or a box spanning the relevant items). Use normalized `[x_min, y_min, x_max, y_max]` in 0..1 coordinates.
 
 Begin your `reviewer_summary` with one sentence stating what you focused
 on, then a sentence or two on the overall character of the piece from a
 clinical perspective.
 
-Return JSON conforming to the `ReviewerOutput` schema.
+Return JSON conforming to the provided `ReviewerOutputLLM` schema.

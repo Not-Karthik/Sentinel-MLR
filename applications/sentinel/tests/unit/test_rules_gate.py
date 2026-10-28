@@ -76,4 +76,6 @@ async def test_rules_reviewer_makes_no_model_call_without_rules() -> None:
     saved = stored.state["rules_findings"]
     saved = json.loads(saved) if isinstance(saved, str) else saved
     assert saved["findings"] == []
-    assert saved["lens"] == "custom"
+    assert (
+        saved["reviewer_summary"] == processing.EMPTY_RULES_OUTPUT["reviewer_summary"]
+    )

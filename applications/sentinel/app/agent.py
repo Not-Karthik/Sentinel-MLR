@@ -79,7 +79,7 @@ from app.schemas import (
     DedupeCriticOutput,
     FinalReport,
     GapCriticOutput,
-    ReviewerOutput,
+    ReviewerOutputLLM,
     SeverityCriticOutput,
     SubmitterDefenseBrief,
 )
@@ -180,6 +180,13 @@ def normalize_intake(ctx: Context, node_input: Any) -> Any:
     return node_input
 
 
+def normalize_findings(ctx: Context, node_input: Any) -> Any:
+    """Expand the slim reviewer outputs into full findings before the critics read them."""
+    for key, expanded in processing.normalize_reviewer_state(ctx.state).items():
+        ctx.state[key] = expanded
+    return node_input
+
+
 def decide_intake_route(ctx: Context, node_input: Any) -> Event:
     """Decides whether to route to the full reviewer panel or short-circuit to direct_responder.
 
@@ -263,7 +270,7 @@ medical_reviewer = LlmAgent(
         "mechanism, efficacy, safety, fair balance."
     ),
     instruction=prompts.MEDICAL_REVIEWER,
-    output_schema=ReviewerOutput,
+    output_schema=ReviewerOutputLLM,
     output_key="medical_findings",
 )
 
@@ -279,7 +286,7 @@ legal_reviewer = LlmAgent(
         "comparative claims, citations, disclosures, IP."
     ),
     instruction=prompts.LEGAL_REVIEWER,
-    output_schema=ReviewerOutput,
+    output_schema=ReviewerOutputLLM,
     output_key="legal_findings",
 )
 
@@ -295,7 +302,7 @@ regulatory_reviewer = LlmAgent(
         "off-label, ISI, PI consistency, fair balance."
     ),
     instruction=prompts.REGULATORY_REVIEWER,
-    output_schema=ReviewerOutput,
+    output_schema=ReviewerOutputLLM,
     output_key="regulatory_findings",
 )
 
@@ -311,7 +318,7 @@ editorial_reviewer = LlmAgent(
         "accessibility, tone, visual design, typography."
     ),
     instruction=prompts.EDITORIAL_REVIEWER,
-    output_schema=ReviewerOutput,
+    output_schema=ReviewerOutputLLM,
     output_key="editorial_findings",
 )
 
@@ -345,7 +352,7 @@ rules_reviewer = LlmAgent(
         "severity / synthesizer pipeline as the standard MLR reviewers."
     ),
     instruction=prompts.RULES_REVIEWER,
-    output_schema=ReviewerOutput,
+    output_schema=ReviewerOutputLLM,
     output_key="rules_findings",
 )
 
@@ -514,7 +521,8 @@ root_agent = Workflow(
             {"review": reviewer_panel, "direct_response": direct_responder},
         ),
         (reviewer_panel, join_reviewers),
-        (join_reviewers, critic_panel),
+        (join_reviewers, normalize_findings),
+        (normalize_findings, critic_panel),
         (critic_panel, join_critics),
         (join_critics, critic_merger),
         (critic_merger, decide_review_loop),

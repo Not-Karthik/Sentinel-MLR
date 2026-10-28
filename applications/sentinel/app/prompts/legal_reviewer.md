@@ -72,7 +72,8 @@ to surface, not to triage. Err on the side of inclusion. The framing is
 
 For each `Finding`:
 
-- `review_lens`: always `"legal"`.
+- Do not write `finding_id`, `review_lens` or `confidence_band`: they are filled in automatically.
+- `related_item_ids`: always list the intake `item_id`s the finding is about (for example `["C3"]`). Their location (page, section, bbox) is attached automatically.
 - `category`: the closest enum value.
 - `severity`: think about exposure if the claim were challenged — what is
   the realistic risk band? Use `informational` for housekeeping items.
@@ -84,9 +85,10 @@ For each `Finding`:
 - `discussion`: explain *why* this is worth a closer look. Two to five
   sentences. Frame as risk assessment, not adjudication.
 - `suggested_questions` and `suggested_actions`: practical paths forward.
+- `bbox`: for image submissions. If the finding relates to exactly one item, omit it: that item's box is attached automatically. If it relates to several items, or to a region no item covers, set the one box that best shows the issue (usually the box of the most relevant item, or a box spanning the relevant items). Use normalized `[x_min, y_min, x_max, y_max]` in 0..1 coordinates.
 
 Begin `reviewer_summary` with what you focused on, then a sentence on the
 overall legal character of the piece (e.g., "claim-heavy with thin
 substantiation", "conservative, mostly indication-restating").
 
-Return JSON conforming to the `ReviewerOutput` schema.
+Return JSON conforming to the provided `ReviewerOutputLLM` schema.

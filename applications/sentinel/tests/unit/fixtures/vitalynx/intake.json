@@ -1,0 +1,168 @@
+{
+  "is_promotional": true,
+  "content_summary": "Promotional product visual and digital advertisement for VITALYNX Medical Technologies showcasing a compact wearable or portable patient monitor labeled 'PulsePro X1'. The layout highlights key device capabilities including real-time vitals tracking, OLED display, wireless connectivity, and automated alerts, concluding with a call-to-action to discover smarter care.",
+  "promotional_intent": "Persuade clinical decision-makers or healthcare providers to explore and adopt the VITALYNX patient monitoring device for advanced clinical monitoring.",
+  "intended_audience": "healthcare_professional",
+  "audience_rationale": "The focus on patient monitoring parameters, clinical telemetry metrics (ECG waveform, heart rate, pulse oximetry), and hospital-oriented terminology indicates the piece targets healthcare professionals and clinical administrators.",
+  "product_or_topic": "VITALYNX PulsePro X1 Patient Monitor",
+  "items": [
+    {
+      "item_id": "C1",
+      "kind": "headline",
+      "text": "VITALYNX Medical Technologies",
+      "location": {
+        "page": 1,
+        "section": "Header",
+        "bbox": [
+          0.334,
+          0.065,
+          0.665,
+          0.147
+        ],
+        "quote": "VITALYNX Medical Technologies"
+      },
+      "notes": "Company/brand name header."
+    },
+    {
+      "item_id": "C2",
+      "kind": "visual_element",
+      "text": "A compact white medical monitor labeled 'PulsePro X1' displaying numeric vitals (936, 99, 60, 128), an ECG rhythm strip, battery status, wireless indicator, and an interactive home button against a high-tech clinical background.",
+      "location": {
+        "page": 1,
+        "section": "Hero Image",
+        "bbox": [
+          0.322,
+          0.207,
+          0.686,
+          0.531
+        ],
+        "quote": null
+      },
+      "notes": "Product rendering depicting active screen metrics and wireless pairing indicators."
+    },
+    {
+      "item_id": "C3",
+      "kind": "headline",
+      "text": "THE FUTURE OF PATIENT MONITORING IS HERE.",
+      "location": {
+        "page": 1,
+        "section": "Main Headline",
+        "bbox": [
+          0.188,
+          0.615,
+          0.812,
+          0.713
+        ],
+        "quote": "THE FUTURE OF PATIENT MONITORING IS HERE."
+      },
+      "notes": "Promotional claim of technological advancement."
+    },
+    {
+      "item_id": "C4",
+      "kind": "product_claim",
+      "text": "REAL-TIME VITALS",
+      "location": {
+        "page": 1,
+        "section": "Feature List Left Column",
+        "bbox": [
+          0.158,
+          0.758,
+          0.389,
+          0.785
+        ],
+        "quote": "REAL-TIME VITALS"
+      },
+      "notes": "Performance/feature claim regarding continuous monitoring."
+    },
+    {
+      "item_id": "C5",
+      "kind": "product_claim",
+      "text": "WIRELESS CONNECTIVITY",
+      "location": {
+        "page": 1,
+        "section": "Feature List Left Column",
+        "bbox": [
+          0.158,
+          0.801,
+          0.491,
+          0.828
+        ],
+        "quote": "WIRELESS CONNECTIVITY"
+      },
+      "notes": "Hardware capability claim."
+    },
+    {
+      "item_id": "C6",
+      "kind": "product_claim",
+      "text": "INTUITIVE OLED DISPLAY",
+      "location": {
+        "page": 1,
+        "section": "Feature List Right Column",
+        "bbox": [
+          0.55,
+          0.758,
+          0.869,
+          0.785
+        ],
+        "quote": "INTUITIVE OLED DISPLAY"
+      },
+      "notes": "Usability and display technology claim."
+    },
+    {
+      "item_id": "C7",
+      "kind": "product_claim",
+      "text": "ADVANCED ALERTS",
+      "location": {
+        "page": 1,
+        "section": "Feature List Right Column",
+        "bbox": [
+          0.55,
+          0.801,
+          0.799,
+          0.828
+        ],
+        "quote": "ADVANCED ALERTS"
+      },
+      "notes": "Clinical notification capability claim."
+    },
+    {
+      "item_id": "C8",
+      "kind": "call_to_action",
+      "text": "DISCOVER SMARTER CARE",
+      "location": {
+        "page": 1,
+        "section": "Call-to-Action Button",
+        "bbox": [
+          0.276,
+          0.871,
+          0.724,
+          0.932
+        ],
+        "quote": "DISCOVER SMARTER CARE"
+      },
+      "notes": "Primary CTA banner/button."
+    },
+    {
+      "item_id": "C9",
+      "kind": "disclaimer",
+      "text": "Fictional product concept • Illustrative specifications • Not for clinical use.",
+      "location": {
+        "page": 1,
+        "section": "Footer Disclaimer",
+        "bbox": [
+          0.242,
+          0.961,
+          0.758,
+          0.98
+        ],
+        "quote": "Fictional product concept • Illustrative specifications • Not for clinical use."
+      },
+      "notes": "Explicit disclaimer limiting device claims and clinical validity."
+    }
+  ],
+  "open_observations": [
+    "The piece explicitly notes that it is a 'Fictional product concept' and 'Not for clinical use' in the footer.",
+    "No regulatory clearance information (e.g., FDA 510(k) or CE mark status) is provided.",
+    "No formal Important Safety Information (ISI), contraindications, or risk information are included on the asset."
+  ]
+}

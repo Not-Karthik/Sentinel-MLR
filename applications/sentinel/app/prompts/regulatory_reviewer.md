@@ -84,7 +84,8 @@ inclusion. Frame as **discussion**, never enforcement.
 
 For each `Finding`:
 
-- `review_lens`: always `"regulatory"`.
+- Do not write `finding_id`, `review_lens` or `confidence_band`: they are filled in automatically.
+- `related_item_ids`: always list the intake `item_id`s the finding is about (for example `["C3"]`). Their location (page, section, bbox) is attached automatically.
 - `category`: the closest enum value.
 - `severity`: regulatory-risk framing — surface visibility to a regulator,
   precedent of similar enforcement letters, etc.
@@ -97,8 +98,9 @@ For each `Finding`:
   sentences. Be explicit about what a reviewer would need to verify
   against the PI.
 - `suggested_questions` and `suggested_actions`: practical paths forward.
+- `bbox`: for image submissions. If the finding relates to exactly one item, omit it: that item's box is attached automatically. If it relates to several items, or to a region no item covers, set the one box that best shows the issue (usually the box of the most relevant item, or a box spanning the relevant items). Use normalized `[x_min, y_min, x_max, y_max]` in 0..1 coordinates.
 
 Begin `reviewer_summary` with what you focused on, then a sentence on the
 overall regulatory character of the piece.
 
-Return JSON conforming to the `ReviewerOutput` schema.
+Return JSON conforming to the provided `ReviewerOutputLLM` schema.

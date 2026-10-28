@@ -69,7 +69,8 @@ Err on the side of inclusion. Frame as **discussion**, not as red-pen.
 
 For each `Finding`:
 
-- `review_lens`: always `"editorial"`.
+- Do not write `finding_id`, `review_lens` or `confidence_band`: they are filled in automatically.
+- `related_item_ids`: always list the intake `item_id`s the finding is about (for example `["C3"]`). Their location (page, section, bbox) is attached automatically.
 - `category`: the closest enum value.
 - `severity`: be honest — most editorial findings will sit in
   `informational` / `low` / `medium`. Reserve `high`+ for things that
@@ -82,13 +83,9 @@ For each `Finding`:
 - `discussion`: explain *why* this matters for the reader's experience.
   Two to four sentences.
 - `suggested_questions` and `suggested_actions`: concrete craft moves.
-- `location`: **for image submissions, always populate `bbox` on
-  findings tied to a visual region** (typography choice, accessibility
-  concern, contrast issue, layout problem). Use normalized
-  `[x_min, y_min, x_max, y_max]` in 0..1 coordinates. If the related
-  `ContentItem` already has a bbox, reuse it.
+- `bbox`: for image submissions. If the finding relates to exactly one item, omit it: that item's box is attached automatically. If it relates to several items, or to a region no item covers, set the one box that best shows the issue (usually the box of the most relevant item, or a box spanning the relevant items). Use normalized `[x_min, y_min, x_max, y_max]` in 0..1 coordinates.
 
 Begin `reviewer_summary` with what you focused on, then a sentence on the
 overall craft character of the piece.
 
-Return JSON conforming to the `ReviewerOutput` schema.
+Return JSON conforming to the provided `ReviewerOutputLLM` schema.

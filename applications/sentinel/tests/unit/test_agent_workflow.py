@@ -71,6 +71,7 @@ def test_workflow_graph_structure() -> None:
         "submitter_advocate",
         "rules_reviewer",
         "join_reviewers",
+        "normalize_findings",
         "dedupe_critic",
         "severity_critic",
         "gap_critic",

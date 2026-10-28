@@ -1,0 +1,34 @@
+{
+  "severity_adjustments": [
+    {
+      "finding_id": "F-MED-1",
+      "current_severity": "high",
+      "recommended_severity": "medium",
+      "rationale": "The depiction of '936' is an uncontextualized UI mockup placeholder rather than a clinical error that directly threatens patient safety or triggers regulatory action. As noted in the advocate's defense, this is illustrative prototyping art that requires standard cosmetic revision for verisimilitude, aligning with Regulatory (F-REG-07) and Editorial (F-EDT-02) assessments at medium."
+    },
+    {
+      "finding_id": "F-MED-5",
+      "current_severity": "high",
+      "recommended_severity": "medium",
+      "rationale": "While clinical alarm management is critical in practice, unsubstantiated promotional copy stating 'ADVANCED ALERTS' represents a claim substantiation and feature qualification gap rather than an acute patient safety risk. Both Legal (F-LEG-5) and Regulatory (F-REG-04) appropriately band this at medium."
+    },
+    {
+      "finding_id": "F-MED-8",
+      "current_severity": "medium",
+      "recommended_severity": "low",
+      "rationale": "Demanding detailed telemetry dropout warnings and backup caching protocols for a top-level hardware bullet ('WIRELESS CONNECTIVITY') over-penalizes standard promotional copy. Regulatory (F-REG-06) calibrated this at low severity as an informational technical qualification."
+    },
+    {
+      "finding_id": "F-REG-10",
+      "current_severity": "medium",
+      "recommended_severity": "low",
+      "rationale": "Applying formal human factors validation requirements to the descriptor 'INTUITIVE OLED DISPLAY' overstates risk for standard descriptive puffery. Medical (F-MED-11) and Legal (F-LEG-7) correctly recognized this as a low-level usability claim."
+    }
+  ],
+  "confidence_concerns": [
+    "F-REG-10 assigns high confidence (0.87) to asserting that 'INTUITIVE OLED DISPLAY' constitutes a human factors validation issue under FDA guidance, when such phrasing is routine commercial puffery for modern display screens.",
+    "F-MED-8 shows high confidence (0.80) that the high-level feature phrase 'WIRELESS CONNECTIVITY' requires immediate clinical disclosure of network packet dropouts and telemetry failure modes."
+  ],
+  "advocate_weighed": true,
+  "rationale": "The advocate's brief was weighed, particularly regarding the conceptual prototyping intent behind placeholder visual metrics and general hardware puffery. While the defense lands for downgrading mock-up display anomalies (F-MED-1) and software descriptors from high to medium or low, it does not mitigate the high-severity premarket commercialization tension (F-LEG-1, F-REG-01, F-MED-10) or missing fair balance (F-REG-02, F-MED-9), because active commercial solicitation paired with diminutive non-clinical disclaimers cannot cure net-impression violations if shared externally."
+}
