@@ -77,7 +77,7 @@ def test_workflow_graph_structure() -> None:
         "severity_critic",
         "gap_critic",
         "join_critics",
-        "critic_merger",
+        "merge_critics",
         "decide_review_loop",
         "synthesizer",
     }

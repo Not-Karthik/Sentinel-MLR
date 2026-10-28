@@ -25,7 +25,7 @@ from google.adk.models.llm_response import LlmResponse
 from google.genai import types
 from pydantic import BaseModel, ValidationError
 
-from app.schemas import ReviewerOutput
+from app.schemas import CriticAssessment, ReviewerOutput
 
 logger = logging.getLogger(__name__)
 
@@ -225,38 +225,45 @@ def derive_location(
     return location
 
 
+def expand_finding(
+    raw: dict[str, Any],
+    lens: str,
+    finding_id: str,
+    items: dict[str, dict[str, Any]],
+) -> dict[str, Any]:
+    confidence = _clamp_confidence(raw.get("confidence"))
+    return {
+        "finding_id": finding_id,
+        "review_lens": lens,
+        "category": raw.get("category") or "other",
+        "severity": raw.get("severity") or "informational",
+        "confidence": confidence,
+        "confidence_band": confidence_band(confidence),
+        "evidence_depth": raw.get("evidence_depth") or "surface",
+        "related_item_ids": _string_list(raw.get("related_item_ids")),
+        "quoted_content": raw.get("quoted_content"),
+        "observation": str(raw.get("observation") or ""),
+        "mlr_principle": str(raw.get("mlr_principle") or ""),
+        "discussion": str(raw.get("discussion") or ""),
+        "suggested_questions": _string_list(raw.get("suggested_questions")),
+        "suggested_actions": _string_list(raw.get("suggested_actions")),
+        "location": derive_location(raw, items),
+    }
+
+
 def expand_reviewer_output(
     lens: str, output: Any, items: dict[str, dict[str, Any]]
 ) -> dict[str, Any]:
     data = as_dict(output)
     prefix = LENS_PREFIX[lens]
     raw_findings = [f for f in data.get("findings") or [] if isinstance(f, dict)]
-    findings = []
-    for number, raw in enumerate(raw_findings, start=1):
-        confidence = _clamp_confidence(raw.get("confidence"))
-        findings.append(
-            {
-                "finding_id": f"F-{prefix}-{number}",
-                "review_lens": lens,
-                "category": raw.get("category") or "other",
-                "severity": raw.get("severity") or "informational",
-                "confidence": confidence,
-                "confidence_band": confidence_band(confidence),
-                "evidence_depth": raw.get("evidence_depth") or "surface",
-                "related_item_ids": _string_list(raw.get("related_item_ids")),
-                "quoted_content": raw.get("quoted_content"),
-                "observation": str(raw.get("observation") or ""),
-                "mlr_principle": str(raw.get("mlr_principle") or ""),
-                "discussion": str(raw.get("discussion") or ""),
-                "suggested_questions": _string_list(raw.get("suggested_questions")),
-                "suggested_actions": _string_list(raw.get("suggested_actions")),
-                "location": derive_location(raw, items),
-            }
-        )
     expanded = {
         "lens": lens,
         "reviewer_summary": str(data.get("reviewer_summary") or ""),
-        "findings": findings,
+        "findings": [
+            expand_finding(raw, lens, f"F-{prefix}-{number}", items)
+            for number, raw in enumerate(raw_findings, start=1)
+        ],
     }
     try:
         return ReviewerOutput.model_validate(expanded).model_dump(mode="json")
@@ -413,3 +420,65 @@ def normalize_finding_id(raw: Any) -> str | None:
     token = match.group(1).upper()
     token = _ID_LENS_ALIASES.get(token, token)
     return f"F-{token}-{int(match.group(2))}"
+
+
+def expand_gap_findings(
+    raw_findings: Any, items: dict[str, dict[str, Any]]
+) -> list[dict[str, Any]]:
+    expanded = []
+    for number, raw in enumerate(
+        [f for f in raw_findings or [] if isinstance(f, dict)], start=1
+    ):
+        lens = raw.get("review_lens")
+        if lens not in LENS_PREFIX:
+            lens = "regulatory"
+        expanded.append(expand_finding(raw, lens, f"F-GAP-{number}", items))
+    return expanded
+
+
+def _text(value: Any) -> str:
+    return str(value).strip() if value else ""
+
+
+def merge_critic_outputs(state: Any) -> dict[str, Any]:
+    items = items_by_id(as_dict(state.get("intake_findings")))
+    dedupe = as_dict(state.get("dedupe_critic_output"))
+    severity = as_dict(state.get("severity_critic_output"))
+    gap = as_dict(state.get("gap_critic_output"))
+    duplicate_groups = [g for g in dedupe.get("duplicate_groups") or [] if g]
+    themes = [t for t in dedupe.get("cross_lens_themes") or [] if t]
+    adjustments = [a for a in severity.get("severity_adjustments") or [] if a]
+    gaps = [str(g) for g in gap.get("gaps_identified") or []]
+    iterations_done = int(state.get("review_iteration_count") or 0)
+    wants_another_pass = iterations_done == 0 and (
+        len(gaps) >= 2 or len(adjustments) >= 3
+    )
+    assessment = " ".join(
+        part
+        for part in (
+            _text(dedupe.get("rationale")),
+            _text(severity.get("rationale")),
+            _text(gap.get("completeness_assessment")),
+        )
+        if part
+    )
+    merged = {
+        "overall_assessment": assessment or "No critic commentary was produced.",
+        "duplicate_groups": duplicate_groups,
+        "cross_lens_themes": themes,
+        "severity_adjustments": adjustments,
+        "gaps_identified": gaps,
+        "additional_findings": expand_gap_findings(
+            gap.get("additional_findings"), items
+        ),
+        "iteration_recommendation": (
+            "another_pass_would_help"
+            if wants_another_pass
+            else "reviewers_have_converged"
+        ),
+    }
+    try:
+        return CriticAssessment.model_validate(merged).model_dump(mode="json")
+    except ValidationError:
+        logger.exception("Merged critic assessment failed schema validation")
+        return merged

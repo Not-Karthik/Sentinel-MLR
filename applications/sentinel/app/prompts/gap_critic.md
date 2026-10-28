@@ -43,11 +43,7 @@ The four lens reviewers each have blind spots. Common ones:
   reviewer panel missed. List them whether or not you can write a
   full Finding for them.
 
-- **`additional_findings`**: net-new `Finding` entries for the gaps you
-  *can* substantiate. Use `finding_id` prefix `F-GAP-` (the
-  synthesizer will renumber per lens at the end). Pick the lens
-  closest to the gap; if it spans lenses, pick the lens whose
-  `mlr_principle` is most natural.
+- **`additional_findings`**: net-new findings for the gaps you *can* substantiate. Do not write a `finding_id` or a `confidence_band`: they are assigned automatically. Set `review_lens` to the lens closest to the gap; if it spans lenses, pick the lens whose `mlr_principle` is most natural. List the `related_item_ids` the gap concerns and set `bbox` when the gap sits in an image region no item covers.
 
 - **`completeness_assessment`**: 3–5 sentences on coverage. Which
   lenses look thorough? Which look thin? Was the panel's collective
@@ -64,4 +60,4 @@ The four lens reviewers each have blind spots. Common ones:
 - Do not speculate beyond what a reasonable reviewer with access to
   the same submission could verify.
 
-Return JSON conforming to the `GapCriticOutput` schema.
+Return JSON conforming to the provided `GapCriticOutputLLM` schema.

@@ -33,7 +33,6 @@ def load(name: str) -> str:
     return path.read_text(encoding="utf-8").strip()
 
 
-ROOT = load("root")
 INTAKE = load("intake")
 
 # Reviewer panel (parallel)
@@ -48,8 +47,6 @@ RULES_REVIEWER = load("rules_reviewer")
 DEDUPE_CRITIC = load("dedupe_critic")
 SEVERITY_CRITIC = load("severity_critic")
 GAP_CRITIC = load("gap_critic")
-CRITIC_MERGER = load("critic_merger")
-LOOP_DECIDER = load("loop_decider")
 
 # Direct responder (non-promotional short circuit)
 DIRECT_RESPONDER = load("direct_responder")

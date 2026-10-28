@@ -528,6 +528,32 @@ class GapCriticOutput(BaseModel):
     )
 
 
+class GapFindingLLM(ReviewerFindingLLM):
+    """Net-new finding proposed by the gap critic (it also picks the lens)."""
+
+    review_lens: ReviewLens = Field(
+        ...,
+        description="The lens whose principle best fits the gap.",
+    )
+
+
+class GapCriticOutputLLM(BaseModel):
+    """Output of the gap-finding critic as written by the model."""
+
+    gaps_identified: list[str] = Field(
+        default_factory=list,
+        description="Issues the reviewer panel may have missed.",
+    )
+    additional_findings: list[GapFindingLLM] = Field(
+        default_factory=list,
+        description="Net-new findings the gap critic can substantiate.",
+    )
+    completeness_assessment: str = Field(
+        ...,
+        description="Brief narrative on coverage across the lenses.",
+    )
+
+
 class CriticAssessment(BaseModel):
     """Consolidated output of the critic stage.
 
