@@ -125,10 +125,10 @@ Every request can choose how hard the model thinks, which is the main trade-off 
 | `thinking` | Measured on the 10 MB, 4096x4096 test image (local run) |
 |---|---|
 | `low` | About 70 seconds. Fastest and shallowest: 30 reviewer findings, 1 high-severity finding. Use it for quick checks. |
-| `medium` (default) | About 100 to 120 seconds. 36 to 42 reviewer findings, and all four of the baseline's high-severity issues were present in both runs (in one run two near-identical findings were merged into one). |
+| `medium` (default) | About 100 seconds when the model API responds normally and up to about 5 minutes when a call stalls (98 to 316 s over five runs). 34 to 42 reviewer findings, and all four of the baseline's high-severity issues were present in all five runs. |
 | `high` | About 7.5 minutes (one reviewer call alone took almost 5). Deepest: 55 reviewer findings, 47 after consolidation. Use it when exhaustiveness matters more than turnaround. |
 
-For comparison, the original workflow (default model thinking) took about 15 minutes and produced 40 reviewer findings. These are single runs, and model output varies from run to run (the number of findings after consolidation ranged from 28 to 37 across medium runs), so treat the figures as indicative.
+For comparison, the original workflow (default model thinking) took 776 and 893 seconds in two runs and produced 39 and 40 reviewer findings. These are single runs, and model output varies from run to run (the number of findings after consolidation ranged from 28 to 37 across medium runs), so treat the figures as indicative.
 
 Send it in the A2A request as `params.metadata`:
 

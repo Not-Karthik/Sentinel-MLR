@@ -83,15 +83,15 @@ root_agent "sentinel" (ADK v2 Workflow DAG)
 
 ### Typical timing
 
-On a 4096x4096, 10 MB test image running locally (single runs, so indicative only):
+On a 4096x4096, 10 MB test image running locally (a handful of runs each, so indicative only):
 
 | Thinking level | Total time | Reviewer findings |
 |---|---|---|
 | `low` | about 70 s | 30 |
-| `medium` (default) | about 100 to 120 s | 36 to 42 |
+| `medium` (default) | 98 to 316 s over five runs (median about 200 s) | 34 to 42 |
 | `high` | about 7.5 minutes | 55 |
 
-The original workflow with default model thinking took about 15 minutes and produced 40 reviewer findings. At `medium` the stages take roughly: intake 25 s, reviewers 30 s, critics 30 s, narrative 11 s.
+The original workflow with default model thinking took 776 and 893 s in two runs and produced 39 and 40 reviewer findings. When the model API responds normally the `medium` stages take roughly: intake 25 s, reviewers 30 s, critics 30 s, narrative 11 s (about 100 s in total). The slower runs each had one model call that took 3 to 5 times its normal time; see "Stalled model calls" below.
 
 ### Reliability, tuning and extension
 
@@ -103,7 +103,7 @@ The original workflow with default model thinking took about 15 minutes and prod
 - Each code node fails soft. If it hits an unexpected error it logs it and the run still ends with a report (the unmerged findings, or a minimal report) instead of discarding a finished review.
 - Critic hints are bounded: duplicate candidates are one group per identical item set plus at most 200 box-overlap pairs, and at most 60 uncovered items are listed. A synthetic submission with 1,500 findings and 400 items stays within these limits.
 
-**Stalled model calls.** Individual model calls were seen stalling for 285 to 645 seconds with no error, which holds the whole review because each stage waits for its slowest call. Every call now has a request timeout (low 120 s, medium 150 s, high 300 s; set `SENTINEL_MODEL_TIMEOUT_SECONDS` to change it, for example for very large documents). When it expires the service returns 504, which the retry options already retry.
+**Stalled model calls.** Individual model calls were seen stalling for 285 to 645 seconds with no error, which holds the whole review because each stage waits for its slowest call. Every call now has a request timeout (low 120 s, medium 150 s, high 300 s; set `SENTINEL_MODEL_TIMEOUT_SECONDS` to change it, for example for very large documents). When it expires the service returns 504, which the retry options already retry. This bounds a stall to roughly the timeout plus one normal call (a 226 s and a 190 s reviewer call were cut and retried this way), but it does not remove it: in the later `medium` runs about one call per run still stalled.
 
 **Tunables.** These values were chosen on one test image, so they can be overridden and should be re-checked on new content:
 
@@ -124,11 +124,11 @@ The original workflow with default model thinking took about 15 minutes and prod
 | Candidate | Reference findings covered | Fully the same issue | High-severity issues covered |
 |---|---|---|---|
 | Original pipeline, second run (control) | 91% | 82% | 4 of 4 |
-| New pipeline, `medium` (two runs) | 91% and 79% | 85% and 79% | 4 of 4 in both |
+| New pipeline, `medium` (five runs) | 79% to 94% (mean 87%) | 79% to 91% | 4 of 4 in all five |
 | New pipeline, `high` | 94% | 91% | 4 of 4 |
 | New pipeline, `low` | 74% | 71% | 4 of 4 |
 
-The original pipeline agrees with itself by about 91%, so differences of that size are run-to-run variation. Across all of these comparisons the baseline findings that a candidate missed were never high or critical (13 medium, 8 low and 3 informational misses in total, mostly editorial accessibility and medical clinical-accuracy findings), and the original pipeline's own second run missed some of the same ones. These are single runs on one image judged by a model, so treat them as indicative, not as a guarantee.
+The original pipeline agreed with itself by 91% in its one comparison, and the new `medium` runs average about four points below that, so most of the difference is run-to-run variation. The new runs also produce about 12% fewer findings after consolidation (28 to 36 against 34 and 35). Across all of these comparisons the baseline findings that a candidate missed were never high or critical (13 medium, 8 low and 3 informational misses in total, mostly editorial accessibility and medical clinical-accuracy findings), and the original pipeline's own second run missed some of the same ones. These are single runs on one image judged by a model, so treat them as indicative, not as a guarantee.
 
 **Known limits.** Sessions and A2A tasks are in memory on a single Cloud Run instance, so a restart loses them and the service does not scale out. Only the intake agent receives the image; the reviewers and critics work from the intake inventory. The dedupe critic's `keep` choice decides which lens a merged finding is attributed to, so a lens can end up with few or no findings in the final report even though its reviewer raised them.
 
