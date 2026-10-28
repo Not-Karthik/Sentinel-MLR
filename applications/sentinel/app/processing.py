@@ -585,6 +585,31 @@ def merge_critic_outputs(state: Any) -> dict[str, Any]:
 SEVERITIES = ("critical", "high", "medium", "low", "informational")
 SEVERITY_RANK = {name: rank for rank, name in enumerate(SEVERITIES)}
 LENS_ORDER = tuple(LENS_PREFIX)
+MAX_CARRIED_ITEMS = 8
+
+
+def _severity_rank(value: Any) -> int:
+    if isinstance(value, str) and value in SEVERITY_RANK:
+        return SEVERITY_RANK[value]
+    return len(SEVERITIES)
+
+
+def _items_nested(first: dict[str, Any], second: dict[str, Any]) -> bool:
+    a = set(_string_list(first.get("related_item_ids")))
+    b = set(_string_list(second.get("related_item_ids")))
+    return bool(a) and bool(b) and (a <= b or b <= a)
+
+
+def _merge_texts(base: Any, extras: list[Any]) -> list[str]:
+    merged = _string_list(base)
+    seen = {text.strip().lower() for text in merged}
+    for extra in extras:
+        for text in _string_list(extra):
+            key = text.strip().lower()
+            if key and key not in seen and len(merged) < MAX_CARRIED_ITEMS:
+                merged.append(text)
+                seen.add(key)
+    return merged
 
 
 def _theme_text(theme: dict[str, Any]) -> str:
@@ -643,6 +668,7 @@ def assemble_findings(state: Any) -> dict[str, Any]:
                 and member not in explicit_keeps
                 and member not in replaced_by
                 and find(keep) != member
+                and _items_nested(by_id[member], by_id[keep])
             ):
                 replaced_by[member] = keep
 
@@ -652,20 +678,23 @@ def assemble_findings(state: Any) -> dict[str, Any]:
         recommended = adjustment.get("recommended_severity")
         if key not in by_id:
             unresolved.append(str(adjustment.get("finding_id")))
-        elif (
-            find(key) == key
-            and isinstance(recommended, str)
-            and recommended in SEVERITY_RANK
-        ):
+        elif isinstance(recommended, str) and recommended in SEVERITY_RANK:
             by_id[key]["severity"] = recommended
 
     kept = [key for key in order if find(key) == key]
     merged_lenses: dict[str, set[str]] = {}
+    merged_members: dict[str, list[dict[str, Any]]] = {}
     for key in order:
         root = find(key)
         lens = by_id[key].get("review_lens")
-        if root != key and isinstance(lens, str):
-            merged_lenses.setdefault(root, set()).add(lens)
+        if root != key:
+            merged_members.setdefault(root, []).append(by_id[key])
+            if isinstance(lens, str):
+                merged_lenses.setdefault(root, set()).add(lens)
+            if _severity_rank(by_id[key].get("severity")) < _severity_rank(
+                by_id[root].get("severity")
+            ):
+                by_id[root]["severity"] = by_id[key]["severity"]
     raised_by_lens = dict.fromkeys(LENS_ORDER, 0)
     for key in order:
         lens = by_id[key].get("review_lens")
@@ -705,6 +734,27 @@ def assemble_findings(state: Any) -> dict[str, Any]:
             other
             for other in LENS_ORDER
             if other in merged_lenses.get(key, set()) and other != lens
+        ]
+        members = merged_members.get(key, [])
+        finding["suggested_actions"] = _merge_texts(
+            finding.get("suggested_actions"),
+            [m.get("suggested_actions") for m in members],
+        )
+        finding["suggested_questions"] = _merge_texts(
+            finding.get("suggested_questions"),
+            [m.get("suggested_questions") for m in members],
+        )
+        finding["merged_from"] = [
+            {
+                "review_lens": member["review_lens"],
+                "category": _enum_value(member.get("category"), IssueCategory, "other"),
+                "severity": _enum_value(member.get("severity"), Severity, "medium"),
+                "observation": str(member.get("observation") or ""),
+                "mlr_principle": str(member.get("mlr_principle") or ""),
+            }
+            for member in members
+            if isinstance(member.get("review_lens"), str)
+            and member["review_lens"] in LENS_PREFIX
         ]
         findings.append(finding)
     themes = [

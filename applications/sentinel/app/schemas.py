@@ -242,6 +242,16 @@ class ContentInventory(BaseModel):
     )
 
 
+class MergedFinding(BaseModel):
+    """What another lens said about an issue that was merged into a finding."""
+
+    review_lens: ReviewLens
+    category: IssueCategory
+    severity: Severity
+    observation: str
+    mlr_principle: str = ""
+
+
 class Finding(BaseModel):
     """A single MLR-style observation worth discussing."""
 
@@ -299,6 +309,14 @@ class Finding(BaseModel):
         description=(
             "Other lenses whose reviewers raised the same issue and whose "
             "findings were merged into this one as duplicates."
+        ),
+    )
+    merged_from: list[MergedFinding] = Field(
+        default_factory=list,
+        description=(
+            "The observation, principle and severity each merged duplicate "
+            "carried. Their suggested actions and questions are added to this "
+            "finding."
         ),
     )
 

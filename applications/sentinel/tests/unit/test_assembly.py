@@ -68,7 +68,7 @@ def _finding(finding_id, lens="medical", severity="medium", **extra) -> dict:
         "confidence": 0.8,
         "confidence_band": "high",
         "evidence_depth": "surface",
-        "related_item_ids": [],
+        "related_item_ids": ["C1"],
         "quoted_content": None,
         "observation": f"obs {finding_id}",
         "mlr_principle": "p",
@@ -307,7 +307,7 @@ def test_severity_adjustments_apply_and_invalid_values_are_ignored() -> None:
     assert findings[0]["observation"] == "obs F-MED-1"
 
 
-def test_adjusting_a_dropped_duplicate_does_not_change_the_kept_one() -> None:
+def test_a_dropped_duplicates_adjusted_severity_raises_the_kept_finding() -> None:
     critic = {
         "duplicate_groups": [
             {"finding_ids": ["F-MED-1", "F-MED-2"], "rationale": "r", "keep": "F-MED-1"}
@@ -330,7 +330,7 @@ def test_adjusting_a_dropped_duplicate_does_not_change_the_kept_one() -> None:
         },
         critic,
     )
-    assert processing.assemble_findings(state)["findings"][0]["severity"] == "low"
+    assert processing.assemble_findings(state)["findings"][0]["severity"] == "high"
 
 
 def test_gap_findings_join_their_lens_sequence() -> None:

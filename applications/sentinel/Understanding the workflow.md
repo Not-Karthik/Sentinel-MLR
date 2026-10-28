@@ -142,7 +142,7 @@ flowchart TD
 | severity critic | LLM | Checks severity against the rubric, weighs the advocate | digest, defense | severity adjustments |
 | gap critic | LLM | Finds what is missing and adds findings | digest, coverage hints | extra findings |
 | merge critics | code | Combines the three critic outputs | critics | one assessment |
-| assemble report | code | Drops duplicates (a named keeper is never dropped), applies severity changes, sorts, renumbers, counts | all findings, assessment | final findings |
+| assemble report | code | Merges duplicates only when they share items (a named keeper is never dropped; the keeper takes the most severe severity and the others' actions and questions, and `merged_from` records what they said), applies severity changes, sorts, renumbers, counts | all findings, assessment | final findings |
 | narrative writer | LLM | Executive summary, open questions, discussion topics only | assembled digest | narrative |
 | compose | code | Builds the `FinalReport` and emits it | state | final report |
 
