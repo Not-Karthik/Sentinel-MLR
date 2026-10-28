@@ -26,6 +26,14 @@ For architecture review. "Today" means branch `backend-only-deployment`, checked
 - [8. Gaps](#8-gaps)
 - [9. Memory and persistence plan](#9-memory-and-persistence-plan)
 - [10. Next steps and open decisions](#10-next-steps-and-open-decisions)
+- [11. Why reviews were slow and what fixed them](#11-why-reviews-were-slow-and-what-fixed-them)
+  - [Where the time went in the original run (893 s)](#where-the-time-went-in-the-original-run-893-s)
+  - [Causes and fixes](#causes-and-fixes)
+  - [Was it the sorting, merging and joins done by the LLM?](#was-it-the-sorting-merging-and-joins-done-by-the-llm)
+  - [Not the cause (checked)](#not-the-cause-checked)
+  - [Where the time goes now](#where-the-time-goes-now)
+  - [What is still slow](#what-is-still-slow)
+  - [Quality checks behind the speed-up](#quality-checks-behind-the-speed-up)
 - [Sources](#sources)
 
 ## 1. The two flows (read this first)
@@ -344,6 +352,72 @@ Order of work is in section 7 (verifier, route lock, user into ADK, roles and up
 Open decisions: Entra ID or Cognito (and, if Cognito, native users or federated from Entra); one tenant or many; Postgres (Cloud SQL) or Vertex sessions for persistence; whether any long-term memory is wanted.
 
 Not yet verified at runtime: what happens when one parallel reviewer fails, whether cancel stops the running workflow, whether the shutdown signal reaches uvicorn through `uv run`, and the two-user isolation test in section 7. Checked by running the code: the route list (including `/api/v1/*`), the stub-model run of the full workflow (which agents run, which receive the image, what the critics receive, the final report keys), the A2A error responses, the 403 for browser requests from another origin, and the unauthenticated `ListTasks` call.
+
+## 11. Why reviews were slow and what fixed them
+
+Numbers are from runs on the 10 MB Vitalynx test image unless noted. They are single runs, so treat them as indicative.
+
+**Result.** The original workflow took 776 s and 893 s in two runs. The current one takes about 100 s when no model call stalls (103 s on the latest Vitalynx run) and 98 to 316 s over five earlier `medium` runs.
+
+### Where the time went in the original run (893 s)
+
+| Stage | Finished at | Time in stage |
+|---|---|---|
+| intake | 102 s | 102 s |
+| 6 reviewers in parallel | 191 s | 89 s |
+| 3 critics in parallel | 254 s | 63 s |
+| critic merger (LLM) | 275 s | 21 s |
+| synthesizer (LLM) | 893 s | 618 s |
+
+Source: `run_outputs/vitalynx-test-image-2/run_info.json`. Of the 893 s, 639 s (72%) came after the critics, in the two LLM steps that applied the critics' decisions.
+
+### Causes and fixes
+
+| # | Cause | Evidence | Fix |
+|---|---|---|---|
+| 1 | Default model thinking spent 1,000 to 2,600 hidden tokens on every call, in every stage | A small test prompt took 48.5 s at default thinking, 20.2 s at `medium`, 23.3 s at `low`, 35.3 s at `high`. Changing only the thinking level took one full run from 893 s to 244 s | `app/thinking.py`: `medium` by default, `low` or `high` per request in `params.metadata.thinking`, plus a per-call timeout |
+| 2 | The synthesizer LLM re-typed every finding to drop duplicates, apply severity changes, renumber and count | About 66,000 characters (about 15,000 output tokens). Replayed alone it took 109 s, but it took 618 s inside the workflow | `assemble_report` does this in code; an LLM now writes only the executive summary, open questions and discussion topics (about 700 output tokens, 15 to 21 s) |
+| 3 | The critic merger LLM copied the three critics' fields into one object | 21 s for a copy | `merge_critics` is code |
+| 4 | The rules reviewer made a full model call to answer "no rules file supplied" | About 15 s of model time per review | The call is skipped when there are no rules |
+| 5 | Reviewers wrote ids, lens, confidence band and a location that is a copy of the intake item | These fields were part of every finding's output tokens (the location alone was about 12% of the characters) | Reviewers return a slim finding; code adds ids, lens, band and location. Not timed separately from the thinking change |
+| 6 | Critics received the full text of all findings through prompt placeholders | About 100,000 characters (about 27,000 tokens) per critic | A compact digest replaced the placeholders. Critic prompts are now about 21,000 tokens, roughly 20% smaller, not the large cut intended (see "What is still slow") |
+
+### Was it the sorting, merging and joins done by the LLM?
+
+Largely, but not only. The sort, merge, duplicate removal, renumbering and counting were done by the LLM synthesizer and the critic merger, and those two steps account for 639 s of the 893 s run (causes 2 and 3). The joins themselves were never LLM work: they are plain graph nodes. Thinking (cause 1) added time to every call in every stage, so it is the second big cause rather than a minor one. The rules reviewer call, the verbose reviewer output and the large critic prompts are smaller contributors. The synthesizer took 109 s alone but 618 s in the workflow, and about 500 s of that gap was not fully explained. Stalled model calls and retries are the likely reason, but this was not verified.
+
+### Not the cause (checked)
+
+- **Prompt size.** The prompts totalled 47 KB when measured; they were not the bottleneck.
+- **Structured output.** The same prompt took 44.1 s with the Pydantic output schema and 43.0 s without it.
+- **The image.** It is about 2,100 input tokens.
+- **Re-sending the image to every agent.** This does not happen: only `intake` receives the image (checked by running the real workflow with a stub model).
+- **Quota.** Not shown to be a cause; it is unknown.
+
+### Where the time goes now
+
+Latest Vitalynx run (`run_outputs/vitalynx-test-image-2-new-merge-rules/model_call_timings.json`), 103 s in total:
+
+| Stage | Slowest call in the stage |
+|---|---|
+| intake | 22.5 s |
+| advocate and 4 reviewers in parallel | 33.5 s |
+| 3 critics in parallel | 30.7 s |
+| narrative writer | 15.4 s |
+| all code steps | about 1 s |
+
+Each stage waits for its slowest call, so the total is roughly the sum of the four slowest calls.
+
+### What is still slow
+
+1. **Stalled model calls.** About 11% of calls (14 of 123 logged) took more than 2.5 times their agent's median and more than 60 s. The evidence points to Vertex AI on the server side (504 DEADLINE_EXCEEDED, and earlier 429 responses). Per-call timeouts of 120, 150 and 300 s bound a stall but do not remove it. In `run_outputs/vitalynx-test-image-2-rerun/` the regulatory reviewer took 183 s after one such retry, which made that run 265 s instead of about 120 s.
+2. **Critic prompts are still large.** The critics receive each reviewer's full output as their user message in addition to the digest, so their requests are 79 to 90 KB (about 21,000 tokens) against 11 to 19 KB for the reviewers (gap 18). Removing that duplicate is the obvious follow-up.
+3. **Thinking is a trade-off.** `low` takes about 70 s with 30 reviewer findings; `medium` about 100 s with 34 to 42; `high` about 7.5 minutes with 55. Medium produces about 12% fewer findings than the original workflow.
+4. **Quota.** If Vertex quota metrics show the project hitting its limit during a run, a quota increase or Provisioned Throughput is worth trying. If they do not, hedged duplicate requests are the remaining option. Neither is built.
+
+### Quality checks behind the speed-up
+
+Each step was checked against the saved output of the original workflow with `tests/eval/compare_runs.py` (high and critical findings covered, boxes present, narrative complete, counts consistent) and with a model judge (`tests/eval/judge_runs.py`) that matches findings by meaning. On the original image the new `medium` runs covered 79% to 94% of the reference findings (mean 87%), against 91% for the original workflow compared with its own second run, and covered all 4 high-severity issues in every run. The latest run passed all five comparison checks with 32 findings against 34.
 
 ## Sources
 
