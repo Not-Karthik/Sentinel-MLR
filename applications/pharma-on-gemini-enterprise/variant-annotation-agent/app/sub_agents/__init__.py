@@ -4,7 +4,7 @@
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
 #
-#     https://www.apache.org/licenses/LICENSE-2.0
+#     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
 # distributed under the License is distributed on an "AS IS" BASIS,
@@ -12,23 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import uuid
-from typing import (
-    Literal,
-)
+"""Sub-agents package for AlphaGenome variant annotation agent."""
 
-from pydantic import (
-    BaseModel,
-    Field,
-)
+from .database_lookup_agent import database_lookup_agent
+from .variant_annotation_pipeline import variant_annotation_pipeline
+from .variant_scoring_agent import variant_scoring_agent
 
-
-class Feedback(BaseModel):
-    """Represents feedback for a conversation."""
-
-    score: int | float
-    text: str | None = ""
-    log_type: Literal["feedback"] = "feedback"
-    service_name: Literal["foldrun-agent"] = "foldrun-agent"
-    user_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    session_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+__all__ = [
+    "database_lookup_agent",
+    "variant_annotation_pipeline",
+    "variant_scoring_agent",
+]

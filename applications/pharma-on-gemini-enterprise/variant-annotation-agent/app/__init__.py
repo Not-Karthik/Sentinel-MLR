@@ -12,23 +12,13 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import uuid
-from typing import (
-    Literal,
-)
+"""AlphaGenome — Variant Annotation Agent package."""
 
-from pydantic import (
-    BaseModel,
-    Field,
-)
+from .agent import alphagenome_variant_agent, app, coordinator_agent, root_agent
 
-
-class Feedback(BaseModel):
-    """Represents feedback for a conversation."""
-
-    score: int | float
-    text: str | None = ""
-    log_type: Literal["feedback"] = "feedback"
-    service_name: Literal["argus-agent"] = "argus-agent"
-    user_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    session_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+__all__ = [
+    "alphagenome_variant_agent",
+    "app",
+    "coordinator_agent",
+    "root_agent",
+]

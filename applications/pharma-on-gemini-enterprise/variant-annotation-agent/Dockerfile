@@ -12,23 +12,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import uuid
-from typing import (
-    Literal,
-)
+FROM python:3.13-slim
 
-from pydantic import (
-    BaseModel,
-    Field,
-)
+COPY --from=ghcr.io/astral-sh/uv:0.13.5 /uv /uvx /bin/
 
+WORKDIR /code
 
-class Feedback(BaseModel):
-    """Represents feedback for a conversation."""
+COPY ./pyproject.toml ./README.md ./uv.lock* ./
 
-    score: int | float
-    text: str | None = ""
-    log_type: Literal["feedback"] = "feedback"
-    service_name: Literal["my-agent"] = "my-agent"
-    user_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
-    session_id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+COPY ./app ./app
+
+RUN uv sync --frozen --no-dev
+
+ARG AGENT_VERSION=0.1.0
+ENV AGENT_VERSION=${AGENT_VERSION}
+ENV GCSFS_EXPERIMENTAL_ZB_HNS_SUPPORT=false
+
+EXPOSE 8080
+
+CMD ["uv", "run", "uvicorn", "app.fast_api_app:app", "--host", "0.0.0.0", "--port", "8080"]
